@@ -1,0 +1,59 @@
+.birth-date-page {
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.birth-date-content {
+  margin-top: 80px;
+}
+
+.birth-date-title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.birth-date-subtitle {
+  margin: 12px 0 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.birth-date-label {
+  display: block;
+  margin-top: 40px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.birth-date-input {
+  width: 100%;
+  height: 52px;
+  padding: 0 16px;
+  border: 1px solid #dddddd;
+  border-radius: 12px;
+  font-size: 16px;
+  outline: none;
+}
+
+.birth-date-input:focus {
+  border-color: #222222;
+}
+
+.birth-date-button {
+  width: 100%;
+  height: 52px;
+  margin-top: 24px;
+  border: none;
+  border-radius: 12px;
+  background: #222222;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.birth-date-error {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: #d32f2f;
+}
