@@ -261,6 +261,29 @@ function HomePage() {
                     </button>
                   )}
 
+                  {editingTaskIndex !== index && (
+                    <button
+                      className="home-delete-task-button"
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        
+                        const shouldDelete = window.confirm('Удалить эту задачу?')
+                        
+                        if (!shouldDelete) {
+                          return
+                        }
+                        const updatedTasks = tasks.filter(
+                          (_, taskIndex) => taskIndex !== index
+                        )
+
+                        setTasks(updatedTasks)
+                        setOpenTaskIndex(null)
+                      }}
+                    >
+                      Удалить
+                    </button>
+                  )}
+
                     {editingTaskIndex === index && (
                       <div className="home-edit-task-buttons">
                         <button
