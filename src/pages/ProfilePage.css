@@ -1,29 +1,221 @@
+
+/* Основная страница */
+
 .profile-page {
   min-height: 100vh;
-  padding: 24px;
-  padding-bottom: 100px;
+  box-sizing: border-box;
+  padding: 32px 24px 110px;
+  background: #f8f7f4;
+  color: #292929;
 }
 
 .profile-content {
   width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }
+
+/* Заголовок */
 
 .profile-title {
   margin: 8px 0 0;
   font-size: 32px;
+  line-height: 1.2;
   font-weight: 600;
+  letter-spacing: -0.7px;
 }
 
 .profile-subtitle {
-  margin: 12px 0 0;
-  font-size: 16px;
+  margin: 12px 0 28px;
+  font-size: 15px;
   line-height: 1.5;
-  color: #777777;
+  color: #77746d;
 }
 
+/* Карточка с данными */
+
+.profile-section {
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #eeece7;
+  border-radius: 24px;
+  box-shadow: 0 4px 18px rgba(40, 35, 25, 0.03);
+}
+
+.profile-section-title {
+  margin: 0 0 20px;
+  font-size: 19px;
+  font-weight: 600;
+}
+
+/* Поля профиля */
+
+.profile-field {
+  padding: 17px 0;
+  border-bottom: 1px solid #eeece7;
+}
+
+.profile-field:last-of-type {
+  border-bottom: none;
+}
+
+.profile-label {
+  display: block;
+  margin-bottom: 9px;
+  color: #89857c;
+  font-size: 13px;
+}
+
+.profile-field-value {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+.profile-edit-button {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 12px;
+  background: #f5f3ee;
+  color: #656158;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.profile-edit-button:hover {
+  background: #eae7df;
+}
+
+/* Редактирование данных */
+
+.profile-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.profile-input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid #dedbd2;
+  border-radius: 12px;
+  outline: none;
+  background: #fcfbf8;
+  color: #292929;
+  font: inherit;
+}
+
+.profile-input:focus {
+  border-color: #a9a394;
+}
+
+.profile-edit-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.profile-save-button,
+.profile-cancel-button {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.profile-save-button {
+  border: 1px solid #33332f;
+  background: #33332f;
+  color: #ffffff;
+}
+
+.profile-save-button:hover {
+  background: #4a4a44;
+}
+
+.profile-cancel-button {
+  border: 1px solid #e5e2da;
+  background: #ffffff;
+  color: #55534d;
+}
+
+.profile-cancel-button:hover {
+  background: #f5f3ee;
+}
+
+/* Уведомления */
+
+.profile-notifications {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 18px;
+  padding-top: 22px;
+  border-top: 1px solid #eeece7;
+}
+
+.profile-notifications-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.profile-notifications-description {
+  margin: 7px 0 0;
+  color: #89857c;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.profile-toggle {
+  position: relative;
+  flex-shrink: 0;
+  width: 48px;
+  height: 28px;
+  padding: 3px;
+  border: none;
+  border-radius: 20px;
+  background: #d8d5cd;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.profile-toggle.is-active {
+  background: #45453e;
+}
+
+.profile-toggle-circle {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s ease;
+}
+
+.profile-toggle.is-active .profile-toggle-circle {
+  transform: translateX(20px);
+}
+
+/* Кнопки внизу */
 
 .profile-logout-button {
   display: block;
+  box-sizing: border-box;
   width: 100%;
   margin-top: 24px;
   padding: 15px 20px;
@@ -31,7 +223,7 @@
   border-radius: 14px;
   background: #ffffff;
   color: #a34f45;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s ease, border-color 0.2s ease;
@@ -46,9 +238,9 @@
   background: #f5e5e2;
 }
 
-
 .profile-home-button {
   display: block;
+  box-sizing: border-box;
   width: 100%;
   margin-top: 12px;
   padding: 14px 20px;
@@ -56,7 +248,7 @@
   border-radius: 14px;
   background: transparent;
   color: #454545;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s ease;
@@ -64,4 +256,25 @@
 
 .profile-home-button:hover {
   background: #eeece7;
+}
+
+/* Мобильная версия */
+
+@media (max-width: 480px) {
+  .profile-page {
+    padding: 26px 18px 110px;
+  }
+
+  .profile-title {
+    font-size: 29px;
+  }
+
+  .profile-section {
+    padding: 20px 18px;
+    border-radius: 20px;
+  }
+
+  .profile-section-title {
+    font-size: 18px;
+  }
 }

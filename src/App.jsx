@@ -10,6 +10,7 @@ import ChronotypeQuestion3Page from './pages/ChronotypeQuestion3Page'
 import ChronotypeQuestion4Page from './pages/ChronotypeQuestion4Page'
 import ChronotypeQuestion5Page from './pages/ChronotypeQuestion5Page'
 import ProfilePage from './pages/ProfilePage'
+import BiorhythmsPage from './pages/BiorhythmsPage'
 
 function App() {
   const [page, setPage] = useState('start')
@@ -33,11 +34,19 @@ function App() {
       {page === 'home' && (
         <HomePage
           onOpenProfile={() => setPage('profile')}
+          onOpenBiorhythms={() => setPage('biorhythms')}
         />
       )}
 
       {page === 'profile' && (
         <ProfilePage onOpenHome={() => setPage('home')} />
+      )}
+
+      {page === 'biorhythms' && (
+        <BiorhythmsPage
+          onOpenHome={() => setPage('home')}
+          onOpenProfile={() => setPage('profile')}
+        />
       )}
 
       {page === 'birthDate' && (

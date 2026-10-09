@@ -1,0 +1,195 @@
+
+.biorhythms {
+  min-height: 100vh;
+  padding: 40px 24px 100px;
+  background: #f8f8f5;
+  color: #292929;
+  font-family: inherit;
+}
+
+.biorhythms__header {
+  margin-bottom: 28px;
+}
+
+.biorhythms__header h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.biorhythms__header p {
+  margin: 0;
+  color: #777;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.biorhythms__switcher {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 5px;
+  margin-bottom: 28px;
+  border-radius: 14px;
+  background: #ededE8;
+}
+
+.biorhythms__tab {
+  padding: 12px 8px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #666;
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.biorhythms__tab--active {
+  background: #fff;
+  color: #292929;
+  box-shadow: 0 1px 4px #0000000d;
+}
+
+.biorhythms__content h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.biorhythms__content > p {
+  margin: 0 0 20px;
+  color: #777;
+  font-size: 14px;
+}
+
+.biorhythms__placeholder {
+  display: grid;
+  min-height: 260px;
+  place-items: center;
+  padding: 20px;
+  border: 1px solid #eeeeea;
+  border-radius: 20px;
+  background: #fff;
+  color: #999;
+  text-align: center;
+}
+
+.biorhythms__nav {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-around;
+  padding: 16px 8px;
+  border-top: 1px solid #eee;
+  background: #fff;
+}
+
+.biorhythms__nav button {
+  border: none;
+  background: transparent;
+  color: #777;
+  font: inherit;
+  cursor: pointer;
+}
+
+.biorhythms__nav .biorhythms__nav-active {
+  color: #292929;
+  font-weight: 600;
+}
+
+@media (min-width: 700px) {
+  .biorhythms {
+    max-width: 760px;
+    margin: 0 auto;
+    padding-top: 56px;
+  }
+
+  .biorhythms__nav {
+    right: auto;
+    left: 50%;
+    width: min(100%, 760px);
+    transform: translateX(-50%);
+  }
+}
+
+
+.biorhythms__chart {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.biorhythms__legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 18px;
+  margin-top: 20px;
+  color: #666;
+  font-size: 12px;
+}
+
+.biorhythms__legend span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.biorhythms__legend i {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.legend-physical {
+  background: #6c8f71;
+}
+
+.legend-emotional {
+  background: #d59b78;
+}
+
+.legend-intellectual {
+  background: #8b83b9;
+}
+
+
+.biorhythms__insight {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 24px;
+  padding: 20px;
+  border: 1px solid #eeeeea;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.biorhythms__insight-icon {
+  display: grid;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 12px;
+  background: #f0eee5;
+  color: #77735e;
+  font-size: 22px;
+}
+
+.biorhythms__insight h3 {
+  margin: 2px 0 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.biorhythms__insight p {
+  margin: 0;
+  color: #777;
+  font-size: 13px;
+  line-height: 1.6;
+}
