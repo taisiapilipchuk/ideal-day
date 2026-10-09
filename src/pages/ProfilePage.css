@@ -1,0 +1,67 @@
+.profile-page {
+  min-height: 100vh;
+  padding: 24px;
+  padding-bottom: 100px;
+}
+
+.profile-content {
+  width: 100%;
+}
+
+.profile-title {
+  margin: 8px 0 0;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.profile-subtitle {
+  margin: 12px 0 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #777777;
+}
+
+
+.profile-logout-button {
+  display: block;
+  width: 100%;
+  margin-top: 24px;
+  padding: 15px 20px;
+  border: 1px solid #e5c9c5;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #a34f45;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.profile-logout-button:hover {
+  background: #fbf1ef;
+  border-color: #d9aaa3;
+}
+
+.profile-logout-button:active {
+  background: #f5e5e2;
+}
+
+
+.profile-home-button {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 14px;
+  background: transparent;
+  color: #454545;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.profile-home-button:hover {
+  background: #eeece7;
+}
