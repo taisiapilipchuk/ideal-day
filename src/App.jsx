@@ -9,6 +9,7 @@ import ChronotypeQuestion2Page from './pages/ChronotypeQuestion2Page'
 import ChronotypeQuestion3Page from './pages/ChronotypeQuestion3Page'
 import ChronotypeQuestion4Page from './pages/ChronotypeQuestion4Page'
 import ChronotypeQuestion5Page from './pages/ChronotypeQuestion5Page'
+import ProfilePage from './pages/ProfilePage'
 
 function App() {
   const [page, setPage] = useState('start')
@@ -30,7 +31,13 @@ function App() {
       )}
 
       {page === 'home' && (
-        <HomePage />
+        <HomePage
+          onOpenProfile={() => setPage('profile')}
+        />
+      )}
+
+      {page === 'profile' && (
+        <ProfilePage onOpenHome={() => setPage('home')} />
       )}
 
       {page === 'birthDate' && (

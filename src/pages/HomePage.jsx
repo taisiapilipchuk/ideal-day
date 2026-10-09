@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './HomePage.css'
 
-function HomePage() {
+function HomePage({onOpenProfile}) {
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false)
   const [taskTitle, setTaskTitle] = useState('')
   const [taskType, setTaskType] = useState('')
@@ -442,7 +442,8 @@ function HomePage() {
             <span>Биоритмы</span>
           </button>
 
-          <button className="home-navigation-item">
+          <button className="home-navigation-item"
+                  onClick={onOpenProfile}>
             👤
             <span>Профиль</span>
           </button>
