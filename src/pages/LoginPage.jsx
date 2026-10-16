@@ -1,25 +1,36 @@
 
-// import './ProfilePage.css';
 import { useState } from 'react'
 import './LoginPage.css'
 
 function LoginPage({ onBack, onLogin }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [emailError, setEmailError] = useState('')
   const [loginError, setLoginError] = useState('')
 
   function handleLogin() {
+    setEmailError('')
     setLoginError('')
 
-    if (email === '') {
-      setLoginError('Введите email')
-    } 
-    else if (password === '') {
+    const trimmedEmail = email.trim()
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+    if (trimmedEmail === '') {
+      setEmailError('Введите email')
+      return
+    }
+
+    if (!emailPattern.test(trimmedEmail)) {
+      setEmailError('Введите корректный email, например name@example.com')
+      return
+    }
+
+    if (password === '') {
       setLoginError('Введите пароль')
+      return
     }
-    else {
-      onLogin()
-    }
+
+    onLogin()
   }
 
   return (
@@ -47,8 +58,17 @@ function LoginPage({ onBack, onLogin }) {
             type="email"
             placeholder="Введите email"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={(event) => {
+              setEmail(event.target.value)
+              setEmailError('')
+            }}
           />
+
+          {emailError && (
+            <p className="login-error">
+              {emailError}
+            </p>
+          )}
         </div>
 
         <div className="login-form">
@@ -61,7 +81,10 @@ function LoginPage({ onBack, onLogin }) {
             type="password"
             placeholder="Введите пароль"
             value={password}
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={(event) => {
+              setPassword(event.target.value)
+              setLoginError('')
+            }}
           />
 
           {loginError && (

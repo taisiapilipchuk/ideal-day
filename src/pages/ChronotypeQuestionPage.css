@@ -73,3 +73,66 @@
   font-size: 14px;
   color: #d32f2f;
 }
+
+
+/* Подсказка о хронотипах */
+
+.chronotype-hint-intro {
+  margin: 12px 0 16px;
+  color: #77716c;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.chronotype-hints {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.chronotype-hint-card {
+  padding: 16px 14px;
+  border: 1px solid #e9e1d8;
+  border-radius: 18px;
+  background: #fffaf4;
+}
+
+.chronotype-hint-icon {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 25px;
+}
+
+.chronotype-hint-card h3 {
+  margin: 0 0 8px;
+  color: #51453e;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.chronotype-hint-card p {
+  margin: 0;
+  color: #77716c;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.chronotype-hint-note {
+  margin: 0 0 18px;
+  color: #898078;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* На узком экране карточки располагаются друг под другом */
+
+@media (max-width: 480px) {
+  .chronotype-hints {
+    grid-template-columns: 1fr;
+  }
+
+  .chronotype-hint-card {
+    padding: 14px;
+  }
+}
