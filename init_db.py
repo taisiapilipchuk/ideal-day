@@ -1,6 +1,10 @@
-from database import Base, engine
-import models
+from database import engine
+from models import Base
 
-print("Создаем таблицы в PostgreSQL...")
-Base.metadata.create_all(bind=engine)
-print("Готово.")
+def init_db():
+    print("Создание таблиц в базе данных...")
+    Base.metadata.create_all(bind=engine)
+    print("Таблицы успешно созданы!")
+
+if __name__ == "__main__":
+    init_db()
