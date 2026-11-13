@@ -12,13 +12,12 @@ body,
 
 body {
   font-family: Arial, sans-serif;
-  background: #f5f5f5;
+  background: #f5f6f8;
 }
 
 .app {
   width: 100%;
-  max-width: 430px;
   min-height: 100vh;
   margin: 0 auto;
-  background: white;
+  background: #f5f6f8;
 }

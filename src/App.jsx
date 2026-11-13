@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import StartPage from './pages/StartPage'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import HomePage from './pages/HomePage'
+import BiorhythmsPage from './pages/BiorhythmsPage'
 import BirthDatePage from './pages/BirthDatePage'
 import ChronotypeQuestionPage from './pages/ChronotypeQuestionPage'
 import ChronotypeQuestion2Page from './pages/ChronotypeQuestion2Page'
@@ -11,8 +12,31 @@ import ChronotypeQuestion4Page from './pages/ChronotypeQuestion4Page'
 import ChronotypeQuestion5Page from './pages/ChronotypeQuestion5Page'
 import ProfilePage from './pages/ProfilePage'
 
+const DEFAULT_PROFILE = {
+  name: 'Александра',
+  email: 'alexandra@example.com',
+  birthDate: '2007-05-15',
+  chronotype: 'Голубь',
+}
+
+function readProfile() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('ideal-day-profile'))
+    return saved && typeof saved === 'object'
+      ? { ...DEFAULT_PROFILE, ...saved }
+      : DEFAULT_PROFILE
+  } catch {
+    return DEFAULT_PROFILE
+  }
+}
+
 function App() {
   const [page, setPage] = useState('start')
+  const [profile, setProfile] = useState(readProfile)
+
+  useEffect(() => {
+    localStorage.setItem('ideal-day-profile', JSON.stringify(profile))
+  }, [profile])
 
   return (
     <div className="app">
@@ -32,16 +56,33 @@ function App() {
 
       {page === 'home' && (
         <HomePage
+          profile={profile}
           onOpenProfile={() => setPage('profile')}
+          onOpenBiorhythms={() => setPage('biorhythms')}
         />
       )}
 
       {page === 'profile' && (
-        <ProfilePage onOpenHome={() => setPage('home')} />
+        <ProfilePage
+          profile={profile}
+          onProfileChange={setProfile}
+          onOpenHome={() => setPage('home')}
+        />
+      )}
+
+      {page === 'biorhythms' && (
+        <BiorhythmsPage
+          profile={profile}
+          onOpenHome={() => setPage('home')}
+          onOpenProfile={() => setPage('profile')}
+        />
       )}
 
       {page === 'birthDate' && (
-        <BirthDatePage  onForward={() => setPage('chronotypeQuestion')}/>
+        <BirthDatePage onForward={(birthDate) => {
+          setProfile((current) => ({ ...current, birthDate }))
+          setPage('chronotypeQuestion')
+        }} />
       )}
 
       {page === 'chronotypeQuestion' && (

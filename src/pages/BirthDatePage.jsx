@@ -10,7 +10,7 @@ function BirthDatePage({ onForward}) {
     if (birthDate === '') {
       setBirthDateError('Введите дату рождения')
     }
-    else onForward()
+    else onForward(birthDate)
   }
 
   return (

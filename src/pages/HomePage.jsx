@@ -1,457 +1,283 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import './HomePage.css'
 
-function HomePage({onOpenProfile}) {
-  const [isAddTaskOpen, setIsAddTaskOpen] = useState(false)
-  const [taskTitle, setTaskTitle] = useState('')
-  const [taskType, setTaskType] = useState('')
-  const [taskDuration, setTaskDuration] = useState('')
-  const [taskPriority, setTaskPriority] = useState('')
-  const [taskDeadline, setTaskDeadline] = useState('')
-  const [tasks, setTasks] = useState([])
-  const [openTaskIndex, setOpenTaskIndex] = useState(null)
-  const [editingTaskIndex, setEditingTaskIndex] = useState(null)
-  const [originalTask, setOriginalTask] = useState(null)
+const CYCLES = [
+  { id: 'physical', name: 'Физический', period: 23, color: '#078b91' },
+  { id: 'emotional', name: 'Эмоциональный', period: 28, color: '#e76591' },
+  { id: 'intellectual', name: 'Интеллектуальный', period: 33, color: '#6046ed' },
+]
+const DEMO_TASKS = [
+  { id: 1, title: 'Подготовить презентацию', type: 'Интеллект', duration: 60, priority: 'Высокий', time: '09:00', status: 'completed' },
+  { id: 2, title: 'Изучить SQL', type: 'Интеллект', duration: 90, priority: 'Высокий', time: '10:00', status: 'planned' },
+  { id: 3, title: 'Ответить на сообщения', type: 'Коммуникация', duration: 30, priority: 'Средний', time: '11:45', status: 'planned' },
+  { id: 4, title: 'Тренировка', type: 'Физика', duration: 60, priority: 'Средний', time: '13:00', status: 'suggested' },
+]
 
-  function handleAddTask() {
-    if (
-      taskTitle === '' ||
-      taskType === '' ||
-      taskDuration === '' ||
-      taskPriority === '' ||
-      taskDeadline === ''
-    ) {
-      alert('Заполните все поля')
-      return
+function rhythmValue(birthDate, date, period) {
+  const birth = new Date(`${birthDate}T00:00:00`)
+  const day = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+  const elapsed = Math.floor((day - birth) / 86400000)
+  return Math.round(Math.sin((2 * Math.PI * elapsed) / period) * 100)
+}
+
+function dateText(date) {
+  return new Intl.DateTimeFormat('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' }).format(date)
+}
+
+function HomePage({ profile, onOpenProfile, onOpenBiorhythms }) {
+  const [tasks, setTasks] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('ideal-day-tasks')) || DEMO_TASKS
+    } catch {
+      return DEMO_TASKS
     }
+  })
+  const [modalOpen, setModalOpen] = useState(false)
+  const [expandedId, setExpandedId] = useState(null)
+  const [editingId, setEditingId] = useState(null)
+  const emptyDraft = { title: '', type: 'Интеллект', duration: '60', priority: 'Средний', time: '15:00' }
+  const [draft, setDraft] = useState(emptyDraft)
 
-    const newTask = {
-      title: taskTitle,
-      type: taskType,
-      duration: taskDuration,
-      priority: taskPriority,
-      deadline: taskDeadline
+  const today = new Date()
+  const rhythms = CYCLES.map((cycle) => ({ ...cycle, value: rhythmValue(profile.birthDate, today, cycle.period) }))
+
+  useEffect(() => {
+    localStorage.setItem('ideal-day-tasks', JSON.stringify(tasks))
+  }, [tasks])
+
+  const stats = useMemo(() => {
+    const active = tasks.filter((task) => task.status !== 'cancelled')
+    const completed = active.filter((task) => task.status === 'completed').length
+    const overdue = active.filter((task) => task.status === 'overdue').length
+    return {
+      total: active.length,
+      completed,
+      overdue,
+      pending: active.length - completed - overdue,
+      percent: active.length ? Math.round((completed / active.length) * 100) : 0,
     }
+  }, [tasks])
 
-    console.log(newTask)
+  const recommendation = useMemo(() => {
+    const best = [...rhythms].sort((a, b) => b.value - a.value)[0]
+    return `Сейчас наибольшее расчётное значение у физического, эмоционального или интеллектуального цикла: ${best.name.toLowerCase()} (${best.value > 0 ? '+' : ''}${best.value}%). Используй подсказку как ориентир, учитывая самочувствие и реальные планы.`
+  }, [rhythms])
 
-    setTasks([...tasks, newTask])
+  const chartLines = useMemo(() => CYCLES.map((cycle) => {
+    const points = Array.from({ length: 15 }, (_, index) => {
+      const date = new Date(today)
+      date.setDate(today.getDate() + index - 7)
+      const value = rhythmValue(profile.birthDate, date, cycle.period)
+      return `${10 + index * 42.8},${75 - value * 0.31}`
+    }).join(' ')
+    return { ...cycle, points }
+  }), [profile.birthDate])
 
-    setTaskTitle('')
-    setTaskType('')
-    setTaskDuration('')
-    setTaskPriority('')
-    setTaskDeadline('')
-
-    setIsAddTaskOpen(false)
+  function openCreate() {
+    setEditingId(null)
+    setDraft(emptyDraft)
+    setModalOpen(true)
   }
 
+  function saveTask(event) {
+    event.preventDefault()
+    if (!draft.title.trim()) return
+    if (editingId !== null) {
+      setTasks((current) => current.map((task) => task.id === editingId
+        ? { ...task, ...draft, duration: Number(draft.duration) } : task))
+    } else {
+      setTasks((current) => [...current, {
+        id: Date.now(), ...draft, duration: Number(draft.duration), status: 'planned',
+      }].sort((a, b) => a.time.localeCompare(b.time)))
+    }
+    setModalOpen(false)
+    setEditingId(null)
+    setDraft(emptyDraft)
+  }
+
+  function editTask(task) {
+    setEditingId(task.id)
+    setDraft({ title: task.title, type: task.type, duration: String(task.duration), priority: task.priority, time: task.time })
+    setModalOpen(true)
+  }
+
+  function setStatus(id, status) {
+    setTasks((current) => current.map((task) => task.id === id ? { ...task, status } : task))
+  }
+
+  function removeTask(id) {
+    if (window.confirm('Удалить эту задачу?')) {
+      setTasks((current) => current.filter((task) => task.id !== id))
+      setExpandedId(null)
+    }
+  }
+
+  const nextCritical = useMemo(() => {
+    for (let offset = 0; offset <= 35; offset += 1) {
+      const date = new Date(today)
+      date.setDate(today.getDate() + offset)
+      const crossed = CYCLES.filter((cycle) => {
+        const current = rhythmValue(profile.birthDate, date, cycle.period)
+        const tomorrow = new Date(date)
+        tomorrow.setDate(date.getDate() + 1)
+        const next = rhythmValue(profile.birthDate, tomorrow, cycle.period)
+        return current === 0 || next === 0 || current * next < 0
+      })
+      if (crossed.length) return { date, crossed }
+    }
+    return null
+  }, [profile.birthDate])
+
   return (
-    <div className="home-page">
+    <main className="home-page">
       <div className="home-content">
-
-        <p className="home-date">
-          1 октября 2026
-        </p>
-
-        <h1 className="home-title">
-          Доброе утро!
-        </h1>
-
-        <div className="home-rhythms">
-
-          <h2 className="home-section-title">
-            Ваши ритмы
-          </h2>
-
-          <div className="home-rhythms-list">
-
-            <div className="home-rhythm">
-              <span>🧠 Интеллект</span>
-              <span>78%</span>
-            </div>
-
-            <div className="home-rhythm">
-              <span>❤️ Эмоции</span>
-              <span>64%</span>
-            </div>
-
-            <div className="home-rhythm">
-              <span>💪 Физика</span>
-              <span>42%</span>
-            </div>
-
+        <header className="home-header">
+          <div>
+            <p className="home-date">{dateText(today)}</p>
+            <h1 className="home-title">Привет, {profile.name}!</h1>
+            <p className="home-subtitle">Вот как проходит твой день</p>
           </div>
+          <button className="home-avatar" onClick={onOpenProfile} aria-label="Открыть профиль">{(profile.name || 'П')[0]}</button>
+        </header>
 
-        </div>
-
-        <div className="home-advice">
-
-          <h2 className="home-section-title">
-            Совет на сегодня
-          </h2>
-
-          <p className="home-advice-text">
-            Сегодня хорошо сосредоточиться на сложных интеллектуальных задачах
-          </p>
-
-        </div>
-
-        <div className="home-schedule">
-
-          <h2 className="home-section-title">
-            Ваш день
-          </h2>
-
-          <div className="home-schedule-list">
-
-            {tasks.map((task, index) => (
-              <div
-                className="home-schedule-item"
-                key={index}
-                onClick={() => {
-                  if (openTaskIndex === index) {
-                    setOpenTaskIndex(null)
-                  } else {
-                    setOpenTaskIndex(index)
-                  }
-                }}
-              >
-
-                <div className="home-schedule-main">
-
-                  <span className="home-schedule-time">
-                    {task.deadline}
-                  </span>
-
-                  {editingTaskIndex === index ? (
-                    <input
-                      className="home-edit-task-input"
-                      type="text"
-                      value={task.title}
-                      onChange={(event) => {
-                        const updatedTasks = [...tasks]
-
-                        updatedTasks[index] = {
-                          ...updatedTasks[index],
-                          title: event.target.value
-                        }
-
-                        setTasks(updatedTasks)
-                      }}
-                      onClick={(event) => event.stopPropagation()}
-                    />
-                  ) : (
-                    <span className="home-schedule-task">
-                      {task.title}
-                    </span>
-                  )}
-
-                  {editingTaskIndex === index && (
-                     <div className="home-edit-task-form">
-                      <label className="home-edit-task-label">
-                        Тип задачи
-                      </label>
-                      <select
-                        className="home-edit-task-input"
-                        value={task.type}
-                        onChange={(event) => {
-                          const updatedTasks = [...tasks]
-
-                          updatedTasks[index] = {
-                            ...updatedTasks[index],
-                            type: event.target.value
-                          }
-
-                          setTasks(updatedTasks)
-                        }}
-                        onClick={(event) => event.stopPropagation()}
-                      >
-                        <option value="Интеллект">Интеллект</option>
-                        <option value="Физика">Физика</option>
-                        <option value="Творчество">Творчество</option>
-                        <option value="Коммуникация">Коммуникация</option>
-                        <option value="Рутина">Рутина</option>
-                        <option value="Отдых">Отдых</option>
-                      </select>
-                      
-                      <label className="home-edit-task-label">
-                        Длительность
-                      </label>
-                      <input
-                        className="home-edit-task-input"
-                        type="number"
-                        value={task.duration}
-                        onChange={(event) => {
-                          const updatedTasks = [...tasks]
-
-                          updatedTasks[index] = {
-                            ...updatedTasks[index],
-                            duration: event.target.value
-                          }
-
-                          setTasks(updatedTasks)
-                        }}
-                        onClick={(event) => event.stopPropagation()}
-                      />
-
-                      <label className="home-edit-task-label">
-                        Приоритет
-                      </label>
-                      <select
-                        className="home-edit-task-input"
-                        value={task.priority}
-                        onChange={(event) => {
-                          const updatedTasks = [...tasks]
-
-                          updatedTasks[index] = {
-                            ...updatedTasks[index],
-                            priority: event.target.value
-                          }
-
-                          setTasks(updatedTasks)
-                        }}
-                        onClick={(event) => event.stopPropagation()}
-                      >
-                        <option value="Низкий">Низкий</option>
-                        <option value="Средний">Средний</option>
-                        <option value="Высокий">Высокий</option>
-                      </select>
-
-                      <label className="home-edit-task-label">
-                        Дедлайн
-                      </label>
-                      <input
-                        className="home-edit-task-input"
-                        type="time"
-                        value={task.deadline}
-                        onChange={(event) => {
-                          const updatedTasks = [...tasks]
-
-                          updatedTasks[index] = {
-                            ...updatedTasks[index],
-                            deadline: event.target.value
-                          }
-
-                          setTasks(updatedTasks)
-                        }}
-                        onClick={(event) => event.stopPropagation()}
-                      />
-                    </div>
-                  )}
+        <section className="home-rhythm-card">
+          <div className="home-rhythm-card-top">
+            <div>
+              <p className="home-eyebrow">ТВОЙ РИТМ СЕГОДНЯ</p>
+              <p className="home-rhythm-date">{dateText(today)}</p>
+            </div>
+            <div className="home-orbit-art" aria-hidden="true"><span /><i /><b /></div>
+          </div>
+          <div className="home-rhythm-values">
+            {rhythms.map((rhythm) => (
+              <div className="home-rhythm-row" key={rhythm.id}>
+                <div className="home-rhythm-row-label">
+                  <span>{rhythm.name}</span>
+                  <strong style={{ color: rhythm.color }}>{rhythm.value > 0 ? '+' : ''}{rhythm.value}%</strong>
                 </div>
-
-                {openTaskIndex === index && (
-                  <div className="home-schedule-details">
-
-                    <p>
-                      {task.type} · {task.duration} мин · {task.priority} приоритет
-                    </p>
-
-                    {editingTaskIndex !== index && (
-                    <button
-                      className="home-edit-task-button"
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        setOriginalTask(tasks[index])
-                        setEditingTaskIndex(index)
-                      }}
-                    >
-                      Изменить
-                    </button>
-                  )}
-
-                  {editingTaskIndex !== index && (
-                    <button
-                      className="home-delete-task-button"
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        
-                        const shouldDelete = window.confirm('Удалить эту задачу?')
-                        
-                        if (!shouldDelete) {
-                          return
-                        }
-                        const updatedTasks = tasks.filter(
-                          (_, taskIndex) => taskIndex !== index
-                        )
-
-                        setTasks(updatedTasks)
-                        setOpenTaskIndex(null)
-                      }}
-                    >
-                      Удалить
-                    </button>
-                  )}
-
-                    {editingTaskIndex === index && (
-                      <div className="home-edit-task-buttons">
-                        <button
-                          className="home-save-task-button"
-                          onClick={(event) => {
-                            event.stopPropagation()
-                            setEditingTaskIndex(null)
-                          }}
-                        >
-                          Сохранить
-                        </button>
-
-                        <button
-                          className="home-cancel-task-button"
-                          onClick={(event) => {
-                            event.stopPropagation()
-
-                            const updatedTasks = [...tasks]
-                            updatedTasks[editingTaskIndex] = originalTask
-
-                            setTasks(updatedTasks)
-                            setEditingTaskIndex(null)
-                            setOriginalTask(null)
-                          }}
-                        >
-                          Отмена
-                        </button>
-                      </div>
-                    )}
-
-                  </div>
-                )}
-
+                <div className="home-rhythm-track">
+                  <span className="home-rhythm-zero" />
+                  <span className="home-rhythm-progress" style={{
+                    background: rhythm.color,
+                    left: rhythm.value < 0 ? `${50 + rhythm.value / 2}%` : '50%',
+                    width: `${Math.abs(rhythm.value) / 2}%`,
+                  }} />
+                </div>
               </div>
             ))}
+          </div>
+          <p className="home-model-note">Расчётные значения математической модели биоритмов</p>
+        </section>
 
+        <div className="home-dashboard-grid">
+          <div className="home-main-column">
+            <section className="home-card home-chart-card">
+              <div className="home-section-head">
+                <div><p className="home-eyebrow">ДИНАМИКА</p><h2>График биоритмов</h2></div>
+                <span className="home-period-label">7 дней</span>
+              </div>
+              <svg className="home-chart" viewBox="0 0 620 150" preserveAspectRatio="none" role="img" aria-label="График трёх биоритмов">
+                {[15, 45, 75, 105, 135].map((y) => <line key={y} x1="8" x2="612" y1={y} y2={y} className="home-chart-grid" />)}
+                <line x1="310" x2="310" y1="8" y2="142" className="home-chart-today" />
+                {chartLines.map((line) => <polyline key={line.id} points={line.points} fill="none" stroke={line.color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />)}
+              </svg>
+              <div className="home-chart-legend">
+                {CYCLES.map((cycle) => <span key={cycle.id}><i style={{ background: cycle.color }} />{cycle.name}</span>)}
+              </div>
+              <div className="home-chart-footer"><p className="home-chart-hint">Подробный прогноз на день, неделю и месяц — в разделе «Биоритмы».</p><button className="home-text-link" onClick={onOpenBiorhythms}>Открыть прогноз →</button></div>
+            </section>
+
+            <section className="home-card home-schedule-card">
+              <div className="home-section-head">
+                <div><p className="home-eyebrow">ПЛАН НА ДЕНЬ</p><h2>Расписание</h2></div>
+                <button className="home-add-button" onClick={openCreate} aria-label="Добавить задачу">+</button>
+              </div>
+              <div className="home-task-list">
+                {tasks.length === 0 && <p className="home-empty">Задач пока нет. Добавь первую задачу.</p>}
+                {tasks.map((task) => (
+                  <article className={`home-task status-${task.status}`} key={task.id}>
+                    <button className="home-task-summary" onClick={() => setExpandedId(expandedId === task.id ? null : task.id)}>
+                      <span className="home-task-time">{task.time}</span>
+                      <span className="home-task-content">
+                        <span className="home-task-meta"><span>{task.type}</span><small>{task.status === 'completed' ? '✓ Выполнено' : task.status === 'overdue' ? 'Просрочено' : task.status === 'suggested' ? 'Предложено' : 'Запланировано'}</small></span>
+                        <strong className={task.status === 'completed' ? 'home-task-done' : ''}>{task.title}</strong>
+                        <small className="home-task-duration">{task.duration} минут · {task.priority} приоритет</small>
+                      </span>
+                      <span className="home-task-expand">{expandedId === task.id ? '−' : '+'}</span>
+                    </button>
+                    {expandedId === task.id && (
+                      <div className="home-task-actions">
+                        <button onClick={() => setStatus(task.id, task.status === 'completed' ? 'planned' : 'completed')}>{task.status === 'completed' ? 'Вернуть в план' : 'Отметить выполненной'}</button>
+                        <button onClick={() => editTask(task)}>Изменить</button>
+                        <button className="home-danger" onClick={() => removeTask(task.id)}>Удалить</button>
+                      </div>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </section>
           </div>
 
+          <aside className="home-side-column">
+            <section className="home-card home-stat-card">
+              <p className="home-eyebrow">РЕЗУЛЬТАТ СЕГОДНЯ</p>
+              <h2>Выполнение задач</h2>
+              <div className="home-progress-ring" style={{ '--progress': `${stats.percent}%` }}>
+                <div><strong>{stats.percent}%</strong><span>выполнено</span></div>
+              </div>
+              <div className="home-stat-list">
+                <div><span>Всего задач</span><strong>{stats.total}</strong></div>
+                <div><span>Выполнено</span><strong className="home-green">{stats.completed}</strong></div>
+                <div><span>Осталось</span><strong>{stats.pending}</strong></div>
+                <div><span>Просрочено</span><strong className="home-red">{stats.overdue}</strong></div>
+              </div>
+            </section>
+
+            <section className="home-recommendation-card">
+              <span className="home-recommendation-star">✦</span>
+              <p className="home-eyebrow">ПЕРСОНАЛЬНАЯ ПОДСКАЗКА</p>
+              <h2>Совет на сегодня</h2>
+              <p>{recommendation}</p>
+              <small>Хронотип: {profile.chronotype}</small>
+            </section>
+
+            <section className="home-card home-critical-card">
+              <p className="home-eyebrow">БИОРИТМИЧЕСКИЙ КАЛЕНДАРЬ</p>
+              <h2>Ближайший критический день</h2>
+              {nextCritical ? <>
+                <strong className="home-critical-date">{new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long' }).format(nextCritical.date)}</strong>
+                <p>Пересечение нулевой отметки: {nextCritical.crossed.map((cycle) => cycle.name.toLowerCase()).join(', ')}.</p>
+              </> : <p>В ближайшие 35 дней пересечений не найдено.</p>}
+              <small>Это математическая модель, а не медицинский прогноз.</small>
+            </section>
+          </aside>
         </div>
-
-        <button
-          className="home-add-button"
-          onClick={() => setIsAddTaskOpen(true)}
-        >
-          +
-        </button>
-
-        {isAddTaskOpen && (
-          <>
-            <div
-              className="home-overlay"
-              onClick={() => setIsAddTaskOpen(false)}
-            />
-
-            <div className="home-add-task">
-
-              <h2>
-                Добавить задачу
-              </h2>
-
-              <label className="home-add-task-label">
-                Название задачи
-              </label>
-
-              <input
-                className="home-add-task-input"
-                type="text"
-                placeholder="Например, изучение Python"
-                value={taskTitle}
-                onChange={(event) => setTaskTitle(event.target.value)}
-              />
-
-              <label className="home-add-task-label">
-                Тип задачи
-              </label>
-
-              <select
-                className="home-add-task-input"
-                value={taskType}
-                onChange={(event) => setTaskType(event.target.value)}
-              >
-                <option value="">Выберите тип задачи</option>
-                <option value="Интеллект">Интеллект</option>
-                <option value="Физика">Физика</option>
-                <option value="Творчество">Творчество</option>
-                <option value="Коммуникация">Коммуникация</option>
-                <option value="Рутина">Рутина</option>
-                <option value="Отдых">Отдых</option>
-              </select>
-
-              <label className="home-add-task-label">
-                Длительность
-              </label>
-
-              <select
-                className="home-add-task-input"
-                value={taskDuration}
-                onChange={(event) => setTaskDuration(event.target.value)}
-              >
-                <option value="">Выберите длительность</option>
-                <option value="15">15 минут</option>
-                <option value="30">30 минут</option>
-                <option value="45">45 минут</option>
-                <option value="60">1 час</option>
-                <option value="90">1 час 30 минут</option>
-                <option value="120">2 часа</option>
-                <option value="180">3 часа</option>
-              </select>
-
-              <label className="home-add-task-label">
-                Приоритет
-              </label>
-
-              <select
-                className="home-add-task-input"
-                value={taskPriority}
-                onChange={(event) => setTaskPriority(event.target.value)}
-              >
-                <option value="">Выберите приоритет</option>
-                <option value="Низкий">Низкий</option>
-                <option value="Средний">Средний</option>
-                <option value="Высокий">Высокий</option>
-              </select>
-
-              <label className="home-add-task-label">
-                Дедлайн
-              </label>
-
-              <input
-                className="home-add-task-input"
-                type="time"
-                value={taskDeadline}
-                onChange={(event) => setTaskDeadline(event.target.value)}
-              />
-
-              <button
-                className="home-add-task-button"
-                onClick={handleAddTask}
-              >
-                Добавить задачу
-              </button>
-
-            </div>
-          </>
-        )}
-
-        <nav className="home-navigation">
-
-          <button className="home-navigation-item active">
-            🏠
-            <span>Главная</span>
-          </button>
-
-          <button className="home-navigation-item">
-            📊
-            <span>Биоритмы</span>
-          </button>
-
-          <button className="home-navigation-item"
-                  onClick={onOpenProfile}>
-            👤
-            <span>Профиль</span>
-          </button>
-
-        </nav>
-
       </div>
-    </div>
+
+      <nav className="home-navigation">
+        <button className="home-navigation-item active"><span>⌂</span>Главная</button>
+        <button className="home-navigation-item" onClick={onOpenBiorhythms}><span>⌁</span>Биоритмы</button>
+        <button className="home-navigation-item" onClick={onOpenProfile}><span>♙</span>Профиль</button>
+      </nav>
+
+      {modalOpen && (
+        <div className="home-modal-overlay" onMouseDown={(event) => {
+          if (event.target === event.currentTarget) { setModalOpen(false); setEditingId(null) }
+        }}>
+          <form className="home-task-modal" onSubmit={saveTask}>
+            <div className="home-modal-heading"><h2>{editingId === null ? 'Добавить задачу' : 'Изменить задачу'}</h2><button type="button" onClick={() => setModalOpen(false)}>×</button></div>
+            <label>Название задачи<input required value={draft.title} onChange={(event) => setDraft({ ...draft, title: event.target.value })} placeholder="Например, подготовить отчёт" /></label>
+            <div className="home-form-grid">
+              <label>Тип задачи<select value={draft.type} onChange={(event) => setDraft({ ...draft, type: event.target.value })}><option>Интеллект</option><option>Физика</option><option>Творчество</option><option>Коммуникация</option><option>Рутина</option><option>Отдых</option></select></label>
+              <label>Длительность<select value={draft.duration} onChange={(event) => setDraft({ ...draft, duration: event.target.value })}><option value="15">15 минут</option><option value="30">30 минут</option><option value="45">45 минут</option><option value="60">60 минут</option><option value="90">90 минут</option><option value="120">120 минут</option></select></label>
+              <label>Приоритет<select value={draft.priority} onChange={(event) => setDraft({ ...draft, priority: event.target.value })}><option>Низкий</option><option>Средний</option><option>Высокий</option></select></label>
+              <label>Время<input type="time" value={draft.time} onChange={(event) => setDraft({ ...draft, time: event.target.value })} /></label>
+            </div>
+            <button className="home-submit-button" type="submit">{editingId === null ? 'Добавить задачу' : 'Сохранить изменения'}</button>
+          </form>
+        </div>
+      )}
+    </main>
   )
 }
 

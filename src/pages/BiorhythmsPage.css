@@ -1,0 +1,330 @@
+.biorhythm-page { min-height:100vh; padding:34px 28px 110px; background:#f5f6f8; color:#252a35; }
+.biorhythm-content { width:min(100%,1050px); margin:0 auto; }
+.biorhythm-header { display:flex; justify-content:space-between; align-items:center; gap:20px; margin-bottom:22px; }
+.biorhythm-eyebrow { margin:0 0 7px; color:#8994a8; font-size:10px; font-weight:700; letter-spacing:.09em; }
+.biorhythm-header h1 { margin:0; font-size:clamp(30px,4vw,42px); letter-spacing:-1px; }
+.biorhythm-header p:last-child { margin:7px 0 0; color:#7d8798; font-size:13px; }
+.biorhythm-avatar { width:44px; height:44px; border:0; border-radius:50%; background:#fff; color:#6046ed; font-size:16px; cursor:pointer; box-shadow:0 3px 16px #252a350c; }
+.biorhythm-panel { padding:24px; border:1px solid #edf0f4; border-radius:20px; background:#fff; box-shadow:0 5px 22px #202a3807; }
+.biorhythm-tabs { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; padding:5px; border-radius:12px; background:#f3f5f8; }
+.biorhythm-tabs button { min-height:38px; border:0; border-radius:9px; background:transparent; color:#68748a; font-size:12px; cursor:pointer; }
+.biorhythm-tabs button.active { background:#fff; color:#6046ed; box-shadow:0 2px 8px #202a3810; font-weight:700; }
+.biorhythm-range { display:flex; justify-content:space-between; align-items:center; gap:14px; margin:17px 0 22px; }
+.biorhythm-range strong { color:#303746; font-size:13px; text-align:center; text-transform:capitalize; }
+.biorhythm-range button { width:32px; height:32px; border:0; border-radius:50%; background:#f5f6fa; color:#718099; font-size:23px; line-height:1; cursor:pointer; }
+.biorhythm-chart-heading { display:flex; justify-content:space-between; margin-bottom:8px; color:#94a0b1; font-size:9px; font-weight:700; letter-spacing:.06em; }
+.biorhythm-chart-wrap { position:relative; padding:10px 0 0; border-radius:16px; background:#f7f9fb; }
+.biorhythm-chart { display:block; width:100%; height:290px; overflow:visible; }
+.biorhythm-chart .grid-line { stroke:#e8edf2; stroke-width:1; }
+.biorhythm-chart .zero-line { stroke:#aeb7c4; stroke-width:1.2; stroke-dasharray:4 4; }
+.biorhythm-chart .axis-label { fill:#9aa4b4; font-size:10px; }
+.biorhythm-chart .selected-day-line { stroke:#8e80ef; stroke-width:1.5; stroke-dasharray:4 4; }
+.biorhythm-x-labels { display:flex; justify-content:space-between; padding:0 16px 12px 42px; color:#98a2b1; font-size:10px; text-transform:capitalize; }
+.biorhythm-day-values { display:grid; gap:0; padding:0 20px 15px 42px; }
+.biorhythm-day-values div { display:grid; grid-template-columns:10px 1fr auto; align-items:center; gap:9px; min-height:36px; border-top:1px solid #e9edf2; color:#6e7a8e; font-size:11px; }
+.biorhythm-day-values i,.biorhythm-legend i { width:8px; height:8px; border-radius:50%; }
+.biorhythm-day-values strong { font-size:13px; }
+.biorhythm-legend { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+.biorhythm-legend button { display:flex; align-items:center; gap:7px; padding:7px 10px; border:1px solid transparent; border-radius:8px; background:#f7f8fb; color:#788397; font-size:10px; cursor:pointer; }
+.biorhythm-legend button.selected { border-color:#dcd7ff; background:#f4f2ff; color:#5140c8; }
+.biorhythm-note { margin:13px 0 0; color:#9aa3b1; font-size:10px; line-height:1.5; }
+.biorhythm-values-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin:18px 0; }
+.biorhythm-value-card { display:grid; gap:7px; padding:19px; border:1px solid #edf0f4; border-radius:16px; background:#fff; }
+.biorhythm-value-card p { margin:0; color:#788397; font-size:11px; }
+.biorhythm-value-card strong { font-size:27px; }
+.biorhythm-value-card span { color:#98a1af; font-size:10px; }
+.biorhythm-section-title { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; }
+.biorhythm-section-title h2 { margin:0; font-size:19px; }
+.biorhythm-section-title > span { padding:7px 10px; border-radius:8px; background:#f4f2ff; color:#6046ed; font-size:10px; }
+.biorhythm-critical-list { display:grid; }
+.biorhythm-critical-list article { display:grid; grid-template-columns:75px minmax(0,1fr) auto; gap:13px; align-items:center; padding:13px 0; border-top:1px solid #edf0f4; }
+.biorhythm-critical-date { color:#6046ed; font-size:13px; font-weight:700; text-transform:capitalize; }
+.biorhythm-critical-list strong { color:#485267; font-size:12px; }
+.biorhythm-critical-list p { margin:4px 0 0; color:#8993a3; font-size:10px; }
+.biorhythm-critical-list article > span { padding:6px 8px; border-radius:7px; background:#fff4e9; color:#c17b2c; font-size:9px; }
+.biorhythm-critical-list article > span.multiple { background:#fff0f3; color:#d65d7d; }
+.biorhythm-empty { color:#8993a3; font-size:12px; }
+.biorhythm-navigation { position:fixed; z-index:5; bottom:0; left:0; right:0; display:flex; justify-content:center; gap:clamp(30px,10vw,110px); padding:10px 16px max(10px,env(safe-area-inset-bottom)); border-top:1px solid #e9edf2; background:#ffffffed; backdrop-filter:blur(12px); }
+.biorhythm-navigation button { min-width:76px; display:flex; flex-direction:column; align-items:center; gap:3px; border:0; background:transparent; color:#8b96aa; font-size:10px; cursor:pointer; }
+.biorhythm-navigation button span { font-size:22px; line-height:1.2; }
+.biorhythm-navigation button.active { color:#6046ed; font-weight:700; }
+@media(max-width:650px) {
+ .biorhythm-page { padding:22px 14px 102px; }
+ .biorhythm-panel { padding:16px; border-radius:17px; }
+ .biorhythm-chart { height:230px; }
+ .biorhythm-values-grid { gap:8px; }
+ .biorhythm-value-card { padding:13px 10px; }
+ .biorhythm-value-card strong { font-size:21px; }
+ .biorhythm-value-card p { font-size:10px; }
+ .biorhythm-critical-list article { grid-template-columns:58px minmax(0,1fr); gap:8px; }
+ .biorhythm-critical-list article > span { grid-column:2; justify-self:start; }
+ .biorhythm-navigation { gap:30px; }
+}
+
+
+/* Day view: three centered indicators instead of an empty plot */
+.biorhythm-chart-wrap.is-day {
+  min-height: 250px;
+  padding: 24px 24px 18px;
+}
+.biorhythm-day-values {
+  display: grid;
+  gap: 22px;
+  padding: 0;
+}
+.biorhythm-day-row {
+  display: grid;
+  gap: 8px;
+}
+.biorhythm-day-row-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  color: #68758b;
+  font-size: 12px;
+}
+.biorhythm-day-row-heading > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.biorhythm-day-row-heading i {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border-radius: 50%;
+}
+.biorhythm-day-row-heading strong {
+  font-size: 14px;
+  font-weight: 700;
+}
+.biorhythm-day-track {
+  position: relative;
+  height: 7px;
+  overflow: visible;
+  border-radius: 99px;
+  background: #e5e9ef;
+}
+.biorhythm-day-zero {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: -4px;
+  width: 2px;
+  height: 15px;
+  border-radius: 2px;
+  background: #343b49;
+}
+.biorhythm-day-fill {
+  position: absolute;
+  top: 0;
+  height: 7px;
+  border-radius: 99px;
+}
+.biorhythm-day-row small {
+  color: #98a2b1;
+  font-size: 10px;
+}
+.biorhythm-x-labels span {
+  display: inline-flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.biorhythm-x-labels span b {
+  font-size: 10px;
+  font-weight: 500;
+}
+.biorhythm-x-labels span small {
+  font-size: 9px;
+}
+.biorhythm-x-labels span.is-selected {
+  color: #6046ed;
+  font-weight: 700;
+}
+.biorhythm-x-labels span.is-selected b,
+.biorhythm-x-labels span.is-selected small {
+  font-weight: 700;
+}
+@media(max-width:650px) {
+  .biorhythm-chart-wrap.is-day {
+    min-height: 230px;
+    padding: 20px 14px 16px;
+  }
+  .biorhythm-day-values {
+    gap: 20px;
+  }
+  .biorhythm-day-row-heading {
+    font-size: 11px;
+  }
+  .biorhythm-day-row-heading strong {
+    font-size: 13px;
+  }
+}
+
+
+/* Correct day-mode layout. These selectors intentionally override legacy
+   .biorhythm-day-values div/i rules defined earlier in this stylesheet. */
+.biorhythm-chart-wrap.is-day {
+  display: block;
+  min-height: 0;
+  padding: 26px 28px;
+  background: #f7f9fb;
+}
+.biorhythm-chart-wrap.is-day .biorhythm-day-values {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  width: 100%;
+  padding: 0;
+}
+.biorhythm-chart-wrap.is-day .biorhythm-day-values > .biorhythm-day-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  gap: 9px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+.biorhythm-chart-wrap.is-day .biorhythm-day-row-heading {
+  display: flex;
+  grid-template-columns: none;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  color: #68758b;
+  font-size: 12px;
+}
+.biorhythm-chart-wrap.is-day .biorhythm-day-row-heading > span {
+  display: inline-flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+.biorhythm-chart-wrap.is-day .biorhythm-day-row-heading i {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  margin: 0;
+  border-radius: 50%;
+}
+.biorhythm-chart-wrap.is-day .biorhythm-day-row-heading strong {
+  display: block;
+  flex: 0 0 auto;
+  margin-left: 12px;
+  font-size: 14px;
+  line-height: 1.2;
+}
+.biorhythm-chart-wrap.is-day .biorhythm-day-track {
+  display: block;
+  width: 100%;
+  height: 9px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 99px;
+  background: #e4e8ef;
+}
+.biorhythm-chart-wrap.is-day .biorhythm-day-zero {
+  display: block;
+  left: 50%;
+  top: -4px;
+  width: 2px;
+  height: 17px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: #343b49;
+}
+.biorhythm-chart-wrap.is-day .biorhythm-day-fill {
+  display: block;
+  top: 0;
+  height: 9px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 99px;
+}
+.biorhythm-chart-wrap.is-day .biorhythm-day-row > small {
+  display: block;
+  margin: 0;
+  padding: 0;
+  color: #98a2b1;
+  font-size: 10px;
+  line-height: 1.2;
+}
+@media (max-width: 650px) {
+  .biorhythm-chart-wrap.is-day {
+    padding: 20px 16px;
+  }
+  .biorhythm-chart-wrap.is-day .biorhythm-day-values {
+    gap: 22px;
+  }
+}
+
+
+/* Final alignment fix: neutralize legacy row styles inherited by nested divs. */
+.biorhythm-chart-wrap.is-day .biorhythm-day-values .biorhythm-day-track {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 9px;
+  min-height: 0;
+  max-height: 9px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #e4e8ef;
+  grid-template-columns: none;
+  align-items: initial;
+  overflow: visible;
+}
+
+.biorhythm-chart-wrap.is-day .biorhythm-day-values .biorhythm-day-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: block;
+  box-sizing: border-box;
+  height: 9px;
+  min-height: 0;
+  max-height: 9px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+}
+
+.biorhythm-chart-wrap.is-day .biorhythm-day-values .biorhythm-day-zero {
+  position: absolute;
+  z-index: 2;
+  top: -4px;
+  bottom: auto;
+  display: block;
+  box-sizing: border-box;
+  width: 2px;
+  height: 17px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #343b49;
+}
+
+.biorhythm-chart-wrap.is-day .biorhythm-day-values > .biorhythm-day-row {
+  min-height: 0;
+  border: 0;
+}
