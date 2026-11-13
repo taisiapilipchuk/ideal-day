@@ -7,6 +7,7 @@ from auth import create_access_token, get_current_user
 from models import User
 from datetime import date
 from biorhythm import calculate_biorhythm
+from recommendations import generate_recommendations
 
 app = FastAPI()
 
@@ -103,4 +104,46 @@ def get_biorhythm(
         "physical": result.physical,
         "emotional": result.emotional,
         "intellectual": result.intellectual,
+    }
+
+
+@app.get("/api/recommendations")
+def get_recommendations(
+    target_date: date | None = None,
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if target_date is None:
+        target_date = date.today()
+
+    user = db.query(User).filter(User.id == user_id).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
+
+    biorhythm = crud.get_biorhythm_cache(db, user_id, target_date)
+
+    if biorhythm is None:
+        values = calculate_biorhythm(user.birth_date, target_date)
+
+        biorhythm = crud.save_biorhythm_cache(
+            db,
+            user_id,
+            target_date,
+            values["physical"],
+            values["emotional"],
+            values["intellectual"],
+        )
+
+    recommendations = generate_recommendations(
+        {
+            "physical": biorhythm.physical,
+            "emotional": biorhythm.emotional,
+            "intellectual": biorhythm.intellectual,
+        }
+    )
+
+    return {
+        "date": target_date,
+        "recommendations": recommendations,
     }
