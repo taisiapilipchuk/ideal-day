@@ -1,0 +1,6 @@
+fastapi[standard]
+sqlalchemy
+psycopg2-binary
+python-dotenv
+pwdlib[argon2]
+PyJWT[crypto]

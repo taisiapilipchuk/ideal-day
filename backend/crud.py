@@ -1,9 +1,42 @@
 from datetime import date
 from sqlalchemy.orm import Session
-from models import Task, BiorhythmLog
+from models import User, Task, BiorhythmLog
+from pwdlib import PasswordHash
+from schemas import UserCreate
+
+
+password_hash = PasswordHash.recommended()
+
+
+def get_user_by_email(db: Session, email: str):
+    return db.query(User).filter(User.email == email).first()
+
+
+def get_user_by_username(db: Session, username: str):
+    return db.query(User).filter(User.username == username).first()
+
+
+def create_user(db: Session, user_data: UserCreate):
+    hashed_password = password_hash.hash(user_data.password)
+    user = User(
+        username=user_data.username,
+        email=user_data.email,
+        hashed_password=hashed_password,
+        birth_date=user_data.birth_date,
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+def verify_password(plain_password: str, hashed_password: str):
+    return password_hash.verify(plain_password, hashed_password)
+
 
 def get_tasks_by_date(db: Session, user_id: int, target_date: date):
     return db.query(Task).filter(Task.user_id == user_id, Task.due_date == target_date).all()
+
 
 def create_task(db: Session, user_id: int, title: str, due_date: date, description: str = None, priority: int = 1):
     task = Task(user_id=user_id, title=title, description=description, due_date=due_date, priority=priority)
@@ -12,8 +45,10 @@ def create_task(db: Session, user_id: int, title: str, due_date: date, descripti
     db.refresh(task)
     return task
 
+
 def get_biorhythm_cache(db: Session, user_id: int, target_date: date):
     return db.query(BiorhythmLog).filter(BiorhythmLog.user_id == user_id, BiorhythmLog.date == target_date).first()
+
 
 def save_biorhythm_cache(db: Session, user_id: int, target_date: date, physical: float, emotional: float, intellectual: float):
     log = BiorhythmLog(user_id=user_id, date=target_date, physical=physical, emotional=emotional, intellectual=intellectual)

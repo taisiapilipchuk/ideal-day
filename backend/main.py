@@ -1,6 +1,21 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException
+from sqlalchemy.orm import Session
+from database import SessionLocal
+from schemas import UserCreate, UserResponse, UserLogin
+import crud
+from auth import create_access_token, get_current_user
+from models import User
+
 
 app = FastAPI()
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @app.get("/")
@@ -13,15 +28,42 @@ def health_check():
     return {"status": "ok"}
 
 
-@app.get("/api/users/{user_id}")
-def get_user(user_id: int):
-    return {
-        "user_id": user_id, 
-        "name": "Алексей", 
-        "email": "alex@example.com"
-    }
+@app.get("/api/users/me", response_model=UserResponse)
+def get_current_user_info(
+    user_id: int = Depends(get_current_user), db: Session = Depends(get_db)
+):
+    user = db.query(User).filter(User.id == user_id).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
+
+    return user
 
 
 @app.get("/api/search")
 def search_users(name: str):
     return {"search_name": name}
+
+
+@app.post("/api/register", response_model=UserResponse, status_code=201)
+def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
+
+    if crud.get_user_by_email(db, user_data.email):
+        raise HTTPException(status_code=400, detail="Email уже занят")
+
+    if crud.get_user_by_username(db, user_data.username):
+        raise HTTPException(status_code=400, detail="Имя пользователя уже занято")
+
+    return crud.create_user(db, user_data)
+
+
+@app.post("/api/login")
+def login_user(user_data: UserLogin, db: Session = Depends(get_db)):
+    user = crud.get_user_by_email(db, user_data.email)
+
+    if not user or not crud.verify_password(user_data.password, user.hashed_password):
+        raise HTTPException(status_code=401, detail="Неверный email или пароль")
+
+    access_token = create_access_token({"sub": str(user.id)})
+
+    return {"access_token": access_token, "token_type": "bearer"}
