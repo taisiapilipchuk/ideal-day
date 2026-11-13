@@ -5,7 +5,8 @@ from schemas import UserCreate, UserResponse, UserLogin
 import crud
 from auth import create_access_token, get_current_user
 from models import User
-
+from datetime import date
+from biorhythm import calculate_biorhythm
 
 app = FastAPI()
 
@@ -67,3 +68,39 @@ def login_user(user_data: UserLogin, db: Session = Depends(get_db)):
     access_token = create_access_token({"sub": str(user.id)})
 
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+@app.get("/api/biorhythm")
+def get_biorhythm(
+    target_date: date | None = None,
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if target_date is None:
+        target_date = date.today()
+
+    user = db.query(User).filter(User.id == user_id).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
+
+    result = crud.get_biorhythm_cache(db, user_id, target_date)
+
+    if result is None:
+        values = calculate_biorhythm(user.birth_date, target_date)
+
+        result = crud.save_biorhythm_cache(
+            db,
+            user_id,
+            target_date,
+            values["physical"],
+            values["emotional"],
+            values["intellectual"],
+        )
+
+    return {
+        "date": result.date,
+        "physical": result.physical,
+        "emotional": result.emotional,
+        "intellectual": result.intellectual,
+    }
