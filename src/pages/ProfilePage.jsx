@@ -2,86 +2,29 @@
 import { useState } from 'react'
 import './ProfilePage.css'
 
-function ProfilePage({ onOpenHome }) {
-  const [profile, setProfile] = useState({
-    name: 'Александра',
-    email: 'alexandra@example.com',
-    birthDate: '2007-05-15',
-    chronotype: 'Голубь',
-  })
-
-  const [editingField, setEditingField] = useState(null)
-  const [draftValue, setDraftValue] = useState('')
+function ProfilePage({ onOpenHome, user }) {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true)
 
-  function startEditing(field) {
-    setEditingField(field)
-    setDraftValue(profile[field])
+  const chronotypeNames = {
+    lark: 'Жаворонок',
+    pigeon: 'Голубь',
+    owl: 'Сова',
   }
 
-  function saveChanges() {
-    setProfile({
-      ...profile,
-      [editingField]: draftValue,
-    })
+  function formatBirthDate(birthDate) {
+    if (!birthDate) return 'Не указана'
 
-    setEditingField(null)
+    const [year, month, day] = birthDate.split('-')
+    return `${day}.${month}.${year}`
   }
 
-  function cancelEditing() {
-    setEditingField(null)
-    setDraftValue('')
-  }
+  function handleLogout() {
+    const confirmed = window.confirm('Вы действительно хотите выйти?')
 
-  function renderProfileField(field, label, type = 'text') {
-    return (
-      <div className="profile-field" key={field}>
-        <span className="profile-label">{label}</span>
-
-        {editingField === field ? (
-          <div className="profile-edit-form">
-            <input
-              className="profile-input"
-              type={type}
-              value={draftValue}
-              onChange={(event) => setDraftValue(event.target.value)}
-            />
-
-            <div className="profile-edit-buttons">
-              <button
-                className="profile-save-button"
-                onClick={saveChanges}
-              >
-                Сохранить
-              </button>
-
-              <button
-                className="profile-cancel-button"
-                onClick={cancelEditing}
-              >
-                Отмена
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="profile-field-value">
-            <span>
-              {field === 'birthDate'
-                ? profile[field].split('-').reverse().join('.')
-                : profile[field]}
-            </span>
-
-            <button
-              className="profile-edit-button"
-              aria-label={`Изменить: ${label}`}
-              onClick={() => startEditing(field)}
-            >
-              ✎
-            </button>
-          </div>
-        )}
-      </div>
-    )
+    if (confirmed) {
+      localStorage.removeItem('access_token')
+      window.location.reload()
+    }
   }
 
   return (
@@ -96,12 +39,36 @@ function ProfilePage({ onOpenHome }) {
         <section className="profile-section">
           <h2 className="profile-section-title">Личные данные</h2>
 
-          {renderProfileField('name', 'Имя')}
-          {renderProfileField('email', 'Email', 'email')}
-          {renderProfileField('birthDate', 'Дата рождения', 'date')}
-          {renderProfileField('chronotype', 'Хронотип')}
+          <div className="profile-field">
+            <span className="profile-label">Имя</span>
+            <div className="profile-field-value">
+              <span>{user?.username || 'Не указано'}</span>
+            </div>
+          </div>
 
-          
+          <div className="profile-field">
+            <span className="profile-label">Email</span>
+            <div className="profile-field-value">
+              <span>{user?.email || 'Не указан'}</span>
+            </div>
+          </div>
+
+          <div className="profile-field">
+            <span className="profile-label">Дата рождения</span>
+            <div className="profile-field-value">
+              <span>{formatBirthDate(user?.birth_date)}</span>
+            </div>
+          </div>
+
+          <div className="profile-field">
+            <span className="profile-label">Хронотип</span>
+            <div className="profile-field-value">
+              <span>
+                {chronotypeNames[user?.chronotype] || 'Не указан'}
+              </span>
+            </div>
+          </div>
+
           <div className="profile-notifications">
             <div>
               <h3 className="profile-notifications-title">Уведомления</h3>
@@ -121,18 +88,14 @@ function ProfilePage({ onOpenHome }) {
             </button>
           </div>
         </section>
-         <button
-          className="profile-logout-button"
-          onClick={() => {
-            const confirmed = window.confirm('Вы действительно хотите выйти?')
 
-            if (confirmed) {
-              window.location.href = '/'
-            }
-          }}
+        <button
+          className="profile-logout-button"
+          onClick={handleLogout}
         >
           Выйти из аккаунта
         </button>
+
         <button
           className="profile-home-button"
           onClick={onOpenHome}

@@ -1,26 +1,40 @@
+
 import { useState } from 'react'
 import './ChronotypeQuestionPage.css'
 
-function ChronotypeQuestion2Page( {onForward, onBack} ) {
-    const [selectedAnswer, setSelectedAnswer] = useState('')
-    const [selectedAnswerError, setSelectedAnsweError] = useState('')
+function ChronotypeQuestion2Page({ onForward, onBack }) {
+  const [selectedAnswer, setSelectedAnswer] = useState('')
+  const [selectedAnswerError, setSelectedAnswerError] = useState('')
 
-    function handleForward() {
-        setSelectedAnsweError('')
-        if (selectedAnswer === '') {
-            setSelectedAnsweError('Выберите вариант ответа')
-        }
-        else onForward()
+  const answers = [
+    'До 21:00',
+    '21:00–22:00',
+    '22:00–23:00',
+    '23:00–00:00',
+    'После 00:00',
+  ]
+
+  function handleForward() {
+    setSelectedAnswerError('')
+
+    if (selectedAnswer === '') {
+      setSelectedAnswerError('Выберите вариант ответа')
+      return
     }
 
+    onForward(selectedAnswer)
+  }
 
   return (
     <div className="chronotype-page">
       <div className="chronotype-content">
-        <button className="chronotype-back-button"
-                onClick={onBack}>
-            ← Назад
+        <button
+          className="chronotype-back-button"
+          onClick={onBack}
+        >
+          ← Назад
         </button>
+
         <p className="chronotype-progress">
           Вопрос 2 из 5
         </p>
@@ -30,53 +44,31 @@ function ChronotypeQuestion2Page( {onForward, onBack} ) {
         </h1>
 
         <div className="chronotype-options">
-          <button
-            className={`chronotype-option ${selectedAnswer === 'До 21:00' ? 'selected' : ''}`}
-            onClick={() => setSelectedAnswer('До 21:00')}
-          >
-            До 21:00
-          </button>
-
-          <button
-            className={`chronotype-option ${selectedAnswer === '21:00–22:00' ? 'selected' : ''}`}
-            onClick={() => setSelectedAnswer('21:00–22:00')}
-          >
-            21:00–22:00
-          </button>
-
-          <button
-            className={`chronotype-option ${selectedAnswer === '22:00–23:00' ? 'selected' : ''}`}
-            onClick={() => setSelectedAnswer('22:00–23:00')}
-          >
-            22:00–23:00
-          </button>
-
-          <button
-            className={`chronotype-option ${selectedAnswer === '23:00–00:00' ? 'selected' : ''}`}
-            onClick={() => setSelectedAnswer('23:00–00:00')}
-          >
-            23:00–00:00
-          </button>
-
-          <button
-            className={`chronotype-option ${selectedAnswer === 'После 00:00' ? 'selected' : ''}`}
-            onClick={() => setSelectedAnswer('После 00:00')}
-          >
-            После 00:00
-          </button>
+          {answers.map((answer) => (
+            <button
+              key={answer}
+              className={`chronotype-option ${
+                selectedAnswer === answer ? 'selected' : ''
+              }`}
+              onClick={() => setSelectedAnswer(answer)}
+            >
+              {answer}
+            </button>
+          ))}
         </div>
 
-        <button className="chronotype-next-button"
-                onClick={handleForward}>
+        <button
+          className="chronotype-next-button"
+          onClick={handleForward}
+        >
           Продолжить
         </button>
 
         {selectedAnswerError && (
           <p className="chronotype-error">
             {selectedAnswerError}
-            </p>
+          </p>
         )}
-
       </div>
     </div>
   )

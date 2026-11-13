@@ -1,39 +1,41 @@
+
 import { useState } from 'react'
 import './RegisterPage.css'
 
 function RegisterPage({ onBack, onRegister }) {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
-    const [passwordError, setPasswordError] = useState('')
-    const [emailError, setEmailError] = useState('')
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState('')
 
   function handleRegister() {
-    setEmailError('')
-    setPasswordError('')
-    if (email === '') {
-      setEmailError('Введите email')
+    setError('')
+
+    if (!username || !email || !password || !confirmPassword) {
+      setError('Заполните все поля')
+      return
     }
-    else if (password === '') {
-      setPasswordError('Введите пароль')
+
+    if (password !== confirmPassword) {
+      setError('Пароли не совпадают')
+      return
     }
-    else if (password === confirmPassword) {
-      setPasswordError('')
-      onRegister()
-    } else {
-      setPasswordError('Пароли не совпадают')
-    }
+
+    onRegister({
+      username,
+      email,
+      password,
+    })
   }
 
   return (
     <div className="register-page">
-
       <button className="register-back-button" onClick={onBack}>
         ← Назад
       </button>
 
       <div className="register-content">
-
         <h1 className="register-title">
           Создать аккаунт
         </h1>
@@ -43,59 +45,66 @@ function RegisterPage({ onBack, onRegister }) {
         </p>
 
         <div className="register-form">
-            <label className="register-label">
-                Email
-            </label>
+          <label className="register-label">
+            Имя пользователя
+          </label>
 
-            <input
-                className="register-input"
-                type="email"
-                placeholder="Введите email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-            />
-
-            {emailError && (
-              <p className="register-error">
-                {emailError}
-                </p>)
-            }
+          <input
+            className="register-input"
+            type="text"
+            placeholder="Введите имя"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+          />
         </div>
 
         <div className="register-form">
-            <label className="register-label">
-                Пароль
-            </label>
+          <label className="register-label">
+            Email
+          </label>
 
-            <input
-                className="register-input"
-                type="password"
-                placeholder="Введите пароль"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-            />
+          <input
+            className="register-input"
+            type="email"
+            placeholder="Введите email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
         </div>
 
         <div className="register-form">
-            <label className="register-label">
-              Повторите пароль
-            </label>
+          <label className="register-label">
+            Пароль
+          </label>
 
-            <input
-              className="register-input"
-              type="password"
-              placeholder="Повторите пароль"
-              value={confirmPassword}
-              onChange={(event) => setConfirmPassword(event.target.value)
-              }
-            />
+          <input
+            className="register-input"
+            type="password"
+            placeholder="Введите пароль"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </div>
 
-            {passwordError && (
-              <p className="register-error">
-                {passwordError}
-              </p>
-            )}
-      </div>
+        <div className="register-form">
+          <label className="register-label">
+            Повторите пароль
+          </label>
+
+          <input
+            className="register-input"
+            type="password"
+            placeholder="Повторите пароль"
+            value={confirmPassword}
+            onChange={(event) => setConfirmPassword(event.target.value)}
+          />
+        </div>
+
+        {error && (
+          <p className="register-error">
+            {error}
+          </p>
+        )}
 
         <button
           className="register-submit-button"
@@ -103,9 +112,7 @@ function RegisterPage({ onBack, onRegister }) {
         >
           Зарегистрироваться
         </button>
-
       </div>
-
     </div>
   )
 }

@@ -1,16 +1,20 @@
+
 import './BirthDatePage.css'
 import { useState } from 'react'
 
-function BirthDatePage({ onForward}) {
+function BirthDatePage({ onForward }) {
   const [birthDate, setBirthDate] = useState('')
   const [birthDateError, setBirthDateError] = useState('')
 
   function handleForward() {
     setBirthDateError('')
+
     if (birthDate === '') {
       setBirthDateError('Введите дату рождения')
+      return
     }
-    else onForward()
+
+    onForward(birthDate)
   }
 
   return (
@@ -36,11 +40,15 @@ function BirthDatePage({ onForward}) {
         />
 
         {birthDateError && (
-          <p className="birth-date-error"> {birthDateError}</p>
+          <p className="birth-date-error">
+            {birthDateError}
+          </p>
         )}
 
-        <button className="birth-date-button" 
-                onClick={handleForward}>
+        <button
+          className="birth-date-button"
+          onClick={handleForward}
+        >
           Продолжить
         </button>
       </div>
