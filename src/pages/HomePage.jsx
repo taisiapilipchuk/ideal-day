@@ -1,16 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
+import { adaptDaySchedule, todayISO } from '../utils/schedule'
 import './HomePage.css'
 
 const CYCLES = [
   { id: 'physical', name: 'Физический', period: 23, color: '#078b91' },
   { id: 'emotional', name: 'Эмоциональный', period: 28, color: '#e76591' },
   { id: 'intellectual', name: 'Интеллектуальный', period: 33, color: '#6046ed' },
-]
-const DEMO_TASKS = [
-  { id: 1, title: 'Подготовить презентацию', type: 'Интеллект', duration: 60, priority: 'Высокий', time: '09:00', status: 'completed' },
-  { id: 2, title: 'Изучить SQL', type: 'Интеллект', duration: 90, priority: 'Высокий', time: '10:00', status: 'planned' },
-  { id: 3, title: 'Ответить на сообщения', type: 'Коммуникация', duration: 30, priority: 'Средний', time: '11:45', status: 'planned' },
-  { id: 4, title: 'Тренировка', type: 'Физика', duration: 60, priority: 'Средний', time: '13:00', status: 'suggested' },
 ]
 
 function rhythmValue(birthDate, date, period) {
@@ -24,29 +19,15 @@ function dateText(date) {
   return new Intl.DateTimeFormat('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' }).format(date)
 }
 
-function HomePage({ profile, onOpenProfile, onOpenBiorhythms }) {
-  const [tasks, setTasks] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('ideal-day-tasks')) || DEMO_TASKS
-    } catch {
-      return DEMO_TASKS
-    }
-  })
-  const [modalOpen, setModalOpen] = useState(false)
+function HomePage({ profile, tasks, onTasksChange, onOpenProfile, onOpenBiorhythms, onOpenTasks, onOpenSchedule }) {
   const [expandedId, setExpandedId] = useState(null)
-  const [editingId, setEditingId] = useState(null)
-  const emptyDraft = { title: '', type: 'Интеллект', duration: '60', priority: 'Средний', time: '15:00' }
-  const [draft, setDraft] = useState(emptyDraft)
-
   const today = new Date()
+  const todayKey = todayISO()
+  const todayTasks = tasks.filter((task) => (task.date || todayKey) === todayKey)
   const rhythms = CYCLES.map((cycle) => ({ ...cycle, value: rhythmValue(profile.birthDate, today, cycle.period) }))
 
-  useEffect(() => {
-    localStorage.setItem('ideal-day-tasks', JSON.stringify(tasks))
-  }, [tasks])
-
   const stats = useMemo(() => {
-    const active = tasks.filter((task) => task.status !== 'cancelled')
+    const active = todayTasks.filter((task) => task.status !== 'cancelled')
     const completed = active.filter((task) => task.status === 'completed').length
     const overdue = active.filter((task) => task.status === 'overdue').length
     return {
@@ -56,7 +37,7 @@ function HomePage({ profile, onOpenProfile, onOpenBiorhythms }) {
       pending: active.length - completed - overdue,
       percent: active.length ? Math.round((completed / active.length) * 100) : 0,
     }
-  }, [tasks])
+  }, [todayTasks])
 
   const recommendation = useMemo(() => {
     const best = [...rhythms].sort((a, b) => b.value - a.value)[0]
@@ -74,40 +55,21 @@ function HomePage({ profile, onOpenProfile, onOpenBiorhythms }) {
   }), [profile.birthDate])
 
   function openCreate() {
-    setEditingId(null)
-    setDraft(emptyDraft)
-    setModalOpen(true)
+    onOpenTasks()
   }
 
-  function saveTask(event) {
-    event.preventDefault()
-    if (!draft.title.trim()) return
-    if (editingId !== null) {
-      setTasks((current) => current.map((task) => task.id === editingId
-        ? { ...task, ...draft, duration: Number(draft.duration) } : task))
-    } else {
-      setTasks((current) => [...current, {
-        id: Date.now(), ...draft, duration: Number(draft.duration), status: 'planned',
-      }].sort((a, b) => a.time.localeCompare(b.time)))
-    }
-    setModalOpen(false)
-    setEditingId(null)
-    setDraft(emptyDraft)
-  }
-
-  function editTask(task) {
-    setEditingId(task.id)
-    setDraft({ title: task.title, type: task.type, duration: String(task.duration), priority: task.priority, time: task.time })
-    setModalOpen(true)
+  function editTask() {
+    onOpenTasks()
   }
 
   function setStatus(id, status) {
-    setTasks((current) => current.map((task) => task.id === id ? { ...task, status } : task))
+    const next = tasks.map((task) => task.id === id ? { ...task, status } : task)
+    onTasksChange(adaptDaySchedule(next, todayKey))
   }
 
   function removeTask(id) {
     if (window.confirm('Удалить эту задачу?')) {
-      setTasks((current) => current.filter((task) => task.id !== id))
+      onTasksChange(tasks.filter((task) => task.id !== id))
       setExpandedId(null)
     }
   }
@@ -190,11 +152,15 @@ function HomePage({ profile, onOpenProfile, onOpenBiorhythms }) {
             <section className="home-card home-schedule-card">
               <div className="home-section-head">
                 <div><p className="home-eyebrow">ПЛАН НА ДЕНЬ</p><h2>Расписание</h2></div>
-                <button className="home-add-button" onClick={openCreate} aria-label="Добавить задачу">+</button>
+                <div className="home-task-shortcuts">
+                  <button onClick={onOpenTasks}>Все задачи</button>
+                  <button onClick={onOpenSchedule}>Расписание</button>
+                  <button className="home-add-button" onClick={openCreate} aria-label="Добавить задачу">+</button>
+                </div>
               </div>
               <div className="home-task-list">
-                {tasks.length === 0 && <p className="home-empty">Задач пока нет. Добавь первую задачу.</p>}
-                {tasks.map((task) => (
+                {todayTasks.length === 0 && <p className="home-empty">Задач пока нет. Добавь первую задачу.</p>}
+                {todayTasks.map((task) => (
                   <article className={`home-task status-${task.status}`} key={task.id}>
                     <button className="home-task-summary" onClick={() => setExpandedId(expandedId === task.id ? null : task.id)}>
                       <span className="home-task-time">{task.time}</span>
@@ -260,23 +226,6 @@ function HomePage({ profile, onOpenProfile, onOpenBiorhythms }) {
         <button className="home-navigation-item" onClick={onOpenProfile}><span>♙</span>Профиль</button>
       </nav>
 
-      {modalOpen && (
-        <div className="home-modal-overlay" onMouseDown={(event) => {
-          if (event.target === event.currentTarget) { setModalOpen(false); setEditingId(null) }
-        }}>
-          <form className="home-task-modal" onSubmit={saveTask}>
-            <div className="home-modal-heading"><h2>{editingId === null ? 'Добавить задачу' : 'Изменить задачу'}</h2><button type="button" onClick={() => setModalOpen(false)}>×</button></div>
-            <label>Название задачи<input required value={draft.title} onChange={(event) => setDraft({ ...draft, title: event.target.value })} placeholder="Например, подготовить отчёт" /></label>
-            <div className="home-form-grid">
-              <label>Тип задачи<select value={draft.type} onChange={(event) => setDraft({ ...draft, type: event.target.value })}><option>Интеллект</option><option>Физика</option><option>Творчество</option><option>Коммуникация</option><option>Рутина</option><option>Отдых</option></select></label>
-              <label>Длительность<select value={draft.duration} onChange={(event) => setDraft({ ...draft, duration: event.target.value })}><option value="15">15 минут</option><option value="30">30 минут</option><option value="45">45 минут</option><option value="60">60 минут</option><option value="90">90 минут</option><option value="120">120 минут</option></select></label>
-              <label>Приоритет<select value={draft.priority} onChange={(event) => setDraft({ ...draft, priority: event.target.value })}><option>Низкий</option><option>Средний</option><option>Высокий</option></select></label>
-              <label>Время<input type="time" value={draft.time} onChange={(event) => setDraft({ ...draft, time: event.target.value })} /></label>
-            </div>
-            <button className="home-submit-button" type="submit">{editingId === null ? 'Добавить задачу' : 'Сохранить изменения'}</button>
-          </form>
-        </div>
-      )}
     </main>
   )
 }

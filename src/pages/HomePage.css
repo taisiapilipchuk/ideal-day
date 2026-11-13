@@ -121,3 +121,10 @@
 .home-text-link { padding:0; border:0; background:transparent; color:#6046ed; font-size:11px; font-weight:600; cursor:pointer; }
 .home-text-link span { margin-left:4px; }
 @media(max-width:480px) { .home-chart-footer { align-items:flex-start; flex-direction:column; } }
+
+.home-task-shortcuts { display:flex; align-items:center; gap:7px; }
+.home-task-shortcuts > button:not(.home-add-button) { min-height:32px; padding:0 9px; border:1px solid #e4e7ef; border-radius:8px; background:#fff; color:#6046ed; font-size:10px; cursor:pointer; }
+@media(max-width:480px) {
+  .home-task-shortcuts { gap:5px; }
+  .home-task-shortcuts > button:not(.home-add-button) { padding:0 7px; font-size:9px; }
+}
