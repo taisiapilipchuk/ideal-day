@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import date, time
 
 # ---------- Пользователи ----------
@@ -33,7 +33,7 @@ class TaskCreate(BaseModel):
     title: str
     description: str | None = None
     task_type: str = "routine"
-    duration: int = 30
+    duration: int = Field(default=30, gt=0)
     due_date: date
     start_time: time | None = None
     end_time: time | None = None
@@ -44,7 +44,7 @@ class TaskUpdate(BaseModel):
     title: str | None = None
     description: str | None = None
     task_type: str | None = None
-    duration: int | None = None
+    duration: int | None = Field(default=None, gt=0)
     due_date: date | None = None
     start_time: time | None = None
     end_time: time | None = None

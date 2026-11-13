@@ -15,6 +15,7 @@ from models import User
 from datetime import date
 from biorhythm import calculate_biorhythm
 from recommendations import generate_recommendations
+from scheduler import create_schedule
 
 app = FastAPI()
 
@@ -35,7 +36,6 @@ def home():
 @app.get("/api/health")
 def health_check():
     return {"status": "ok"}
-
 
 
 # ---------- Пользователи ----------
@@ -78,7 +78,6 @@ def login_user(user_data: UserLogin, db: Session = Depends(get_db)):
     access_token = create_access_token({"sub": str(user.id)})
 
     return {"access_token": access_token, "token_type": "bearer"}
-
 
 
 # ---------- Биоритмы ----------
@@ -161,7 +160,6 @@ def get_recommendations(
     }
 
 
-
 # ---------- Задачи ----------
 
 @app.get("/api/tasks", response_model=list[TaskResponse])
@@ -183,6 +181,19 @@ def create_task(
     db: Session = Depends(get_db),
 ):
     return crud.create_task(db, user_id, task_data)
+
+
+@app.get("/api/tasks/schedule")
+def get_task_schedule(
+    target_date: date,
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    tasks = crud.get_tasks_by_date(db, user_id, target_date)
+
+    schedule = create_schedule(tasks)
+
+    return {"date": target_date, "schedule": schedule}
 
 
 @app.get("/api/tasks/{task_id}", response_model=TaskResponse)
