@@ -60,35 +60,14 @@ function readProfile() {
   }
 }
 
-const DEFAULT_PROFILE = {
-  name: 'Александра',
-  email: 'alexandra@example.com',
-  birthDate: '2007-05-15',
-  chronotype: 'Голубь',
-}
-
-function readProfile() {
-  try {
-    const saved = JSON.parse(localStorage.getItem('ideal-day-profile'))
-    return saved && typeof saved === 'object'
-      ? { ...DEFAULT_PROFILE, ...saved }
-      : DEFAULT_PROFILE
-  } catch {
-    return DEFAULT_PROFILE
-  }
-}
-
 function App() {
   const [page, setPage] = useState('start')
   const [profile, setProfile] = useState(readProfile)
-<<<<<<< Updated upstream
-=======
   const [tasks, setTasks] = useState(readTasks)
 
   useEffect(() => {
     localStorage.setItem('ideal-day-tasks', JSON.stringify(tasks))
   }, [tasks])
->>>>>>> Stashed changes
 
   useEffect(() => {
     localStorage.setItem('ideal-day-profile', JSON.stringify(profile))
@@ -113,17 +92,12 @@ function App() {
       {page === 'home' && (
         <HomePage
           profile={profile}
-<<<<<<< Updated upstream
-          onOpenProfile={() => setPage('profile')}
-          onOpenBiorhythms={() => setPage('biorhythms')}
-=======
           tasks={tasks}
           onTasksChange={setTasks}
           onOpenProfile={() => setPage('profile')}
           onOpenBiorhythms={() => setPage('biorhythms')}
           onOpenTasks={() => setPage('tasks')}
           onOpenSchedule={() => setPage('schedule')}
->>>>>>> Stashed changes
         />
       )}
 
@@ -141,8 +115,6 @@ function App() {
           onOpenHome={() => setPage('home')}
           onOpenProfile={() => setPage('profile')}
         />
-<<<<<<< Updated upstream
-=======
       )}
 
       {page === 'tasks' && (
@@ -165,7 +137,6 @@ function App() {
           onOpenBiorhythms={() => setPage('biorhythms')}
           onOpenProfile={() => setPage('profile')}
         />
->>>>>>> Stashed changes
       )}
 
       {page === 'birthDate' && (
