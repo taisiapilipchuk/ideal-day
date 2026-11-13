@@ -9,6 +9,7 @@ class UserCreate(BaseModel):
     email: str
     password: str
     birth_date: date
+    chronotype: str = "pigeon"
 
 
 class UserResponse(BaseModel):
@@ -35,6 +36,7 @@ class TaskCreate(BaseModel):
     task_type: str = "routine"
     duration: int = Field(default=30, gt=0)
     due_date: date
+    deadline_time: time | None = None
     start_time: time | None = None
     end_time: time | None = None
     priority: int = 1
@@ -46,6 +48,7 @@ class TaskUpdate(BaseModel):
     task_type: str | None = None
     duration: int | None = Field(default=None, gt=0)
     due_date: date | None = None
+    deadline_time: time | None = None
     start_time: time | None = None
     end_time: time | None = None
     is_completed: bool | None = None
@@ -60,6 +63,7 @@ class TaskResponse(BaseModel):
     task_type: str
     duration: int
     due_date: date
+    deadline_time: time | None
     start_time: time | None
     end_time: time | None
     is_completed: bool

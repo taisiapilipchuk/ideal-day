@@ -1,22 +1,34 @@
+
 import { useState } from 'react'
+import { loginUser } from '../api'
 import './LoginPage.css'
 
 function LoginPage({ onBack, onLogin }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loginError, setLoginError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  function handleLogin() {
+  async function handleLogin() {
     setLoginError('')
 
-    if (email === '') {
-      setLoginError('Введите email')
-    } 
-    else if (password === '') {
-      setLoginError('Введите пароль')
+    if (!email || !password) {
+      setLoginError('Введите email и пароль')
+      return
     }
-    else {
-      onLogin()
+
+    try {
+      setLoading(true)
+
+      const data = await loginUser(email, password)
+
+      localStorage.setItem('access_token', data.access_token)
+
+      await onLogin()
+    } catch (error) {
+      setLoginError(error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -27,18 +39,14 @@ function LoginPage({ onBack, onLogin }) {
       </button>
 
       <div className="login-content">
-        <h1 className="login-title">
-          Вход
-        </h1>
+        <h1 className="login-title">Вход</h1>
 
         <p className="login-subtitle">
           Войдите, чтобы продолжить планировать свой идеальный день
         </p>
 
         <div className="login-form">
-          <label className="login-label">
-            Email
-          </label>
+          <label className="login-label">Email</label>
 
           <input
             className="login-input"
@@ -50,9 +58,7 @@ function LoginPage({ onBack, onLogin }) {
         </div>
 
         <div className="login-form">
-          <label className="login-label">
-            Пароль
-          </label>
+          <label className="login-label">Пароль</label>
 
           <input
             className="login-input"
@@ -61,19 +67,18 @@ function LoginPage({ onBack, onLogin }) {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
-
-          {loginError && (
-            <p className="login-error">
-              {loginError}
-            </p>
-          )}
         </div>
+
+        {loginError && (
+          <p className="login-error">{loginError}</p>
+        )}
 
         <button
           className="login-submit-button"
           onClick={handleLogin}
+          disabled={loading}
         >
-          Войти
+          {loading ? 'Входим...' : 'Войти'}
         </button>
       </div>
     </div>

@@ -26,6 +26,7 @@ def create_user(db: Session, user_data: UserCreate):
         email=user_data.email,
         hashed_password=hashed_password,
         birth_date=user_data.birth_date,
+        chronotype=user_data.chronotype,
     )
 
     db.add(user)

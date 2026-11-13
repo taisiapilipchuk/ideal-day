@@ -29,6 +29,13 @@ def create_schedule(tasks):
         if task_start < start_time or task_end > end_time or task_end <= task_start:
             continue
 
+        # Проверяем дедлайн фиксированной задачи
+        if task.deadline_time is not None:
+            deadline = datetime.strptime(task.deadline_time.strftime("%H:%M"), "%H:%M")
+
+            if task_end > deadline:
+                continue
+
         occupied.append((task_start, task_end, task))
 
     # Сортируем фиксированные задачи по времени
@@ -54,7 +61,7 @@ def create_schedule(tasks):
 
     occupied = valid_occupied
 
-    # Сортируем остальные задачи по приоритету
+    # Сортируем свободные задачи по приоритету
     flexible_tasks.sort(key=lambda task: task.priority, reverse=True)
 
     # Ищем свободное время для каждой задачи
@@ -70,8 +77,16 @@ def create_schedule(tasks):
                 current_time = busy_end
                 task_end = current_time + timedelta(minutes=task.duration)
 
+        # Проверяем рабочее время
         if task_end > end_time:
             continue
+
+        # Проверяем дедлайн свободной задачи
+        if task.deadline_time is not None:
+            deadline = datetime.strptime(task.deadline_time.strftime("%H:%M"), "%H:%M")
+
+            if task_end > deadline:
+                continue
 
         schedule.append(
             {
