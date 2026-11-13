@@ -1,7 +1,14 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import SessionLocal
-from schemas import UserCreate, UserResponse, UserLogin
+from schemas import (
+    UserCreate,
+    UserResponse,
+    UserLogin,
+    TaskCreate,
+    TaskUpdate,
+    TaskResponse,
+)
 import crud
 from auth import create_access_token, get_current_user
 from models import User
@@ -30,6 +37,9 @@ def health_check():
     return {"status": "ok"}
 
 
+
+# ---------- Пользователи ----------
+
 @app.get("/api/users/me", response_model=UserResponse)
 def get_current_user_info(
     user_id: int = Depends(get_current_user), db: Session = Depends(get_db)
@@ -49,7 +59,6 @@ def search_users(name: str):
 
 @app.post("/api/register", response_model=UserResponse, status_code=201)
 def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
-
     if crud.get_user_by_email(db, user_data.email):
         raise HTTPException(status_code=400, detail="Email уже занят")
 
@@ -70,6 +79,9 @@ def login_user(user_data: UserLogin, db: Session = Depends(get_db)):
 
     return {"access_token": access_token, "token_type": "bearer"}
 
+
+
+# ---------- Биоритмы ----------
 
 @app.get("/api/biorhythm")
 def get_biorhythm(
@@ -147,3 +159,72 @@ def get_recommendations(
         "date": target_date,
         "recommendations": recommendations,
     }
+
+
+
+# ---------- Задачи ----------
+
+@app.get("/api/tasks", response_model=list[TaskResponse])
+def get_tasks(
+    target_date: date | None = None,
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if target_date:
+        return crud.get_tasks_by_date(db, user_id, target_date)
+
+    return crud.get_all_tasks(db, user_id)
+
+
+@app.post("/api/tasks", response_model=TaskResponse, status_code=201)
+def create_task(
+    task_data: TaskCreate,
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    return crud.create_task(db, user_id, task_data)
+
+
+@app.get("/api/tasks/{task_id}", response_model=TaskResponse)
+def get_task(
+    task_id: int,
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    task = crud.get_task(db, user_id, task_id)
+
+    if not task:
+        raise HTTPException(status_code=404, detail="Задача не найдена")
+
+    return task
+
+
+@app.patch("/api/tasks/{task_id}", response_model=TaskResponse)
+def update_task(
+    task_id: int,
+    task_data: TaskUpdate,
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    task = crud.get_task(db, user_id, task_id)
+
+    if not task:
+        raise HTTPException(status_code=404, detail="Задача не найдена")
+
+    return crud.update_task(db, task, task_data)
+
+
+@app.delete("/api/tasks/{task_id}")
+def delete_task(
+    task_id: int,
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    task = crud.get_task(db, user_id, task_id)
+
+    if not task:
+        raise HTTPException(status_code=404, detail="Задача не найдена")
+
+    crud.delete_task(db, task)
+
+    return {"message": "Задача успешно удалена"}
