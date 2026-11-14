@@ -2,6 +2,13 @@
 import { useState } from 'react'
 import './ProfilePage.css'
 
+function formatBirthDate(birthDate) {
+  if (!birthDate) return 'Не указана'
+
+  const [year, month, day] = birthDate.split('-')
+  return `${day}.${month}.${year}`
+}
+
 function ProfilePage({ onOpenHome, user }) {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true)
 
@@ -9,13 +16,6 @@ function ProfilePage({ onOpenHome, user }) {
     lark: 'Жаворонок',
     pigeon: 'Голубь',
     owl: 'Сова',
-  }
-
-  function formatBirthDate(birthDate) {
-    if (!birthDate) return 'Не указана'
-
-    const [year, month, day] = birthDate.split('-')
-    return `${day}.${month}.${year}`
   }
 
   function handleLogout() {
@@ -31,7 +31,6 @@ function ProfilePage({ onOpenHome, user }) {
     <div className="profile-page">
       <div className="profile-content">
         <h1 className="profile-title">Профиль</h1>
-
         <p className="profile-subtitle">
           Управляйте своими данными и настройками
         </p>
@@ -71,7 +70,9 @@ function ProfilePage({ onOpenHome, user }) {
 
           <div className="profile-notifications">
             <div>
-              <h3 className="profile-notifications-title">Уведомления</h3>
+              <h3 className="profile-notifications-title">
+                Уведомления
+              </h3>
               <p className="profile-notifications-description">
                 Получать напоминания и рекомендации
               </p>
@@ -84,7 +85,7 @@ function ProfilePage({ onOpenHome, user }) {
               aria-checked={notificationsEnabled}
               aria-label="Уведомления"
             >
-              <span className="profile-toggle-circle"></span>
+              <span className="profile-toggle-circle" />
             </button>
           </div>
         </section>

@@ -6,6 +6,7 @@ import StartPage from './pages/StartPage'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import HomePage from './pages/HomePage'
+import BiorhythmsPage from './pages/BiorhythmsPage'
 import BirthDatePage from './pages/BirthDatePage'
 import ChronotypeQuestionPage from './pages/ChronotypeQuestionPage'
 import ChronotypeQuestion2Page from './pages/ChronotypeQuestion2Page'
@@ -13,6 +14,8 @@ import ChronotypeQuestion3Page from './pages/ChronotypeQuestion3Page'
 import ChronotypeQuestion4Page from './pages/ChronotypeQuestion4Page'
 import ChronotypeQuestion5Page from './pages/ChronotypeQuestion5Page'
 import ProfilePage from './pages/ProfilePage'
+import TasksPage from './pages/TasksPage'
+import SchedulePage from './pages/SchedulePage'
 
 function App() {
   const [page, setPage] = useState('start')
@@ -138,14 +141,46 @@ function App() {
 
       {page === 'home' && (
         <HomePage
+          user={currentUser}
           onOpenProfile={() => setPage('profile')}
+          onOpenBiorhythms={() => setPage('biorhythms')}
+          onOpenTasks={() => setPage('tasks')}
+          onOpenSchedule={() => setPage('schedule')}
         />
       )}
 
       {page === 'profile' && (
         <ProfilePage
-          onOpenHome={() => setPage('home')}
           user={currentUser}
+          onOpenHome={() => setPage('home')}
+        />
+      )}
+
+      {page === 'biorhythms' && (
+        <BiorhythmsPage
+          user={currentUser}
+          onOpenHome={() => setPage('home')}
+          onOpenProfile={() => setPage('profile')}
+        />
+      )}
+
+      {page === 'tasks' && (
+        <TasksPage
+          user={currentUser}
+          onOpenHome={() => setPage('home')}
+          onOpenSchedule={() => setPage('schedule')}
+          onOpenBiorhythms={() => setPage('biorhythms')}
+          onOpenProfile={() => setPage('profile')}
+        />
+      )}
+
+      {page === 'schedule' && (
+        <SchedulePage
+          user={currentUser}
+          onOpenHome={() => setPage('home')}
+          onOpenTasks={() => setPage('tasks')}
+          onOpenBiorhythms={() => setPage('biorhythms')}
+          onOpenProfile={() => setPage('profile')}
         />
       )}
 

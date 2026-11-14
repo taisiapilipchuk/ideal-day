@@ -1,4 +1,3 @@
-
 const API_URL = '/api'
 
 // ---------- Общая функция запросов ----------
@@ -44,13 +43,20 @@ export async function getCurrentUser() {
   return apiRequest('/users/me')
 }
 
+// ---------- Биоритмы и рекомендации ----------
+
+export async function getBiorhythm(targetDate) {
+  return apiRequest(`/biorhythm?target_date=${targetDate}`)
+}
+
+export async function getRecommendations(targetDate) {
+  return apiRequest(`/recommendations?target_date=${targetDate}`)
+}
+
 // ---------- Задачи ----------
 
 export async function getTasks(targetDate) {
-  const query = targetDate
-    ? `?target_date=${targetDate}`
-    : ''
-
+  const query = targetDate ? `?target_date=${targetDate}` : ''
   return apiRequest(`/tasks${query}`)
 }
 
