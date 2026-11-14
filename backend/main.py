@@ -40,6 +40,7 @@ def health_check():
 
 # ---------- Пользователи ----------
 
+
 @app.get("/api/users/me", response_model=UserResponse)
 def get_current_user_info(
     user_id: int = Depends(get_current_user), db: Session = Depends(get_db)
@@ -82,6 +83,7 @@ def login_user(user_data: UserLogin, db: Session = Depends(get_db)):
 
 # ---------- Биоритмы ----------
 
+
 @app.get("/api/biorhythm")
 def get_biorhythm(
     target_date: date | None = None,
@@ -96,11 +98,11 @@ def get_biorhythm(
     if not user:
         raise HTTPException(status_code=404, detail="Пользователь не найден")
 
+    values = calculate_biorhythm(user.birth_date, target_date)
+
     result = crud.get_biorhythm_cache(db, user_id, target_date)
 
     if result is None:
-        values = calculate_biorhythm(user.birth_date, target_date)
-
         result = crud.save_biorhythm_cache(
             db,
             user_id,
@@ -115,6 +117,7 @@ def get_biorhythm(
         "physical": result.physical,
         "emotional": result.emotional,
         "intellectual": result.intellectual,
+        "critical_cycles": values["critical_cycles"],
     }
 
 
@@ -132,11 +135,11 @@ def get_recommendations(
     if not user:
         raise HTTPException(status_code=404, detail="Пользователь не найден")
 
+    values = calculate_biorhythm(user.birth_date, target_date)
+
     biorhythm = crud.get_biorhythm_cache(db, user_id, target_date)
 
     if biorhythm is None:
-        values = calculate_biorhythm(user.birth_date, target_date)
-
         biorhythm = crud.save_biorhythm_cache(
             db,
             user_id,
@@ -151,6 +154,7 @@ def get_recommendations(
             "physical": biorhythm.physical,
             "emotional": biorhythm.emotional,
             "intellectual": biorhythm.intellectual,
+            "critical_cycles": values["critical_cycles"],
         }
     )
 
@@ -161,6 +165,7 @@ def get_recommendations(
 
 
 # ---------- Задачи ----------
+
 
 @app.get("/api/tasks", response_model=list[TaskResponse])
 def get_tasks(

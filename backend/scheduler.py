@@ -11,7 +11,6 @@ def create_schedule(tasks):
 
     # Разделяем задачи на фиксированные и свободные
     for task in tasks:
-        # Пропускаем завершённые задачи
         if task.is_completed:
             continue
 
@@ -38,10 +37,9 @@ def create_schedule(tasks):
 
         occupied.append((task_start, task_end, task))
 
-    # Сортируем фиксированные задачи по времени
+    # Сортируем фиксированные задачи
     occupied.sort(key=lambda item: item[0])
 
-    # Добавляем фиксированные задачи без пересечений
     valid_occupied = []
 
     for task_start, task_end, task in occupied:
@@ -61,14 +59,27 @@ def create_schedule(tasks):
 
     occupied = valid_occupied
 
-    # Сортируем свободные задачи по приоритету
-    flexible_tasks.sort(key=lambda task: task.priority, reverse=True)
+    # Сортируем свободные задачи:
+    # сначала ближайший дедлайн, затем высокий приоритет
+    def task_sort_key(task):
+        if task.deadline_time is not None:
+            deadline = datetime.strptime(task.deadline_time.strftime("%H:%M"), "%H:%M")
+        else:
+            deadline = end_time
 
-    # Ищем свободное время для каждой задачи
+        return deadline, -task.priority
+
+    flexible_tasks.sort(key=task_sort_key)
+
+    # Распределяем свободные задачи
     for task in flexible_tasks:
+        if task.duration <= 0:
+            continue
+
         current_time = start_time
         task_end = current_time + timedelta(minutes=task.duration)
 
+        # Ищем первое свободное место
         for busy_start, busy_end in sorted(occupied):
             if task_end <= busy_start:
                 break
@@ -77,11 +88,11 @@ def create_schedule(tasks):
                 current_time = busy_end
                 task_end = current_time + timedelta(minutes=task.duration)
 
-        # Проверяем рабочее время
+        # Проверяем конец рабочего дня
         if task_end > end_time:
             continue
 
-        # Проверяем дедлайн свободной задачи
+        # Проверяем дедлайн
         if task.deadline_time is not None:
             deadline = datetime.strptime(task.deadline_time.strftime("%H:%M"), "%H:%M")
 
