@@ -118,6 +118,7 @@ import LoginPage from './pages/LoginPage/LoginPage.jsx'
 import RegisterPage from './pages/RegisterPage/RegisterPage.jsx'
 import ChronotypePage from './pages/ChronotypePage/ChronotypePage.jsx'
 import ChronotypeTestPage from './pages/ChronotypeTest/ChronotypeTestPage.jsx'
+import ChronotypeResultPage from './pages/ChronotypeResult/ChronotypeResultPage.jsx'
 
 function App() {
   const [page, setPage] = useState('login')
@@ -147,6 +148,15 @@ function App() {
       {page === 'chronotype-test' && (
         <ChronotypeTestPage
           onBack={() => setPage('chronotype')}
+          onFinish={() => setPage('chronotype-result')}
+        />
+      )}
+
+      {page === 'chronotype-result' && (
+        <ChronotypeResultPage
+          chronotype="owl"
+          onBack={() => setPage('chronotype-test')}
+          onContinue={() => setPage('home')}
         />
       )}
     </div>

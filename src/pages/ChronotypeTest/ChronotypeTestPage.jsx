@@ -1,147 +1,3 @@
-// import { useState } from 'react'
-// import './ChronotypeTest.css'
-
-// function ChronotypeTestPage( {onBack }) {
-//   const [answer, setAnswer] = useState('')
-
-//   return (
-//     <main>
-
-//     <div className='test-header'>
-//       <div className="page-intro">
-//         <button
-//           className="back"
-//           type="button"
-//           onClick={onBack}
-//         >
-//           <img src="/src/assets/icons/back.svg" alt="" />
-//           <span className="test-back-text">Назад</span>
-//         </button>
-//         <span className="intro-info">ТЕСТ ХРОНОТИПА</span>
-//       </div>
-
-//       <div className="test-progress">
-
-//         <div className="test-progress-info">
-//           <span className="test-progress-question">
-//             Вопрос 1 из 5
-//           </span>
-
-//           <span className="test-progress-percent">
-//             20%
-//           </span>
-//         </div>
-
-//         <div className="test-progress-bars">
-//           <span className="test-progress-bar active"></span>
-//           <span className="test-progress-bar"></span>
-//           <span className="test-progress-bar"></span>
-//           <span className="test-progress-bar"></span>
-//           <span className="test-progress-bar"></span>
-//         </div>
-
-//       </div>
-
-//       <h1 className='test-question'>Когда ты естественным образом просыпаешься?</h1>
-//       <p className="chronotype-subtitle">Представь, что тебе не нужно ставить будильник и никуда спешить.</p>
-//     </div>
-
-//       <div className='test-buttons'>
-//         <button
-//         type="button"
-//         onClick={() => setAnswer('До 6:00')}
-//         className={`test-answer ${answer === 'До 6:00' ? 'selected' : ''}`}
-//       >
-//         <span className="chronotype-info">
-//           <span className="chronotype-name">
-//             До 6:00
-//           </span>
-//           <span className="chronotype-description">
-//             Очень рано, просыпаюсь с лёгкостью
-//           </span>
-//         </span>
-//          <span className={`chronotype-radio ${answer === 'До 6:00' ? 'selected' : ''}`}>
-//             {answer === 'До 6:00' && (
-//               <span className="chronotype-radio-selected" />
-//             )}
-//           </span>
-//       </button>
-
-//       <button
-//         type="button"
-//         onClick={() => setAnswer('6:00–8:00')}
-//         className={`test-answer ${answer === '6:00–8:00' ? 'selected' : ''}`}
-//       >
-//         <span className="chronotype-info">
-//           <span className="chronotype-name">
-//            6:00–8:00
-//           </span>
-//           <span className="chronotype-description">
-//             Утром чувствую себя хорошо
-//           </span>
-//         </span>
-//         <span className={`chronotype-radio ${answer === '6:00–8:00' ? 'selected' : ''}`}>
-//             {answer === '6:00–8:00' && (
-//               <span className="chronotype-radio-selected" />
-//             )}
-//           </span>
-//       </button>
-
-//       <button
-//         type="button"
-//         onClick={() => setAnswer('8:00–10:00')}
-//         className={`test-answer ${answer === '8:00–10:00' ? 'selected' : ''}`}
-//       >
-//         <span className="chronotype-info">
-//           <span className="chronotype-name">
-//             8:00–10:00
-//           </span>
-//           <span className="chronotype-description">
-//             Мне комфортнее просыпаться позже
-//           </span>
-//         </span>
-//         <span className={`chronotype-radio ${answer === '8:00–10:00' ? 'selected' : ''}`}>
-//             {answer === '8:00–10:00' && (
-//               <span className="chronotype-radio-selected" />
-//             )}
-//           </span>
-//       </button>
-
-//       <button
-//         type="button"
-//         onClick={() => setAnswer('После 10:00')}
-//         className={`test-answer ${answer === 'После 10:00' ? 'selected' : ''}`}
-//       >
-//         <span className="chronotype-info">
-//           <span className="chronotype-name">
-//             После 10:00
-//           </span>
-//           <span className="chronotype-description">
-//             Мой естественный подъём — ближе к полудню
-//           </span>
-//         </span>
-//         <span className={`chronotype-radio ${answer === 'После 10:00' ? 'selected' : ''}`}>
-//             {answer === 'После 10:00' && (
-//               <span className="chronotype-radio-selected" />
-//             )}
-//           </span>
-//       </button>
-//       </div>
-
-//       <button
-//         className="auth-submit-button chronotype-button"
-//         type="button"
-//         disabled={!answer}
-//       >
-//         Далее
-//       </button>
-//     </main>
-//   )
-// }
-
-// export default ChronotypeTestPage
-
-
 import { useState } from 'react'
 import './ChronotypeTest.css'
 
@@ -198,7 +54,7 @@ const questions = [
   },
 ]
 
-function ChronotypeTestPage({ onBack }) {
+function ChronotypeTestPage({ onBack, onFinish }) {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState({})
 
@@ -217,7 +73,7 @@ function ChronotypeTestPage({ onBack }) {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1)
     } else {
-      console.log('Все ответы:', answers)
+       onFinish()
     }
   }
 
