@@ -1,0 +1,125 @@
+.page-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.back {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  gap: 6px;
+  padding: 0;
+}
+
+.test-back-text {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 20px;
+  color: #667085;
+}
+
+.intro-info {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+  color: #98A2B3;
+}
+
+.test-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 24px 0;
+}
+
+.test-progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.test-progress-question {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #20252B;
+}
+
+.test-progress-percent {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: #5644D8;
+}
+
+.test-progress-bars {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.test-progress-bar {
+  flex: 1;
+  height: 5px;
+  border-radius: 10px;
+  background-color: #E8EBEF;
+}
+
+.test-progress-bar.active {
+  background-color: #5644D8;
+}
+
+.test-question {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 38px;
+  line-height: 42px;
+  color: #20252B;
+  margin: 0;
+}
+
+.test-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.test-answer {
+  background-color: transparent;
+  border: #E8EBEF 1px solid; 
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.test-answer.selected {
+  border: 1.5px solid #5644D8;
+  background-color: #F4F2FF;
+}
+
+
+.chronotype-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+  min-width: 0;
+  gap: 3px;
+}
+
+.chronotype-description {
+  text-align: left;
+}

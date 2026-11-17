@@ -111,11 +111,13 @@
 
 
 
+
 import { useState } from 'react'
 
 import LoginPage from './pages/LoginPage/LoginPage.jsx'
 import RegisterPage from './pages/RegisterPage/RegisterPage.jsx'
 import ChronotypePage from './pages/ChronotypePage/ChronotypePage.jsx'
+import ChronotypeTestPage from './pages/ChronotypeTest/ChronotypeTestPage.jsx'
 
 function App() {
   const [page, setPage] = useState('login')
@@ -137,7 +139,15 @@ function App() {
       )}
 
       {page === 'chronotype' && (
-        <ChronotypePage />
+        <ChronotypePage
+          onOpenTest={() => setPage('chronotype-test')}
+        />
+      )}
+
+      {page === 'chronotype-test' && (
+        <ChronotypeTestPage
+          onBack={() => setPage('chronotype')}
+        />
       )}
     </div>
   )

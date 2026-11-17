@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import './ChronotypePage.css'
 
-function ChronotypePage() {
+function ChronotypePage( {onOpenTest}) {
   const [chronotype, setChronotype] = useState('')
 
   return (
@@ -104,9 +104,13 @@ function ChronotypePage() {
 
         </div>
 
-        <a className="chronotype-test" href="">
+        <button
+          className="chronotype-test"
+          type="button"
+          onClick={onOpenTest}
+        >
           Не знаю свой хронотип
-        </a>
+        </button>
       </div>
 
       <button
