@@ -6,19 +6,17 @@ html,
 body,
 #root {
   margin: 0;
-  width: 100%;
   min-height: 100%;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
+  min-width: 320px;
 }
 
 .app {
   width: 100%;
-  max-width: 430px;
+  max-width: 480px;
   min-height: 100vh;
+  min-height: 100svh;
   margin: 0 auto;
-  background: white;
 }

@@ -1,0 +1,134 @@
+main {
+  box-sizing: border-box;
+  padding: 48px 20px;
+  display: grid;
+  min-height: 100vh;
+  min-height: 100dvh;
+  grid-template-rows: auto 1fr auto;
+}
+
+.title-chronotype {
+  margin-top: 27px;
+}
+
+.chronotype-subtitle {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: 0.02em;
+  color: #667085;
+  max-width: 350px;
+}
+
+.chronotype-selection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.chronotype-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chronotype-option {
+  height: 80px;
+  width: 100%;
+  max-width: 350px;
+  padding: 16px;
+  background-color: transparent;
+  border: 1px #E8EBEF solid;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.chronotype-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chronotype-name {
+  text-align: left;
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 0.02em;
+  color: #20252B;
+}
+
+.chronotype-description {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  color: #667085;
+}
+
+.chronotype-radio {
+  width: 25px;
+  height: 25px;
+  border: 0.67px #98A2B3 solid;
+  border-radius: 50%;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+.chronotype-radio-selected {
+  width: 17px;
+  height: 17px;
+  background-color: #5644D8;
+  border-radius: 50%;
+}
+
+.chronotype-option.selected {
+  border: 1.5px solid #5644D8;
+}
+
+.chronotype-radio.selected {
+  border-color: #5644D8;
+}
+
+.chronotype-test {
+  text-decoration: none;
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  letter-spacing: 0.02em;
+  color: #5644D8;
+}
+
+.auth-submit-button:disabled {
+  background-color: #E8EBEF;
+  color: #98A2B3;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.chronotype-button {
+  margin-top: 35px;
+}
+
+@media (width<=350px) {
+  .chronotype-option {
+    padding: 6px;
+  }
+}

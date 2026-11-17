@@ -1,83 +1,144 @@
+
+// import { useState } from 'react'
+
+// // Авторизация
+// import LoginPage from './pages/LoginPage/LoginPage.jsx'
+// import RegisterPage from './pages/RegisterPage/RegisterPage.jsx'
+// // Первоначальная настройка пользователя
+// import BirthDatePage from './pages/onboarding/BirthDatePage/BirthDatePage'
+// import ChronotypeQuestion1Page from './pages/onboarding/chronotype/ChronotypeQuestion1Page'
+// import ChronotypeQuestion2Page from './pages/onboarding/chronotype/ChronotypeQuestion2Page'
+// import ChronotypeQuestion3Page from './pages/onboarding/chronotype/ChronotypeQuestion3Page'
+// import ChronotypeQuestion4Page from './pages/onboarding/chronotype/ChronotypeQuestion4Page'
+// import ChronotypeQuestion5Page from './pages/onboarding/chronotype/ChronotypeQuestion5Page'
+
+// // Основные страницы приложения
+// import HomePage from './pages/main/HomePage/HomePage'
+// import ProfilePage from './pages/main/ProfilePage/ProfilePage'
+// import BiorhythmsPage from './pages/main/BiorhythmsPage/BiorhythmsPage'
+
+// function App() {
+//   const [page, setPage] = useState('login')
+
+//   return (
+//     <div className="app">
+
+//       {/* Авторизация */}
+
+//       {page === 'login' && (
+//         <LoginPage
+//           onLogin={() => setPage('home')}
+//           onRegister={() => setPage('register')}
+//         />
+//       )}
+
+//       {page === 'register' && (
+//         <RegisterPage
+//           onBack={() => setPage('login')}
+//           onRegister={() => setPage('birthDate')}
+//         />
+//       )}
+
+//       {/* Первоначальная настройка */}
+
+//       {page === 'birthDate' && (
+//         <BirthDatePage
+//           onForward={() => setPage('chronotypeQuestion1')}
+//         />
+//       )}
+
+//       {page === 'chronotypeQuestion1' && (
+//         <ChronotypeQuestion1Page
+//           onForward={() => setPage('chronotypeQuestion2')}
+//         />
+//       )}
+
+//       {page === 'chronotypeQuestion2' && (
+//         <ChronotypeQuestion2Page
+//           onForward={() => setPage('chronotypeQuestion3')}
+//           onBack={() => setPage('chronotypeQuestion1')}
+//         />
+//       )}
+
+//       {page === 'chronotypeQuestion3' && (
+//         <ChronotypeQuestion3Page
+//           onForward={() => setPage('chronotypeQuestion4')}
+//           onBack={() => setPage('chronotypeQuestion2')}
+//         />
+//       )}
+
+//       {page === 'chronotypeQuestion4' && (
+//         <ChronotypeQuestion4Page
+//           onForward={() => setPage('chronotypeQuestion5')}
+//           onBack={() => setPage('chronotypeQuestion3')}
+//         />
+//       )}
+
+//       {page === 'chronotypeQuestion5' && (
+//         <ChronotypeQuestion5Page
+//           onForward={() => setPage('home')}
+//           onBack={() => setPage('chronotypeQuestion4')}
+//         />
+//       )}
+
+//       {/* Основное приложение */}
+
+//       {page === 'home' && (
+//         <HomePage
+//           onOpenProfile={() => setPage('profile')}
+//           onOpenBiorhythms={() => setPage('biorhythms')}
+//         />
+//       )}
+
+//       {page === 'profile' && (
+//         <ProfilePage
+//           onOpenHome={() => setPage('home')}
+//         />
+//       )}
+
+//       {page === 'biorhythms' && (
+//         <BiorhythmsPage
+//           onOpenHome={() => setPage('home')}
+//           onOpenProfile={() => setPage('profile')}
+//         />
+//       )}
+
+//     </div>
+//   )
+// }
+
+// export default App
+
+
+
 import { useState } from 'react'
-import StartPage from './pages/StartPage'
-import RegisterPage from './pages/RegisterPage'
-import LoginPage from './pages/LoginPage'
-import HomePage from './pages/HomePage'
-import BirthDatePage from './pages/BirthDatePage'
-import ChronotypeQuestionPage from './pages/ChronotypeQuestionPage'
-import ChronotypeQuestion2Page from './pages/ChronotypeQuestion2Page'
-import ChronotypeQuestion3Page from './pages/ChronotypeQuestion3Page'
-import ChronotypeQuestion4Page from './pages/ChronotypeQuestion4Page'
-import ChronotypeQuestion5Page from './pages/ChronotypeQuestion5Page'
-import ProfilePage from './pages/ProfilePage'
-import BiorhythmsPage from './pages/BiorhythmsPage'
+
+import LoginPage from './pages/LoginPage/LoginPage.jsx'
+import RegisterPage from './pages/RegisterPage/RegisterPage.jsx'
+import ChronotypePage from './pages/ChronotypePage/ChronotypePage.jsx'
 
 function App() {
-  const [page, setPage] = useState('start')
+  const [page, setPage] = useState('login')
 
   return (
     <div className="app">
-      {page === 'start' && (
-        <StartPage onRegister={() => setPage('register')}
-                    onLogin={() => setPage('login')} />
+      {page === 'login' && (
+        <LoginPage
+          onLogin={() => {}}
+          onRegister={() => setPage('register')}
+        />
       )}
 
       {page === 'register' && (
-      <RegisterPage onBack={() => setPage('start')}
-                    onRegister={() => setPage('birthDate')} />
-      )}
-      {page === 'login' && 
-      (<LoginPage onBack={() => setPage('start')}
-                  onLogin={() => setPage('home')} />
-      )}
-
-      {page === 'home' && (
-        <HomePage
-          onOpenProfile={() => setPage('profile')}
-          onOpenBiorhythms={() => setPage('biorhythms')}
+        <RegisterPage
+          onRegister={() => setPage('chronotype')}
+          onBack={() => setPage('login')}
         />
       )}
 
-      {page === 'profile' && (
-        <ProfilePage onOpenHome={() => setPage('home')} />
+      {page === 'chronotype' && (
+        <ChronotypePage />
       )}
-
-      {page === 'biorhythms' && (
-        <BiorhythmsPage
-          onOpenHome={() => setPage('home')}
-          onOpenProfile={() => setPage('profile')}
-        />
-      )}
-
-      {page === 'birthDate' && (
-        <BirthDatePage  onForward={() => setPage('chronotypeQuestion')}/>
-      )}
-
-      {page === 'chronotypeQuestion' && (
-        <ChronotypeQuestionPage onForward={() => setPage('chronotypeQuestion2')}/>
-      )}
-
-      {page === 'chronotypeQuestion2' && (
-        <ChronotypeQuestion2Page onForward={() => setPage('chronotypeQuestion3')}
-                                onBack={() => setPage('chronotypeQuestion')}/>
-      )}
-
-      {page === 'chronotypeQuestion3' && (
-        <ChronotypeQuestion3Page onForward={() => setPage('chronotypeQuestion4')}
-                                onBack={() => setPage('chronotypeQuestion2')}/>
-      )}
-
-      {page === 'chronotypeQuestion4' && (
-        <ChronotypeQuestion4Page onForward={() => setPage('chronotypeQuestion5')}
-                                onBack={() => setPage('chronotypeQuestion3')}/>
-      )}
-
-      {page === 'chronotypeQuestion5' && (
-        <ChronotypeQuestion5Page onForward={() => setPage('home')}
-                                onBack={() => setPage('chronotypeQuestion4')}/>
-      )}
-
-      
     </div>
   )
 }
