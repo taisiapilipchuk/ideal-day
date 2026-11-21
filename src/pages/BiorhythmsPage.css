@@ -44,8 +44,8 @@
 .biorhythm-critical-list article > span { padding:6px 8px; border-radius:7px; background:#fff4e9; color:#c17b2c; font-size:9px; }
 .biorhythm-critical-list article > span.multiple { background:#fff0f3; color:#d65d7d; }
 .biorhythm-empty { color:#8993a3; font-size:12px; }
-.biorhythm-navigation { position:fixed; z-index:5; bottom:0; left:0; right:0; display:flex; justify-content:center; gap:clamp(30px,10vw,110px); padding:10px 16px max(10px,env(safe-area-inset-bottom)); border-top:1px solid #e9edf2; background:#ffffffed; backdrop-filter:blur(12px); }
-.biorhythm-navigation button { min-width:76px; display:flex; flex-direction:column; align-items:center; gap:3px; border:0; background:transparent; color:#8b96aa; font-size:10px; cursor:pointer; }
+.biorhythm-navigation { position:fixed; z-index:5; bottom:0; left:0; right:0; display:flex; justify-content:center; align-items:center; gap:clamp(12px,7vw,76px); padding:10px 16px max(10px,env(safe-area-inset-bottom)); border-top:1px solid #e9edf2; background:#ffffffed; backdrop-filter:blur(12px); }
+.biorhythm-navigation button { min-width:76px; display:flex; flex-direction:column; align-items:center; gap:3px; border:0; background:transparent; color:#8b96aa; font-size:10px; cursor:pointer; white-space:nowrap; }
 .biorhythm-navigation button span { font-size:22px; line-height:1.2; }
 .biorhythm-navigation button.active { color:#6046ed; font-weight:700; }
 @media(max-width:650px) {
@@ -58,7 +58,8 @@
  .biorhythm-value-card p { font-size:10px; }
  .biorhythm-critical-list article { grid-template-columns:58px minmax(0,1fr); gap:8px; }
  .biorhythm-critical-list article > span { grid-column:2; justify-self:start; }
- .biorhythm-navigation { gap:30px; }
+ .biorhythm-navigation { justify-content:space-around; gap:6px; padding-left:8px; padding-right:8px; }
+ .biorhythm-navigation button { min-width:0; flex:1 1 0; }
 }
 
 

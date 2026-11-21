@@ -21,3 +21,26 @@ body {
   margin: 0 auto;
   background: #f5f6f8;
 }
+
+/* Week 4: accessibility and compact density preferences. */
+:focus-visible {
+  outline: 2px solid #6046ed;
+  outline-offset: 3px;
+}
+
+html[data-compact-mode='true'] .home-card,
+html[data-compact-mode='true'] .biorhythm-panel,
+html[data-compact-mode='true'] .tasks-list-panel,
+html[data-compact-mode='true'] .schedule-timeline-panel,
+html[data-compact-mode='true'] .settings-card {
+  padding: 15px;
+}
+
+html[data-reduce-motion='true'] *,
+html[data-reduce-motion='true'] *::before,
+html[data-reduce-motion='true'] *::after {
+  scroll-behavior: auto !important;
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}

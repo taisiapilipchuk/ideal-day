@@ -7,10 +7,10 @@ function formatDate(value) {
   return `${day}.${month}.${year}`
 }
 
-function ProfilePage({ profile, onProfileChange, onOpenHome }) {
+function ProfilePage({ profile, settings, onProfileChange, onOpenHome, onOpenSettings }) {
   const [editingField, setEditingField] = useState(null)
   const [draftValue, setDraftValue] = useState('')
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true)
+  const notificationsEnabled = Boolean(settings?.notificationsEnabled)
 
   function startEditing(field) {
     setEditingField(field)
@@ -86,14 +86,14 @@ function ProfilePage({ profile, onProfileChange, onOpenHome }) {
           <div className="profile-notifications">
             <div>
               <h3 className="profile-notifications-title">Уведомления</h3>
-              <p className="profile-notifications-description">Получать напоминания и рекомендации</p>
+              <p className="profile-notifications-description">{notificationsEnabled ? 'Напоминания включены' : 'Напоминания выключены · настроить в параметрах'}</p>
             </div>
             <button
               className={`profile-toggle ${notificationsEnabled ? 'is-active' : ''}`}
-              onClick={() => setNotificationsEnabled(!notificationsEnabled)}
-              role="switch"
-              aria-checked={notificationsEnabled}
-              aria-label="Уведомления"
+              onClick={onOpenSettings}
+              type="button"
+              aria-label="Настроить уведомления"
+              title="Открыть настройки уведомлений"
             >
               <span className="profile-toggle-circle" />
             </button>
@@ -106,7 +106,6 @@ function ProfilePage({ profile, onProfileChange, onOpenHome }) {
         }}>
           Выйти из аккаунта
         </button>
-        <button className="profile-home-button" onClick={onOpenHome}>← На главную</button>
       </div>
     </div>
   )

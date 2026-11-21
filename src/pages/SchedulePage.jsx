@@ -176,12 +176,6 @@ function SchedulePage({ tasks, onTasksChange, onOpenHome, onOpenTasks, onOpenBio
           <p>Выполненные, выполняемые и задачи с закреплённым временем сохраняют свои интервалы. Остальные задачи автоматически размещаются в ближайших свободных слотах с учётом продолжительности и 10-минутного перерыва. Если свободного времени не хватает, задача помечается как неразмещённая.</p>
         </section>
 
-        <div className="schedule-footer-nav">
-          <button onClick={onOpenHome}>← Главная</button>
-          <button onClick={onOpenTasks}>Задачи</button>
-          <button onClick={onOpenBiorhythms}>Биоритмы</button>
-          <button onClick={onOpenProfile}>Профиль</button>
-        </div>
       </div>
     </main>
   )

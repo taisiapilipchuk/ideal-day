@@ -19,7 +19,7 @@ function dateText(date) {
   return new Intl.DateTimeFormat('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' }).format(date)
 }
 
-function HomePage({ profile, tasks, onTasksChange, onOpenProfile, onOpenBiorhythms, onOpenTasks, onOpenSchedule }) {
+function HomePage({ profile, tasks, onTasksChange, onOpenProfile, onOpenBiorhythms, onOpenTasks, onOpenSchedule, onOpenSettings }) {
   const [expandedId, setExpandedId] = useState(null)
   const today = new Date()
   const todayKey = todayISO()
@@ -220,11 +220,6 @@ function HomePage({ profile, tasks, onTasksChange, onOpenProfile, onOpenBiorhyth
         </div>
       </div>
 
-      <nav className="home-navigation">
-        <button className="home-navigation-item active"><span>⌂</span>Главная</button>
-        <button className="home-navigation-item" onClick={onOpenBiorhythms}><span>⌁</span>Биоритмы</button>
-        <button className="home-navigation-item" onClick={onOpenProfile}><span>♙</span>Профиль</button>
-      </nav>
 
     </main>
   )

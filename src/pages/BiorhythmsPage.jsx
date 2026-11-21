@@ -67,7 +67,7 @@ function findCriticalDays(start, end, birthDate) {
   return found
 }
 
-function BiorhythmsPage({ profile, onOpenHome, onOpenProfile }) {
+function BiorhythmsPage({ profile, onOpenHome, onOpenProfile, onOpenSettings }) {
   const [period, setPeriod] = useState('week')
   const [anchor, setAnchor] = useState(() => new Date())
   const [selectedCycle, setSelectedCycle] = useState('all')
@@ -223,11 +223,6 @@ function BiorhythmsPage({ profile, onOpenHome, onOpenProfile }) {
         </section>
       </div>
 
-      <nav className="biorhythm-navigation">
-        <button onClick={onOpenHome}><span>⌂</span>Главная</button>
-        <button className="active"><span>⌁</span>Биоритмы</button>
-        <button onClick={onOpenProfile}><span>♙</span>Профиль</button>
-      </nav>
     </main>
   )
 }

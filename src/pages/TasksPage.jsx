@@ -215,11 +215,6 @@ function TasksPage({ tasks, onTasksChange, onOpenHome, onOpenSchedule, onOpenBio
           </div>
         </section>
 
-        <div className="tasks-page-bottom">
-          <button onClick={onOpenHome}>← Главная</button>
-          <button onClick={onOpenBiorhythms}>Биоритмы</button>
-          <button onClick={onOpenProfile}>Профиль</button>
-        </div>
       </div>
 
       {modalOpen && (

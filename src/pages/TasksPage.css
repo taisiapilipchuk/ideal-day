@@ -1,4 +1,4 @@
-.tasks-page { min-height:100vh; padding:32px 22px 54px; background:#f5f6f8; color:#252a35; }
+.tasks-page { min-height:100vh; padding:32px 22px 104px; background:#f5f6f8; color:#252a35; }
 .tasks-content { width:min(100%,980px); margin:0 auto; }
 .tasks-page-header { display:flex; align-items:center; justify-content:space-between; gap:20px; margin-bottom:22px; }
 .tasks-eyebrow { margin:0 0 7px; color:#8994a8; font-size:10px; font-weight:700; letter-spacing:.09em; }
@@ -69,7 +69,7 @@
 .task-form-actions .secondary { border:1px solid #e2e6ed; background:#fff; color:#6d788c; }
 .task-form-actions .primary { border:1px solid #6046ed; background:#6046ed; color:#fff; font-weight:600; }
 @media(max-width:600px) {
-  .tasks-page { padding:22px 14px 45px; }
+  .tasks-page { padding:22px 14px 104px; }
   .tasks-page-header { align-items:flex-start; flex-direction:column; }
   .tasks-toolbar { align-items:stretch; flex-direction:column; }
   .tasks-toolbar-links button { width:100%; }
