@@ -29,10 +29,14 @@ def create_user(db: Session, user_data: UserCreate):
         chronotype=user_data.chronotype,
     )
 
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return user
+    try:
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        return user
+    except Exception:
+        db.rollback()
+        raise
 
 
 def verify_password(plain_password: str, hashed_password: str):
@@ -61,24 +65,36 @@ def get_task(db: Session, user_id: int, task_id: int):
 def create_task(db: Session, user_id: int, task_data: TaskCreate):
     task = Task(user_id=user_id, **task_data.model_dump())
 
-    db.add(task)
-    db.commit()
-    db.refresh(task)
-    return task
+    try:
+        db.add(task)
+        db.commit()
+        db.refresh(task)
+        return task
+    except Exception:
+        db.rollback()
+        raise
 
 
 def update_task(db: Session, task: Task, task_data: TaskUpdate):
-    for key, value in task_data.model_dump(exclude_unset=True).items():
-        setattr(task, key, value)
+    try:
+        for key, value in task_data.model_dump(exclude_unset=True).items():
+            setattr(task, key, value)
 
-    db.commit()
-    db.refresh(task)
-    return task
+        db.commit()
+        db.refresh(task)
+        return task
+    except Exception:
+        db.rollback()
+        raise
 
 
 def delete_task(db: Session, task: Task):
-    db.delete(task)
-    db.commit()
+    try:
+        db.delete(task)
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
 
 
 # ---------- Биоритмы ----------
@@ -108,7 +124,11 @@ def save_biorhythm_cache(
         intellectual=intellectual,
     )
 
-    db.add(log)
-    db.commit()
-    db.refresh(log)
-    return log
+    try:
+        db.add(log)
+        db.commit()
+        db.refresh(log)
+        return log
+    except Exception:
+        db.rollback()
+        raise
