@@ -42,9 +42,9 @@ function LoginPage({ onLogin, onRegister }) {
 
   return (
     <main className="auth-page">
-      <span className="auth-logo">идеальный день</span>
-
       <div className="auth-intro">
+        <span className="auth-logo">идеальный день</span>
+
         <h1 className="auth-title">
           Твой день. <br />
           Твой ритм.
@@ -142,7 +142,8 @@ function LoginPage({ onLogin, onRegister }) {
         </button>
 
         <div className="auth-register">
-          <span>Впервые в «Идеальный день»?</span>
+          <div className='auth-register-link'>
+            <span>Впервые в «Идеальный день»?</span>
 
           <a
             href="/register"
@@ -154,6 +155,7 @@ function LoginPage({ onLogin, onRegister }) {
           >
             Зарегистрироваться
           </a>
+          </div>
         </div>
       </div>
     </main>

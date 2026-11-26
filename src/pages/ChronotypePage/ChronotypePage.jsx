@@ -31,7 +31,7 @@ function ChronotypePage( {onOpenTest}) {
             onClick={() => setChronotype('lark')}
           >
             <span className="chronotype-icon">
-              <img src="/src/assets/icons/lark.svg" alt="" />
+              <img src="/icons/lark.svg" alt="" />
             </span>
 
             <span className="chronotype-info">
@@ -57,7 +57,7 @@ function ChronotypePage( {onOpenTest}) {
             onClick={() => setChronotype('pigeon')}
           >
             <span className="chronotype-icon">
-              <img src="/src/assets/icons/pigeon.svg" alt="" />
+              <img src="/icons/pigeon.svg" alt="" />
             </span>
 
             <span className="chronotype-info">
@@ -83,7 +83,7 @@ function ChronotypePage( {onOpenTest}) {
             onClick={() => setChronotype('owl')}
           >
             <span className="chronotype-icon">
-              <img src="/src/assets/icons/owl.svg" alt="" />
+              <img src="/icons/owl.svg" alt="" />
             </span>
 
             <span className="chronotype-info">

@@ -15,7 +15,7 @@ function ChronotypeResultPage({ chronotype, onBack, onContinue }) {
             type="button"
             onClick={onBack}
           >
-            <img src="/src/assets/icons/back.svg" alt="" />
+            <img src="/icons/back.svg" alt="" />
             <span className="test-back-text">Назад</span>
           </button>
 

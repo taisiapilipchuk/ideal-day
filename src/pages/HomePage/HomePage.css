@@ -1,964 +1,2212 @@
-/* .home-page {
-  min-height: 100vh;
-  padding: 24px;
-  padding-bottom: 100px;
-}
+/* ==================================================
+   1. ГЛАВНАЯ СТРАНИЦА
+   ================================================== */
 
-.home-content {
-  width: 100%;
-}
 
-.home-date {
-  margin: 0;
-  font-size: 14px;
-  color: #777777;
-}
-
-.home-title {
-  margin: 8px 0 0;
-  font-size: 32px;
-  font-weight: 600;
-}
-
-.home-rhythms {
-  margin-top: 40px;
-}
-
-.home-section-title {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-}
-
-.home-rhythms-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 16px;
-}
-
-.home-rhythm {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  border-radius: 12px;
-  background: white;
-  font-size: 16px;
-}
-
-.home-advice {
-  margin-top: 32px;
-  padding: 20px;
-  border-radius: 16px;
-  background: #eeeeee;
-}
-
-.home-advice-text {
-  margin: 12px 0 0;
-  font-size: 16px;
-  line-height: 1.5;
-}
-
-.home-schedule {
-  margin-top: 32px;
-}
-
-.home-schedule-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 16px;
-}
-
-.home-schedule-time {
-  min-width: 48px;
-  font-size: 14px;
-  color: #777777;
-}
-
-.home-schedule-task {
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.home-schedule-details {
-  margin: 12px 0 0 64px;
-  font-size: 14px;
-  color: #777777;
-  line-height: 1.4;
-}
-
-.home-add-button {
-  display: block;
-  width: 64px;
-  height: 64px;
-  margin: 24px 0 0 auto;
-  border: none;
-  border-radius: 50%;
-  background: #222222;
-  color: white;
-  font-size: 32px;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.home-navigation {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-
-  width: min(100%, 430px);
-
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-
-  padding: 12px 0;
-
-  background: white;
-  border-top: 1px solid #dddddd;
-}
-
-.home-navigation-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  border: none;
-  background: none;
-  padding: 4px 16px;
-  font-size: 14px;
-  color: #777777;
-  cursor: pointer;
-}
-
-.home-schedule-item {
-  padding: 16px;
-  border-radius: 14px;
-  background: white;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.home-schedule-item:hover {
-  background: #f8f8f8;
-}
-
-.home-schedule-main {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.home-navigation-item.active {
-  color: #222222;
-  font-weight: 600;
-}
-
-.home-add-task {
-  position: fixed;
-  z-index: 10;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  width: calc(100% - 48px);
-  max-width: 382px;
-
-  padding: 24px;
-  border-radius: 20px;
-  background: white;
-}
-
-.home-overlay {
-  position: fixed;
-  z-index: 5;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-}
-
-.home-add-task-label {
-  display: block;
-  margin-top: 24px;
-  margin-bottom: 8px;
-  font-size: 14px;
-}
-
-.home-add-task-input {
-  width: 100%;
-  height: 52px;
-  padding: 0 16px;
-  border: 1px solid #dddddd;
-  border-radius: 12px;
-  font-size: 16px;
-  outline: none;
-}
-
-.home-add-task-input:focus {
-  border-color: #222222;
-}
-
-.home-add-task-button {
-  width: 100%;
-  height: 52px;
-  margin-top: 24px;
-  border: none;
-  border-radius: 12px;
-  background: #222222;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.home-add-task-button:hover {
-  background: #333333;
-}
-
-.home-edit-task-input {
-  width: 100%;
-  min-height: 44px;
-  padding: 0 12px;
-  border: 1px solid #dddddd;
-  border-radius: 10px;
-  background: white;
-  font-size: 14px;
-  outline: none;
-}
-
-.home-edit-task-input:focus {
-  border-color: #222222;
-}
-
-.home-edit-task-form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.home-edit-task-label {
-  margin-top: 4px;
-  font-size: 13px;
-  color: #777777;
-}
-
-.home-edit-task-button {
-  margin-top: 12px;
-  padding: 8px 14px;
-  border: 1px solid #dddddd;
-  border-radius: 8px;
-  background: white;
-  color: #222222;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.home-edit-task-button:hover {
-  background: #f5f5f5;
-}
-
-.home-save-task-button {
-  margin-top: 12px;
-  width: 100%;
-  min-height: 44px;
-  border: none;
-  border-radius: 10px;
-  background: #222222;
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.home-save-task-button:hover {
-  background: #333333;
-}
-
-.home-edit-task-buttons {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.home-edit-task-buttons .home-save-task-button,
-.home-edit-task-buttons .home-cancel-task-button {
-  flex: 1;
-  margin-top: 0;
-}
-
-.home-cancel-task-button {
-  min-height: 44px;
-  border: 1px solid #dddddd;
-  border-radius: 10px;
-  background: white;
-  color: #222222;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.home-cancel-task-button:hover {
-  background: #f5f5f5;
-}
-
-.home-delete-task-button {
-  margin-top: 8px;
-  padding: 8px 14px;
-  border: 1px solid #dddddd;
-  border-radius: 8px;
-  background: white;
-  color: #d32f2f;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.home-delete-task-button:hover {
-  background: #f5f5f5;
-}
-
-
-.profile-page {
-  min-height: 100vh;
-  padding: 32px 24px 110px;
-  background: #f8f7f4;
-  box-sizing: border-box;
-}
-
-.profile-content {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.profile-title {
-  margin: 8px 0 0;
-  font-size: 32px;
-  font-weight: 600;
-  color: #292929;
-}
-
-.profile-subtitle {
-  margin: 12px 0 32px;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #777777;
-}
-
-.profile-section {
-  padding: 24px;
-  background: #ffffff;
-  border: 1px solid #e9e7e2;
-  border-radius: 20px;
-}
-
-.profile-section-title {
-  margin: 0 0 20px;
-  font-size: 20px;
-  font-weight: 600;
-  color: #292929;
-}
-
-.profile-field {
-  padding: 18px 0;
-  border-bottom: 1px solid #eeeeee;
-}
-
-.profile-field:last-child {
-  padding-bottom: 0;
-  border-bottom: none;
-}
-
-.profile-label {
-  display: block;
-  margin-bottom: 10px;
-  font-size: 14px;
-  color: #777777;
-}
-
-.profile-field-value {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  font-size: 16px;
-  color: #292929;
-  overflow-wrap: anywhere;
-}
-
-.profile-edit-button {
-  flex-shrink: 0;
-  width: 36px;
-  height: 36px;
-  border: none;
-  border-radius: 10px;
-  background: #f3f1ec;
-  color: #454545;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.profile-edit-button:hover {
-  background: #e9e5dc;
-}
-
-.profile-edit-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.profile-input {
-  width: 100%;
-  padding: 12px;
-  box-sizing: border-box;
-  border: 1px solid #d8d5ce;
-  border-radius: 10px;
-  background: #ffffff;
-  font: inherit;
-  color: #292929;
-}
-
-.profile-input:focus {
-  outline: 2px solid #b9b1a1;
-  outline-offset: 2px;
-}
-
-.profile-edit-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.profile-save-button,
-.profile-cancel-button {
-  padding: 10px 16px;
-  border-radius: 10px;
-  font: inherit;
-  cursor: pointer;
-}
-
-.profile-save-button {
-  border: 1px solid #292929;
-  background: #292929;
-  color: #ffffff;
-}
-
-.profile-cancel-button {
-  border: 1px solid #dedbd4;
-  background: #ffffff;
-  color: #454545;
-}
-
-@media (max-width: 480px) {
-  .profile-page {
-    padding: 24px 16px 110px;
-  }
-
-  .profile-section {
-    padding: 20px 16px;
-  }
-
-  .profile-title {
-    font-size: 28px;
-  }
-}
-
-
-.profile-notifications {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding-top: 24px;
-  margin-top: 8px;
-  border-top: 1px solid #eeeeee;
-}
-
-.profile-notifications-title {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 500;
-  color: #292929;
-}
-
-.profile-notifications-description {
-  margin: 6px 0 0;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #777777;
-}
-
-.profile-toggle {
-  position: relative;
-  flex-shrink: 0;
-  width: 48px;
-  height: 28px;
-  padding: 3px;
-  border: none;
-  border-radius: 20px;
-  background: #d6d4cf;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.profile-toggle.is-active {
-  background: #292929;
-}
-
-.profile-toggle-circle {
-  display: block;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: #ffffff;
-  transition: transform 0.2s ease;
-}
-
-.profile-toggle.is-active .profile-toggle-circle {
-  transform: translateX(20px);
-} */
-
-
-/* =========================
-   ОСНОВА СТРАНИЦЫ
-========================= */
+/* ---------- Приветствие и заголовок ---------- */
 
 .home-page {
-  min-height: 100vh;
-  box-sizing: border-box;
-  padding: 32px 24px 110px;
-  background: #f8f7f4;
-  color: #292929;
+  padding: 48px 20px 100px 20px;
 }
 
-.home-content {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.home-date {
-  margin: 0;
-  color: #88847b;
-  font-size: 14px;
-  letter-spacing: 0.2px;
-}
-
-.home-title {
-  margin: 8px 0 0;
-  color: #292929;
-  font-size: 32px;
-  line-height: 1.2;
-  font-weight: 600;
-  letter-spacing: -0.7px;
-}
-
-/* =========================
-   БИОРИТМЫ
-========================= */
-
-.home-rhythms {
-  margin-top: 36px;
-}
-
-.home-section-title {
-  margin: 0;
-  color: #292929;
-  font-size: 20px;
-  line-height: 1.3;
-  font-weight: 600;
-}
-
-.home-rhythms-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 16px;
-}
-
-.home-rhythm {
+.home-intro {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  padding: 18px;
-  border: 1px solid #e9e7e2;
-  border-radius: 18px;
-  background: #ffffff;
-  color: #292929;
-  font-size: 16px;
 }
 
-/* =========================
-   СОВЕТ
-========================= */
-
-.home-advice {
-  margin-top: 28px;
-  padding: 22px;
-  border: 1px solid #e9e7e2;
-  border-radius: 20px;
-  background: #efeee7;
-}
-
-.home-advice-text {
-  margin: 12px 0 0;
-  color: #66645d;
+.home-greeting {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
   font-size: 15px;
-  line-height: 1.6;
+  line-height: 22px;
+  color: #20252B;
 }
 
-/* =========================
-   РАСПИСАНИЕ
-========================= */
-
-.home-schedule {
-  margin-top: 32px;
+.home-title {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 56px;
+  line-height: 62px;
+  color: #20252B;
+  margin: 0;
 }
 
-.home-schedule-list {
+.home-date {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #667085;
+  margin: 0 0 32px 0;
+}
+
+
+/* ==================================================
+   2. БИОРИТМЫ
+   ================================================== */
+
+
+/* ---------- Общая карточка биоритмов ---------- */
+
+.home-biorhythms {
+  background-color: #F6F8FA;
+  border-radius: 24px;
+  padding: 16px 16px 30px 16px;
+  min-height: 300px;
+
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+
+  position: relative;
+  z-index: 0;
+}
+
+
+/* ---------- Декоративное изображение ---------- */
+
+.home-biorythms-png {
+  position: absolute;
+  z-index: 1;
+  top: -57px;
+  right: 3px;
+}
+
+
+/* ---------- Заголовок и дата ---------- */
+
+.biorhythms-title {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.012em;
+  color: #667085;
+  margin: 0 0 4px 0;
+}
+
+.biorhythms-date {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.012em;
+  color: #667085;
+}
+
+
+/* ---------- Верхняя строка биоритма ---------- */
+
+.biorhythm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.biorhythm-name {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.012em;
+  color: #667085;
+}
+
+.biorhythm-value {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: 0.012em;
+}
+
+
+/* ---------- Общая шкала биоритма ---------- */
+
+.biorhythm-bar {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  background-color: #F0F0F0;
+  border-radius: 3px;
+  overflow: visible;
+}
+
+
+/* Заполнение шкалы */
+
+.biorhythm-progress {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 3px;
+  z-index: 1;
+}
+
+
+/* Центральная отметка шкалы */
+
+.biorhythm-marker {
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 2px;
+  height: 14px;
+
+  background-color: #20252B;
+  z-index: 2;
+  border-radius: 2px;
+}
+
+
+/* ---------- Физический биоритм ---------- */
+
+.biorhythm-physical .biorhythm-progress {
+  background-color: #087F83;
+}
+
+.biorhythm-physical .biorhythm-bar {
+  background-color: #E5F3F2;
+}
+
+.biorhythm-physical .biorhythm-value {
+  color: #087F83;
+}
+
+
+/* ---------- Интеллектуальный биоритм ---------- */
+
+.biorhythm-intellect .biorhythm-progress {
+  background-color: #5644D8;
+}
+
+.biorhythm-intellect .biorhythm-bar {
+  background-color: #EEEAFE;
+}
+
+.biorhythm-intellect .biorhythm-value {
+  color: #5644D8;
+}
+
+
+/* ---------- Эмоциональный биоритм ---------- */
+
+.biorhythm-emotion .biorhythm-progress {
+  background-color: #D96D91;
+}
+
+.biorhythm-emotion .biorhythm-bar {
+  background-color: #FBEAF0;
+}
+
+.biorhythm-emotion .biorhythm-value {
+  color: #D96D91;
+}
+
+
+/* ==================================================
+   3. РАСПИСАНИЕ
+   ================================================== */
+
+
+/* ---------- Общий блок расписания ---------- */
+
+.home-schedule {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+}
+
+
+/* ---------- Заголовок и кнопка добавления ---------- */
+
+.home-schedule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.home-schedule-title {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+  color: #20252B;
+}
+
+.home-add-button {
+  border: none;
+  background-color: transparent;
+}
+
+
+/* ---------- Список задач ---------- */
+
+.schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 24px;
+  width: 100%;
+}
+
+
+/* ---------- Одна строка расписания ---------- */
+
+.schedule-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   gap: 12px;
-  margin-top: 16px;
+
+  padding-bottom: 16px;
 }
 
-.home-schedule-item {
-  padding: 18px;
-  border: 1px solid #e9e7e2;
-  border-radius: 18px;
-  background: #ffffff;
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
+
+/* ==================================================
+   4. ВРЕМЕННАЯ ШКАЛА РАСПИСАНИЯ
+   ================================================== */
+
+
+/* ---------- Левая колонка с временем ---------- */
+
+.schedule-timeline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
 }
 
-.home-schedule-item:hover {
-  background: #fcfbf8;
-  border-color: #d9d5ca;
+
+/* Время начала задачи */
+
+.schedule-time {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 16px;
+  color: #667085;
+  margin-bottom: 3px;
 }
 
-.home-schedule-main {
+
+/* Область точки и вертикальной линии */
+
+.schedule-timeline-line {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  flex: 1;
+}
+
+
+/* Точка на временной шкале */
+
+.schedule-timeline-dot {
+  position: relative;
+  z-index: 2;
+
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+
+  border-radius: 50%;
+  background: #667085;
+}
+
+
+/* Вертикальная линия между задачами */
+
+.schedule-timeline-connector {
+  position: absolute;
+  top: 10px;
+  bottom: 0;
+
+  width: 2px;
+  background: #E8EBEF;
+  border-radius: 1px;
+}
+
+
+/* ==================================================
+   5. КАРТОЧКА ЗАДАЧИ
+   ================================================== */
+
+
+/* ---------- Контейнер карточки в правой колонке ---------- */
+
+.schedule-item-content {
+  width: 100%;
+  min-width: 0;
+  padding-bottom: 0;
+}
+
+
+/* ---------- Основная карточка ---------- */
+
+.schedule-task {
+  width: 100%;
+  min-height: 132px;
+  box-sizing: border-box;
+
+  padding: 16px;
+
+  border: 1px solid #E8EBEF;
+  border-radius: 20px;
+  background: #FFFFFF;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+
+/* ---------- Верхняя часть карточки ---------- */
+
+.schedule-task-header {
   display: flex;
   align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
-.home-schedule-time {
-  min-width: 48px;
-  color: #88847b;
-  font-size: 14px;
+
+/* Категория задачи */
+
+.schedule-task-category {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  text-transform: lowercase;
 }
 
-.home-schedule-task {
-  color: #292929;
+
+/* Длительность задачи */
+
+.schedule-task-duration {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #667085;
+  margin: 0;
+}
+
+
+/* ---------- Название задачи ---------- */
+
+.schedule-task-name {
+  margin: 12px 0 0 0;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
   font-size: 16px;
+  line-height: 22px;
+  color: #20252B;
+}
+
+
+/* ---------- Описание задачи ---------- */
+
+.schedule-task-description {
+  margin: 6px 0 0;
+
+  font-family: 'Golos Text';
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #667085;
+}
+
+
+/* ---------- Время выполнения задачи ---------- */
+
+.schedule-task-time {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #667085;
+}
+
+.schedule-task-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.schedule-task-status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 14px;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.schedule-task-status--suitable {
+  color: #087F83;
+  background-color: #E5F3F2;
+}
+
+/* Можно перенести */
+.schedule-task-status--move {
+  color: #5644D8;
+  background-color: #EEEAFE;
+}
+
+/* Вне пика активности */
+.schedule-task-status--outside-peak {
+  color: #B7791F;
+  background-color: #FFF4DF;
+}
+
+
+/* Разделитель между временем */
+
+.schedule-task-time-separator {
+  color: #A0A7B2;
+}
+
+/* просроченная карточка */
+
+.schedule-task--overdue {
+  border: 2px solid #D64545;
+}
+
+.schedule-task-time--overdue {
+  color: #D64545;
+}
+
+.schedule-task-status--overdue {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 16px;
+  color: #D64545;
+  padding: 0;
+}
+
+/* текущая карточка */
+
+.schedule-task--active {
+  border: 2px solid #5644D8;
+}
+
+.schedule-task-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #5644D8;
+  flex-shrink: 0;
+}
+
+.schedule-time--active {
+  color: #5644D8;
+}
+
+.schedule-timeline-dot--active {
+  background-color: #5644D8;
+}
+
+/* выполненная карточка */
+
+/* ==================================================
+   ВЫПОЛНЕННАЯ ЗАДАЧА
+   ================================================== */
+
+/* Зачеркнутое название */
+.schedule-task-name--completed {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  text-decoration-line: line-through;
+  text-decoration-thickness: 1px;
+  color: #98A2B3;
+}
+
+/* Статус выполнено */
+.schedule-task-status--completed {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 16px;
+  color: #16845B;
+  padding: 0;
+}
+
+/* Иконка выполненной задачи */
+.schedule-task-status--completed img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.schedule-task-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #98A2B3;
+  flex-shrink: 0;
+}
+
+.schedule-task-indicator--completed {
+  background-color: #16845B;
+}
+
+/* ==================================================
+   6. ЦВЕТА КАТЕГОРИЙ ЗАДАЧ
+   ================================================== */
+
+
+/* Интеллект */
+
+.category-intellect {
+  background: #EEEAFE;
+  color: #5644D8;
+}
+
+
+/* Творчество */
+
+.category-creativity {
+  background: #FCE8F0;
+  color: #C44A83;
+}
+
+
+/* Общение */
+
+.category-communication {
+  background: #E6F3FA;
+  color: #3282A8;
+}
+
+
+/* Физическая активность */
+
+.category-physics {
+  background: #E2F3EC;
+  color: #16845B;
+}
+
+
+/* Рутина */
+
+.category-routine {
+  background: #F1F2E5;
+  color: #777B38;
+}
+
+
+/* Отдых */
+
+.category-rest {
+  background: #FFF0E6;
+  color: #C87542;
+}
+
+
+/* ==================================================
+   7. ПУСТОЕ РАСПИСАНИЕ
+   ================================================== */
+
+
+/* Контейнер, когда задач нет */
+
+.schedule-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  padding: 32px 20px;
+  margin-top: 20px;
+
+  border: 1px dashed #DDE1E7;
+  border-radius: 16px;
+  background: #FAFBFC;
+}
+
+
+/* Заголовок пустого расписания */
+
+.schedule-empty-title {
+  margin: 0;
+
+  font-family: 'Golos Text';
+  font-size: 14px;
+  font-weight: 500;
+  color: #20252B;
+}
+
+
+/* Описание пустого расписания */
+
+.schedule-empty-description {
+  max-width: 230px;
+  margin: 6px 0 0;
+
+  font-family: 'Golos Text';
+  font-size: 12px;
+  line-height: 18px;
+  color: #8A929E;
+}
+
+
+/* ==================================================
+   8. BOTTOM SHEET — ДОБАВЛЕНИЕ ЗАДАЧИ
+   ================================================== */
+
+
+/* ---------- Затемнение главной страницы ---------- */
+
+.task-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+
+  background-color: rgba(32, 37, 43, 0.4);
+  opacity: 1;
+
+  transition: opacity 0.32s ease;
+}
+
+
+/* Затемнение при закрытии */
+
+.task-sheet-overlay-closing {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+/* ---------- Основная панель Bottom Sheet ---------- */
+
+.task-sheet {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  width: 100%;
+  max-width: 480px;
+
+  height: 100vh;
+  height: 100dvh;
+
+  box-sizing: border-box;
+  padding: 12px 20px 30px;
+
+  background-color: #FFFFFF;
+  border-radius: 24px 24px 0 0;
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  will-change: transform;
+}
+
+
+/* ---------- Область ручки для перетаскивания ---------- */
+
+.task-sheet-handle-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 28px;
+
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+
+/* Сама ручка */
+
+.task-sheet-handle {
+  width: 40px;
+  height: 4px;
+
+  border-radius: 10px;
+  background-color: #C4C7CC;
+}
+
+
+/* ==================================================
+   9. ШАПКА ФОРМЫ ДОБАВЛЕНИЯ ЗАДАЧИ
+   ================================================== */
+
+
+/* ---------- Заголовок и кнопка закрытия ---------- */
+
+.task-add-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 18px 0 25px 0;
+}
+
+
+/* Заголовок формы */
+
+.task-add-title {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+  color: #98A2B3;
+}
+
+
+/* Кнопка закрытия формы */
+
+.task-add-close {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+
+/* ==================================================
+   10. ПОЛЯ ФОРМЫ
+   ================================================== */
+
+
+/* ---------- Общая форма ---------- */
+
+.task-add-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+
+/* Контейнер одного поля */
+
+.task-add-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+/* Название поля */
+
+.task-add-label {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  color: #20252B;
+}
+
+
+/* ---------- Поле ввода названия ---------- */
+
+.task-add-input {
+  padding: 16px;
+
+  border-radius: 12px;
+  border: #E8EBEF 1px solid;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.01em;
+  color: #20252B;
+}
+
+
+/* Состояние фокуса названия */
+
+.task-add-input:focus {
+  outline: 2px solid #5644D8;
+}
+
+
+/* ---------- Поле описания ---------- */
+
+.task-add-textarea {
+  padding: 16px;
+
+  border-radius: 12px;
+  border: #E8EBEF 1px solid;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.01em;
+  color: #20252B;
+}
+
+
+/* Состояние фокуса описания */
+
+.task-add-textarea:focus {
+  outline: 2px solid #5644D8;
+}
+
+
+/* ==================================================
+   11. ВЫБОР КАТЕГОРИИ И ДЛИТЕЛЬНОСТИ
+   ================================================== */
+
+
+/* ---------- Заголовок секции выбора ---------- */
+
+.task-add-section-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 12px;
+}
+
+
+/* Подсказка под заголовком */
+
+.task-add-description {
+  margin: 0;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  color: #98A2B3;
+}
+
+
+/* ---------- Сетка вариантов ---------- */
+
+.task-add-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+
+/* ---------- Общая кнопка выбора ---------- */
+
+.task-add-option {
+  border-radius: 12px;
+  padding: 10px 12px;
+  border: #E8EBEF 1px solid;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 14px;
+  color: #20252B;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+
+/* ---------- Цвета категорий в форме ---------- */
+
+.option-intellect {
+  background-color: #EEEAFE;
+}
+
+.option-creativity {
+  background-color: #FBEAF0;
+}
+
+.option-communication {
+  background-color: #E5F3F2;
+}
+
+.option-physics {
+  background-color: #F1F8D8;
+}
+
+.option-routine {
+  background-color: #F1F3F5;
+}
+
+.option-rest {
+  background-color: #EAF0F8;
+}
+
+
+/* ---------- Варианты длительности ---------- */
+
+.task-add-duration .task-add-option {
+  background-color: #F6F8FA;
+  color: #667085;
+}
+
+
+/* ==================================================
+   12. ВЫБОР ВРЕМЕНИ ВЫПОЛНЕНИЯ ЗАДАЧИ
+   ================================================== */
+
+
+/* ---------- Общая секция выбора времени ---------- */
+
+.task-add-timing-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+
+/* ---------- Кнопка времени ---------- */
+
+.task-add-timing {
+  width: 100%;
+  border-radius: 12px;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #20252B;
+
+  padding: 10px 12px;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+
+/* Содержимое кнопки */
+
+.task-add-timing-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+/* ---------- Оптимальное время ---------- */
+
+.task-add-timing-optimal {
+  background-color: #EEEAFE;
+  border: 1px solid #E4DFFC;
+  justify-content: space-between;
+}
+
+
+/* ---------- Желаемое время ---------- */
+
+.task-add-timing-wishful {
+  background-color: #E5F3F2;
+  border: 1px solid #D6ECEA;
+}
+
+
+/* ==================================================
+   13. КНОПКА СОЗДАНИЯ ЗАДАЧИ
+   ================================================== */
+
+
+/* ---------- Основная кнопка ---------- */
+
+.task-add-button {
+  width: 100%;
+
+  background-color: #5644D8;
+  border-radius: 16px;
+  padding: 15px 10px;
+
+  color: white;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 22px;
+
+  border: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 25px;
+}
+
+
+/* Неактивная кнопка */
+
+.task-add-button:disabled {
+  background-color: #E8EBEF;
+  color: #98A2B3;
+  cursor: not-allowed;
+}
+
+
+/* Активная кнопка */
+
+.task-add-button:not(:disabled) {
+  background-color: #5644D8;
+  cursor: pointer;
+}
+
+
+/* ==================================================
+   14. СОСТОЯНИЯ ВЫБОРА В ФОРМЕ
+   ================================================== */
+
+
+/* ---------- Выбранная категория ---------- */
+
+.task-add-categories .task-add-option.is-selected {
+  outline: 2px solid #5644D8;
+}
+
+
+/* ---------- Выбранная длительность ---------- */
+
+.task-add-duration .task-add-option.is-selected {
+  outline: 2px solid #5644D8;
+  background-color: #EEEAFE;
+  color: #5644D8;
+}
+
+
+/* ---------- Выбранное оптимальное время ---------- */
+
+.task-add-timing-optimal.is-selected {
+  outline: 2px solid #5644D8;
+}
+
+
+/* ==================================================
+   15. КНОПКА ОТМЕНЫ
+   ================================================== */
+
+
+/* ---------- Отмена добавления задачи ---------- */
+
+.task-add-cancel-button {
+  width: 100%;
+
+  border: none;
+  background-color: transparent;
+  padding: 15px 10px;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 20px;
+  color: #667085;
+}
+
+
+/* ==================================================
+   16. РАСКРЫВАЮЩИЙСЯ БЛОК ВЫБОРА ВРЕМЕНИ
+   ================================================== */
+
+
+/* ---------- Обёртка блока ---------- */
+
+.task-add-timing-option {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+
+/* ---------- Скрытое состояние поля времени ---------- */
+
+.task-add-time-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+
+  transition:
+    grid-template-rows 0.3s ease,
+    opacity 0.25s ease;
+}
+
+
+/* Открытое состояние поля времени */
+
+.task-add-timing-option.is-open .task-add-time-collapse {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+
+/* ---------- Внутренняя область ---------- */
+
+.task-add-time-inner {
+  min-height: 0;
+  overflow: hidden;
+
+  background-color: #E5F3F2;
+
+  display: flex;
+  justify-content: center;
+
+  padding: 0 10px 16px 10px;
+}
+
+
+/* ---------- Поле выбора времени ---------- */
+
+.task-add-time-field {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  background: #FFFFFF;
+  border: 1px solid #E8EBEF;
+  border-radius: 10px;
+
+  padding: 7px 12px;
+  width: 100%;
+}
+
+
+/* Ввод времени */
+
+.task-add-time-field input {
+  width: 100%;
+  min-width: 0;
+
+  border: none;
+  outline: none;
+  background: transparent;
+
+  color: #20252B;
+  font-family: 'Golos Text';
+  font-size: 14px;
+  color-scheme: light;
+}
+
+
+/* Скругление верхней кнопки при открытии */
+
+.task-add-timing-option.is-open .task-add-timing-wishful {
+  border-radius: 12px 12px 0 0;
+}
+
+
+/* ---------- Иконка времени ---------- */
+
+.task-add-time-icon {
+  position: absolute;
+  right: 14px;
+
+  color: #667085;
+  pointer-events: none;
+}
+
+
+/* ---------- Убираем стандартные элементы браузера ---------- */
+
+/* Иконка часов Chrome */
+
+.task-add-time-field input::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+/* Кнопка очистки */
+
+.task-add-time-field input::-webkit-clear-button {
+  display: none;
+}
+
+/* Стрелки изменения времени */
+
+.task-add-time-field input::-webkit-inner-spin-button {
+  display: none;
+}
+
+
+/* ==================================================
+   17. МОДАЛЬНОЕ ОКНО ВЫБОРА ДЛИТЕЛЬНОСТИ
+   ================================================== */
+
+
+/* ---------- Затемнение фона ---------- */
+
+.duration-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(20, 30, 40, 0.35);
+  backdrop-filter: blur(4px);
+}
+
+
+/* ---------- Карточка модального окна ---------- */
+
+.duration-modal {
+  width: 100%;
+  max-width: 350px;
+
+  border-radius: 20px;
+  background: transparent;
+
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+
+/* ---------- Заголовок ---------- */
+
+.duration-modal-title {
+  margin: 0;
+
+  font-family: 'Golos Text';
+  font-size: 20px;
+  font-weight: 600;
+  color: #20252B;
+}
+
+
+/* ---------- Описание ---------- */
+
+.duration-modal-description {
+  margin: 8px 0 20px;
+
+  font-family: 'Golos Text';
+  font-size: 13px;
+  color: #667085;
+}
+
+
+/* ==================================================
+   18. ПОЛЕ ВВОДА ДЛИТЕЛЬНОСТИ И ВЫБОР ЕДИНИЦ
+   ================================================== */
+
+
+/* ---------- Поле и переключатель единиц ---------- */
+
+.duration-modal-controls {
+  display: flex;
+  gap: 10px;
+  height: 56px;
+}
+
+
+/* ---------- Поле ввода ---------- */
+
+.duration-modal-input {
+  flex: 1;
+  min-width: 0;
+
+  padding: 12px;
+
+  border: 1px solid #E8EBEF;
+  border-radius: 12px;
+
+  outline: none;
+  background: #F8FAFA;
+
+  text-align: start;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #20252B;
+}
+
+
+/* Фокус поля */
+
+.duration-modal-input:focus {
+  border-color: #5644D8;
+}
+
+
+/* ---------- Переключатель единиц ---------- */
+
+.duration-modal-units {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  width: 76px;
+
+  background-color: #F6F8FA;
+  padding: 4px;
+  border-radius: 12px;
+}
+
+
+/* Кнопки минут и часов */
+
+.duration-modal-units button {
+  flex: 1;
+
+  border-radius: 10px;
+  border: none;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #667085;
+}
+
+
+/* Выбранная единица */
+
+.duration-modal-units button.is-selected {
+  background: #EEEAFE;
+  color: #5644D8;
+}
+
+
+/* ==================================================
+   19. КНОПКИ МОДАЛЬНОГО ОКНА
+   ================================================== */
+
+
+/* ---------- Нижний ряд кнопок ---------- */
+
+.duration-modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+
+/* Общие стили кнопок */
+
+.duration-modal-actions button {
+  flex: 1;
+
+  padding: 12px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #F1F4F5;
+
+  font-family: 'Golos Text';
+  font-size: 13px;
+  color: #20252B;
+}
+
+
+/* Кнопка подтверждения */
+
+.duration-modal-actions button:last-child {
+  background: #168C87;
+  color: #FFFFFF;
+}
+
+
+/* Неактивные кнопки */
+
+.duration-modal-actions button:disabled {
+  opacity: 0.4;
+}
+
+/* ==========================================
+   ОКНО ДЕТАЛЕЙ ЗАДАЧИ — BOTTOM SHEET
+========================================== */
+
+/* Затемнение фона */
+.task-detail-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  background-color: rgba(25, 25, 25, 0.35);
+}
+
+/* Панель */
+.task-detail-sheet {
+  width: 100%;
+  max-width: 500px;
+  min-height: 50vh;
+  max-height: 85vh;
+
+  padding: 12px 24px 30px;
+
+  background-color: #FFFFFF;
+  border-radius: 24px 24px 0 0;
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Серый ползунок */
+.task-detail-handle-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 24px;
+  margin-bottom: 12px;
+}
+
+.task-detail-handle {
+  width: 40px;
+  height: 5px;
+
+  background-color: #D1D5DB;
+  border-radius: 10px;
+}
+
+/* Заголовок */
+.task-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 24px;
+}
+
+.task-detail-title {
+  margin: 0;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+  color: #98A2B3;
+}
+
+/* Кнопка закрытия */
+.task-detail-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.task-detail-close img {
+  width: 18px;
+  height: 18px;
+}
+
+/* Категория и статус */
+.task-detail-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  margin-bottom: 16px;
+}
+
+.task-detail-category {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 13px;
   font-weight: 500;
 }
 
-.home-schedule-details {
-  margin: 12px 0 0 64px;
-  color: #77736b;
+.task-detail-category img {
+  width: 20px;
+  height: 20px;
+}
+
+/* Статусы */
+.task-detail-status {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+  color: #667085;
+}
+
+/* Название задачи */
+.task-detail-name {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 30px;
+  letter-spacing: 0.01em;
+  color: #20252B;
+}
+
+/* Описание */
+.task-detail-description {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 400;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 22px;
+  letter-spacing: 0.01em;
+  color: #667085;
+  margin: 12px 0;
 }
 
-/* =========================
-   КНОПКА ДОБАВЛЕНИЯ
-========================= */
+.task-detail-description p {
+  margin: 0;
+}
 
-.home-add-button {
-  display: block;
-  width: 58px;
-  height: 58px;
-  margin: 24px 0 0 auto;
+/* Информация о задаче */
+.task-detail-info {
+  display: flex;
+  gap: 12px;
+}
+
+.task-detail-info-item {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px 20px 10px;
+  background-color: #F6F8FA;
+  border-radius: 14px;
+  justify-content: space-between;
+  width: 100%;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.task-detail-info-label {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 14px;
+  letter-spacing: 0.01em;
+  color: #667085;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.task-detail-info-value {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  color: #20252B;
+}
+
+/* Отметить выполненной */
+.task-detail-complete-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 29px 0 20px 0;
+  width: 100%;
+  min-height: 45px;
+  padding: 13px;
+
   border: none;
-  border-radius: 20px;
-  background: #292929;
-  color: #ffffff;
-  font-size: 30px;
-  line-height: 1;
+  border-radius: 14px;
+
+  background-color: #5644D8;
+  color: #FFFFFF;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+
   cursor: pointer;
-  box-shadow: 0 5px 14px #29292918;
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease;
 }
 
-.home-add-button:hover {
-  background: #454545;
-  transform: translateY(-2px);
+.task-detail-edit-button,
+.task-detail-move-button {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  min-height: 47px;
+  margin: 0;
+  padding: 5px 0;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border-radius: 12px;
+  border: 1px #E8EBEF solid;
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #20252B;
 }
 
-/* =========================
-   НИЖНЯЯ НАВИГАЦИЯ
-========================= */
+.task-detail-edit-button img,
+.task-detail-move-button img {
+  width: 16px;
+  height: 16px;
+}
 
-.home-navigation {
+
+/* Перенести и удалить */
+.task-detail-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.task-detail-delete-button {
+  width: 100%;
+  min-height: 48px;
+
+  padding: 12px;
+  border-radius: 14px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: #D64545;
+  background-color: #FFFFFF;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+.task-detail-delete-button {
+  color: #D64545;
+  border-color: #F1D4D4;
+}
+
+
+/* ==========================================
+   ПОДТВЕРЖДЕНИЕ УДАЛЕНИЯ ЗАДАЧИ
+========================================== */
+
+/* Затемнение поверх окна деталей */
+.task-delete-confirm-overlay {
   position: fixed;
-  z-index: 4;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(100%, 600px);
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background-color: rgba(25, 25, 25, 0.35);
+}
+
+/* Модальное окно */
+.task-delete-confirm {
+  width: 100%;
+  max-width: 350px;
+  max-height: 229px;
+  padding: 20px;
+  background-color: #FFFFFF;
+  border-radius: 20px;
+}
+
+.task-move-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-move-close-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.task-delete-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.task-delete-confirm-icon img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+/* Заголовок */
+.task-delete-confirm-title {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 22px;
+  color: #20252B;
+}
+
+/* Описание */
+.task-delete-confirm-description {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  color: #667085;
+  margin: 16px 0;
+}
+
+/* Кнопки */
+.task-delete-confirm-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Отмена */
+.task-delete-confirm-cancel {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px;
+  border: 1px solid #E8EBEF;
+  border-radius: 14px;
+  background-color: #FFFFFF;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #20252B;
+  cursor: pointer;
+}
+
+/* Удаление */
+.task-delete-confirm-submit {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px;
+  border: none;
+  border-radius: 14px;
+  background-color: #D64545;
+  color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+
+/* ========================================
+   ПЕРЕНОС ЗАДАЧИ — BOTTOM SHEET
+======================================== */
+
+/* Затемнение фона */
+.task-move-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  background-color: rgba(25, 25, 25, 0.25);
+}
+
+/* Панель переноса */
+.task-move-sheet {
+  width: 100%;
+  max-width: 500px;
+  min-height: 310px;
+  max-height: 90dvh;
+  overflow-y: auto;
+  padding: 24px;
+
+  background-color: #FFFFFF;
+  border-radius: 24px 24px 0 0;
+
   box-sizing: border-box;
+}
+
+.task-move-task {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0 20px 0;
+  padding: 6px 0;
+}
+
+.task-move-task-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.task-move-task-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.task-move-task-name {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  color: #20252B;
+}
+
+.task-move-task-time {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+  color: #667085;
+   display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.task-move-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-move-button {
+  width: 100%;
+  border-radius: 12px;
+  border:  1px solid #E4DFFC;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 12px;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  color: #20252B;
+}
+
+.task-move-custom-button.is-selected {
+  border: 2px solid #5644D8;
+}
+
+.task-move-custom-button {
+  background-color: #EEEAFE;
+}
+
+.task-move-custom-button-self {
+  background-color: #E5F3F2;
+}
+
+/* ==================================================
+   20. ВЫБОР ВРЕМЕНИ ПРИ ПЕРЕНОСЕ ЗАДАЧИ
+   ================================================== */
+
+/* Обёртка кнопки и раскрывающегося поля */
+.task-move-custom-option {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+/* Скрытое поле времени */
+.task-move-time-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+
+  transition:
+    grid-template-rows 0.3s ease,
+    opacity 0.25s ease;
+}
+
+/* Открытое поле времени */
+.task-move-custom-option.is-open .task-move-time-collapse {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+/* Внутренняя область */
+.task-move-time-inner {
+  min-height: 0;
+  overflow: hidden;
+
+  background-color: #E5F3F2;
+
+  display: flex;
+  justify-content: center;
+
+  padding: 0 10px 16px 10px;
+}
+
+/* Поле выбора времени */
+.task-move-time-field {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  background: #FFFFFF;
+  border: 1px solid #E8EBEF;
+  border-radius: 10px;
+
+  padding: 7px 12px;
+  width: 100%;
+}
+
+/* Ввод времени */
+.task-move-time-field input {
+  width: 100%;
+  min-width: 0;
+
+  border: none;
+  outline: none;
+  background: transparent;
+
+  color: #20252B;
+  font-family: 'Golos Text';
+  font-size: 14px;
+  color-scheme: light;
+}
+
+/* Скругление кнопки при открытии */
+.task-move-custom-option.is-open .task-move-custom-button-self {
+  border-radius: 12px 12px 0 0;
+}
+
+/* Иконка времени */
+.task-move-time-icon {
+  position: absolute;
+  right: 14px;
+
+  pointer-events: none;
+}
+
+/* Убираем стандартную иконку браузера */
+.task-move-time-field input::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+.task-move-time-field input::-webkit-clear-button {
+  display: none;
+}
+
+.task-move-time-field input::-webkit-inner-spin-button {
+  display: none;
+}
+
+.task-move-button-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* ==========================================
+   КНОПКА ПОДТВЕРЖДЕНИЯ ПЕРЕНОСА
+========================================== */
+
+/* Общий стиль */
+.task-move-submit-button {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 16px;
+  padding: 13px 10px;
+
+  border: none;
+  border-radius: 14px;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Неактивное состояние */
+.task-move-submit-button:disabled {
+  background-color: #E8EBEF;
+  color: #98A2B3;
+  cursor: not-allowed;
+}
+
+/* Активное состояние */
+.task-move-submit-button:not(:disabled) {
+  background-color: #5644D8;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+
+.task-move-handle {
+    display: flex;
+    margin: 0 auto 20px;
+}
+
+/* ==================================================
+   НИЖНЯЯ НАВИГАЦИЯ
+   ================================================== */
+
+.bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+
+  width: 100%;
+  height: 76px;
+
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 12px 8px max(12px, env(safe-area-inset-bottom));
-  border: 1px solid #e9e7e2;
-  border-bottom: none;
-  border-radius: 20px 20px 0 0;
-  background: #ffffff;
+
+  background-color: #FFFFFF;
+  border-top: 1px solid #EAECF0;
+  padding: 0 16px;
 }
 
-.home-navigation-item {
+/* Пункт навигации */
+.bottom-navigation-item {
+  flex: 1;
+  height: 100%;
+
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 5px;
-  padding: 6px 16px;
+
   border: none;
-  border-radius: 12px;
-  background: transparent;
-  color: #88847b;
-  font: inherit;
-  font-size: 13px;
+  background: none;
+  padding: 0;
+
   cursor: pointer;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
 }
 
-.home-navigation-item:hover {
-  background: #f5f3ee;
-}
+/* Иконка навигации */
+.bottom-navigation-icon {
+  width: 24px;
+  height: 24px;
 
-.home-navigation-item.active {
-  color: #292929;
-  font-weight: 600;
-}
-
-/* =========================
-   ЗАТЕМНЕНИЕ И ОКНО ЗАДАЧИ
-========================= */
-
-.home-overlay {
-  position: fixed;
-  z-index: 5;
-  inset: 0;
-  background: rgba(35, 34, 30, 0.4);
-  backdrop-filter: blur(3px);
-}
-
-.home-add-task {
-  position: fixed;
-  z-index: 10;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: calc(100% - 32px);
-  max-width: 382px;
-  max-height: calc(100vh - 40px);
-  overflow-y: auto;
-  box-sizing: border-box;
-  padding: 24px;
-  border: 1px solid #e9e7e2;
-  border-radius: 24px;
-  background: #ffffff;
-  box-shadow: 0 16px 50px #00000018;
-}
-
-.home-add-task-label {
   display: block;
-  margin-top: 24px;
-  margin-bottom: 8px;
-  color: #66645d;
-  font-size: 14px;
+
+  background-color: #98A2B3;
+
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+
+  transition: background-color 0.2s ease;
 }
 
-.home-add-task-input {
-  width: 100%;
-  height: 52px;
-  box-sizing: border-box;
-  padding: 0 16px;
-  border: 1px solid #dedbd4;
-  border-radius: 12px;
-  background: #ffffff;
-  color: #292929;
-  font: inherit;
-  font-size: 16px;
-  outline: none;
+/* Активная иконка */
+.bottom-navigation-item.is-active .bottom-navigation-icon {
+  background-color: #5644D8;
 }
 
-.home-add-task-input:focus {
-  border-color: #aaa393;
-  box-shadow: 0 0 0 3px #aaa39320;
+/* Название */
+.bottom-navigation-label {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 14px;
+  color: #98A2B3;
+
+  transition: color 0.2s ease;
 }
 
-.home-add-task-button {
-  width: 100%;
-  min-height: 52px;
-  margin-top: 24px;
-  border: none;
-  border-radius: 12px;
-  background: #292929;
-  color: #ffffff;
-  font: inherit;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.home-add-task-button:hover {
-  background: #454545;
-}
-
-/* =========================
-   РЕДАКТИРОВАНИЕ ЗАДАЧ
-========================= */
-
-.home-edit-task-input {
-  width: 100%;
-  min-height: 44px;
-  box-sizing: border-box;
-  padding: 0 12px;
-  border: 1px solid #dedbd4;
-  border-radius: 10px;
-  background: #ffffff;
-  color: #292929;
-  font: inherit;
-  font-size: 14px;
-  outline: none;
-}
-
-.home-edit-task-input:focus {
-  border-color: #aaa393;
-  box-shadow: 0 0 0 3px #aaa39320;
-}
-
-.home-edit-task-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-  margin-top: 12px;
-}
-
-.home-edit-task-label {
-  margin-top: 4px;
-  color: #77736b;
-  font-size: 13px;
-}
-
-.home-edit-task-button {
-  margin-top: 12px;
-  padding: 8px 14px;
-  border: 1px solid #dedbd4;
-  border-radius: 10px;
-  background: #ffffff;
-  color: #292929;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.home-edit-task-button:hover {
-  background: #f5f3ee;
-}
-
-.home-save-task-button {
-  width: 100%;
-  min-height: 44px;
-  margin-top: 12px;
-  border: none;
-  border-radius: 10px;
-  background: #292929;
-  color: #ffffff;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.home-save-task-button:hover {
-  background: #454545;
-}
-
-.home-edit-task-buttons {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.home-edit-task-buttons .home-save-task-button,
-.home-edit-task-buttons .home-cancel-task-button {
-  flex: 1;
-  margin-top: 0;
-}
-
-.home-cancel-task-button {
-  min-height: 44px;
-  border: 1px solid #dedbd4;
-  border-radius: 10px;
-  background: #ffffff;
-  color: #292929;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.home-cancel-task-button:hover {
-  background: #f5f3ee;
-}
-
-.home-delete-task-button {
-  margin-top: 8px;
-  padding: 8px 14px;
-  border: 1px solid #ead8d5;
-  border-radius: 10px;
-  background: #ffffff;
-  color: #b64b42;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.home-delete-task-button:hover {
-  background: #fbf3f1;
-}
-
-/* =========================
-   АДАПТАЦИЯ ПОД ТЕЛЕФОН
-========================= */
-
-@media (max-width: 480px) {
-  .home-page {
-    padding: 24px 16px 110px;
-  }
-
-  .home-title {
-    font-size: 28px;
-  }
-
-  .home-rhythms {
-    margin-top: 30px;
-  }
-
-  .home-advice {
-    padding: 18px;
-  }
-
-  .home-schedule-item {
-    padding: 16px;
-  }
-
-  .home-navigation-item {
-    padding: 6px 12px;
-    font-size: 12px;
-  }
-
-  .home-schedule-details {
-    margin-left: 0;
-  }
+/* Активный пункт */
+.bottom-navigation-item.is-active .bottom-navigation-label {
+  color: #5644D8;
 }

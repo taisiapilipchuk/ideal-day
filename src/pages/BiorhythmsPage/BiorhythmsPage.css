@@ -1,195 +1,257 @@
+/* ==================================================
+   СТРАНИЦА БИОРИТМОВ
+   ================================================== */
 
-.biorhythms {
-  min-height: 100vh;
-  padding: 40px 24px 100px;
-  background: #f8f8f5;
-  color: #292929;
-  font-family: inherit;
-}
-
-.biorhythms__header {
-  margin-bottom: 28px;
-}
-
-.biorhythms__header h1 {
-  margin: 0 0 8px;
-  font-size: 32px;
-  font-weight: 600;
-}
-
-.biorhythms__header p {
-  margin: 0;
-  color: #777;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.biorhythms__switcher {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  padding: 5px;
-  margin-bottom: 28px;
-  border-radius: 14px;
-  background: #ededE8;
-}
-
-.biorhythms__tab {
-  padding: 12px 8px;
-  border: none;
-  border-radius: 10px;
-  background: transparent;
-  color: #666;
-  font: inherit;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-
-.biorhythms__tab--active {
-  background: #fff;
-  color: #292929;
-  box-shadow: 0 1px 4px #0000000d;
-}
-
-.biorhythms__content h2 {
-  margin: 0 0 8px;
-  font-size: 22px;
-}
-
-.biorhythms__content > p {
-  margin: 0 0 20px;
-  color: #777;
-  font-size: 14px;
-}
-
-.biorhythms__placeholder {
-  display: grid;
-  min-height: 260px;
-  place-items: center;
-  padding: 20px;
-  border: 1px solid #eeeeea;
-  border-radius: 20px;
-  background: #fff;
-  color: #999;
-  text-align: center;
-}
-
-.biorhythms__nav {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  justify-content: space-around;
-  padding: 16px 8px;
-  border-top: 1px solid #eee;
-  background: #fff;
-}
-
-.biorhythms__nav button {
-  border: none;
-  background: transparent;
-  color: #777;
-  font: inherit;
-  cursor: pointer;
-}
-
-.biorhythms__nav .biorhythms__nav-active {
-  color: #292929;
-  font-weight: 600;
-}
-
-@media (min-width: 700px) {
-  .biorhythms {
-    max-width: 760px;
-    margin: 0 auto;
-    padding-top: 56px;
-  }
-
-  .biorhythms__nav {
-    right: auto;
-    left: 50%;
-    width: min(100%, 760px);
-    transform: translateX(-50%);
-  }
-}
-
-
-.biorhythms__chart {
-  display: block;
+.biorhythms-page {
   width: 100%;
-  height: auto;
-  overflow: visible;
+  min-height: 100vh;
+  padding: 24px 20px 100px;
+  box-sizing: border-box;
+  display: block;
 }
 
-.biorhythms__legend {
+.biorhythms-header {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px 18px;
-  margin-top: 20px;
-  color: #666;
-  font-size: 12px;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
 }
 
-.biorhythms__legend span {
+.biorhythms-header-title {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.012em;
+  color: #98A2B3;
+  text-transform: uppercase;
+}
+
+.biorhythms-profile-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.biorhythms-intro-title {
+  margin: 0;
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 56px;
+  line-height: 62px;
+  letter-spacing: 0.012em;
+  color: #20252B;
+}
+
+.biorhythms-intro-description {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: 0.012em;
+  color: #667085;
+  margin: 0;
+}
+
+.biorhythms-period-switch {
+  width: 100%;
+  background-color: #F6F8FA;
+  border-radius: 14px;
+  height: 44px;
+  padding: 4px;
+  display: flex;
+  justify-content: space-between;
+  margin: 32px 0 16px 0;
+}
+
+.biorhythms-period-button {
+  width: 100%;
+  height: 36px;
+  padding: 9px;
+  border: none;
+  background-color: transparent;
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: 0.012em;
+  color: #667085;
+  border-radius: 11px;
+}
+
+.biorhythms-period-button.is-active {
+  background-color: #FFFFFF;
+  border: 1px soled #E8EBEF;
+  color: #5644D8;
+  border-radius: 11px;
+}
+
+.biorhythms-date-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.biorhythms-date-navigation-button {
+  background-color: transparent;
+  border: none;
+  padding: 0%;
+}
+
+.biorhythms-date-navigation-title {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.012em;
+  color: #20252B;
+}
+
+.biorhythms-chart-section {
+  width: 100%;
+  min-height: 318px;
+  padding: 16px;
+  background-color: #F6F8FA;
+  border-radius: 24px;
+  margin: 20px 0 26px 0;
+}
+
+.biorhythms-cycle-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 26px;
+}
+
+.biorhythms-cycle-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: space-between;
+  padding: 0 31px;
 }
 
-.biorhythms__legend i {
-  display: inline-block;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
+.biorhythms-cycle-name {
+  position: relative;
+  padding-left: 16px;
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.012em;
+  color: #20252B;
 }
 
-.legend-physical {
-  background: #6c8f71;
-}
-
-.legend-emotional {
-  background: #d59b78;
-}
-
-.legend-intellectual {
-  background: #8b83b9;
-}
-
-
-.biorhythms__insight {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  margin-top: 24px;
-  padding: 20px;
-  border: 1px solid #eeeeea;
-  border-radius: 18px;
-  background: #fff;
-}
-
-.biorhythms__insight-icon {
-  display: grid;
-  flex-shrink: 0;
-  width: 38px;
-  height: 38px;
-  place-items: center;
-  border-radius: 12px;
-  background: #f0eee5;
-  color: #77735e;
-  font-size: 22px;
-}
-
-.biorhythms__insight h3 {
-  margin: 2px 0 8px;
-  font-size: 16px;
+.biorhythms-cycle-duration {
+  font-family: 'Golos Text';
+  font-style: normal;
   font-weight: 600;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.012em;
 }
 
-.biorhythms__insight p {
-  margin: 0;
-  color: #777;
-  font-size: 13px;
-  line-height: 1.6;
+.biorhythms-cycle-name::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: red;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+/* Цвет кружочков биоритмов */
+
+.biorhythms-cycle-item--physical .biorhythms-cycle-name::before {
+  background-color: #087F83;
+}
+
+.biorhythms-cycle-item--emotional .biorhythms-cycle-name::before {
+  background-color: #D96D91;
+}
+
+.biorhythms-cycle-item--intellectual .biorhythms-cycle-name::before {
+  background-color: #5644D8;
+}
+
+/* Цвет длительности циклов */
+
+.biorhythms-cycle-item--physical .biorhythms-cycle-duration {
+  color: #087F83;
+}
+
+.biorhythms-cycle-item--emotional .biorhythms-cycle-duration {
+  color: #D96D91;
+}
+
+.biorhythms-cycle-item--intellectual .biorhythms-cycle-duration {
+  color: #5644D8;
+}
+
+.biorhythms-values {
+  display: flex;
+  gap: 8px;
+}
+
+.biorhythms-value-card {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px;
+  background-color: #F6F8FA;
+  border-radius: 16px;
+  width: 100%;
+}
+
+.biorhythms-value-name {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 9px;
+  line-height: 12px;
+  letter-spacing: 0.012em;
+  color: #667085;
+  text-transform: lowercase;
+}
+
+.biorhythms-value-percent {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 28px;
+  letter-spacing: 0.012em;
+}
+
+.biorhythms-value-level {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.012em;
+  color: #667085;
+}
+
+/* Физический */
+.biorhythms-value-card--physical .biorhythms-value-percent {
+  color: #087F83;
+}
+
+/* Эмоциональный */
+.biorhythms-value-card--emotional .biorhythms-value-percent {
+  color: #D96D91;
+}
+
+/* Интеллектуальный */
+.biorhythms-value-card--intellectual .biorhythms-value-percent {
+  color: #5644D8;
 }

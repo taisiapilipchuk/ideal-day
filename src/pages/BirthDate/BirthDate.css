@@ -1,0 +1,118 @@
+.birth-date-title {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 52px;
+  letter-spacing: 0.012em;
+  color: #20252B;
+  max-width: 350px;
+  margin: 44px 0 19px;
+}
+
+.birth-date-description {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: 0.012em;
+  color: #667085;
+  max-width: 330px;
+  margin: 0;
+}
+
+.birth-date-content {
+  align-self: center;
+}
+
+.birth-date-label {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.012em;
+  color: #20252B;
+  margin-bottom: 8px;
+}
+
+.birth-date-input {
+  width: 100%;
+  height: 56px;
+  background-color: transparent;
+  border-radius: 12px;
+  border: #E8EBEF 1px solid;
+
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.012em;
+  color: #98A2B3;
+  padding: 0 16px;
+  text-transform: uppercase;
+}
+
+.birth-date-input:focus {
+  outline: none;
+  border: #5644D8 1.5px solid;
+}
+
+.birth-date-input-wrapper {
+  position: relative;
+}
+
+.birth-date-input {
+  width: 100%;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  color: #20252B;
+}
+
+.birth-date-input:invalid {
+  color: #98A2B3;
+}
+
+.birth-date-input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  width: 44px;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* Наша иконка */
+.birth-date-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 20px;
+  height: 20px;
+
+  background-color: #98A2B3;
+
+  mask: url('/icons/date-of-birth.svg') center / contain no-repeat;
+  -webkit-mask: url('/icons/date-of-birth.svg') center / contain no-repeat;
+
+  pointer-events: none;
+}
+
+.birth-date-input:focus + .birth-date-icon {
+  background-color: #5644D8;
+}
+
+.birth-date-note {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.012em;
+  color: #98A2B3;
+}

@@ -93,7 +93,7 @@ function ChronotypeTestPage({ onBack, onFinish }) {
               }
             }}
           >
-            <img src="/src/assets/icons/back.svg" alt="" />
+            <img src="/icons/back.svg" alt="" />
             <span className="test-back-text">Назад</span>
           </button>
 

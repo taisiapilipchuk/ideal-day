@@ -1,12 +1,14 @@
 
 /* Общая страница авторизации */
 
+
 .auth-page {
   position: relative;
   isolation: isolate;
 
   width: 100%;
   max-width: 480px;
+
   min-height: 100vh;
   min-height: 100svh;
 
@@ -15,29 +17,72 @@
   padding: 28px 24px 40px;
 
   overflow: hidden;
-  background: #ffffff;
+  background: #fff;
   color: #20252b;
 
   display: grid;
   grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
 }
 
 .auth-page::after {
   content: "";
-  background-image: url("../assets/images/logo-image.png");
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: 100% auto;
-
   position: absolute;
+
   top: 30%;
   left: 0;
   right: 0;
   bottom: 0;
 
+  background-image: url("../assets/images/logo-image.png");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: 100% auto;
+
   z-index: 0;
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.25;
+}
+
+.auth-intro {
+  grid-row: 1;
+}
+
+.auth-form {
+  grid-row: 2;
+  align-self: center;
+}
+
+.auth-action {
+  grid-row: 3;
+  align-self: end;
+}
+
+.auth-intro,
+.auth-form,
+.auth-action {
+  position: relative;
+  z-index: 1;
+}
+
+
+.auth-page::after {
+  content: "";
+  position: absolute;
+
+  top: 30%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background-image: url("../assets/images/logo-image.png");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: 100% auto;
+
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.25;
 }
 
 /* Логотип */
@@ -86,7 +131,7 @@
   font-size: 46px;
   line-height: 48px;
   color: #20252b;
-  margin: 0;
+  margin: 23px 0;
 }
 
 /* Подзаголовок */
@@ -107,10 +152,11 @@
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   width: 100%;
   min-width: 0;
   margin-bottom: 22px;
+  justify-content: center;
 }
 
 .auth-label {
@@ -139,6 +185,7 @@
   color: #20252b;
   font-family: "Golos Text", sans-serif;
   font-size: 14px;
+  margin-top: 5px;
   font-weight: 400;
 
   transition:
@@ -251,7 +298,8 @@
   justify-content: center;
 
   display: flex;
-  gap: 5px;
+  flex-direction: column;
+  gap: 15px;
   margin-top: 16px;
 }
 
@@ -259,6 +307,12 @@
   text-decoration: none;
   font-weight: 500;
   color: #5644d8;
+}
+
+.auth-register-link {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
 }
 
 /* Кнопка назад */
@@ -449,6 +503,16 @@ line-height: 16px;
   color: #16845B;
 }
 
+.auth-page::after {
+  z-index: 0;
+}
+
+.auth-intro,
+.auth-content,
+.auth-action {
+  position: relative;
+  z-index: 1;
+}
 
 /* Узкие экраны */
 

@@ -83,11 +83,11 @@ function RegisterPage({ onBack, onRegister }) {
 
   return (
     <main className="auth-page">
-      <span className="auth-logo">
+      <div className='auth-page-header'>
+        <span className="auth-logo">
         идеальный день
       </span>
 
-      <div className="auth-content">
         <h1 className="auth-title">
           Начни жить <br /> в своём ритме
         </h1>
@@ -95,8 +95,10 @@ function RegisterPage({ onBack, onRegister }) {
         <p className="auth-subtitle">
           Планируй день в гармонии со своими биоритмами
         </p>
+      </div>
 
         <form
+          id="register-form"
           className="auth-form"
           onSubmit={handleRegister}
           noValidate
@@ -226,14 +228,20 @@ function RegisterPage({ onBack, onRegister }) {
               </p>
             )}
           </div>
-
-          <button className="auth-submit-button" type="submit">
-            Создать аккаунт
-          </button>
         </form>
 
         <div className="auth-register">
-          <span>Уже есть аккаунт?</span>
+
+          <button
+            className="auth-submit-button"
+            type="submit"
+            form="register-form"
+          >
+            Создать аккаунт
+          </button>
+
+          <div className='auth-register-link'>
+            <span>Уже есть аккаунт?</span>
 
           <a
             href="/register"
@@ -245,8 +253,8 @@ function RegisterPage({ onBack, onRegister }) {
           >
             Войти
           </a>
+          </div>
         </div>
-      </div>
     </main>
   )
 }

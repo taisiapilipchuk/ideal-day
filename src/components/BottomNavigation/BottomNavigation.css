@@ -1,0 +1,80 @@
+/* ==================================================
+   НИЖНЯЯ НАВИГАЦИЯ
+   ================================================== */
+
+.bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+
+  width: 100%;
+  height: 76px;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  background-color: #FFFFFF;
+  border-top: 1px solid #EAECF0;
+  padding: 0 16px;
+}
+
+/* Пункт навигации */
+.bottom-navigation-item {
+  flex: 1;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+
+  border: none;
+  background: none;
+  padding: 0;
+
+  cursor: pointer;
+}
+
+/* Иконка */
+.bottom-navigation-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+
+  background-color: #98A2B3;
+
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+
+  transition: background-color 0.2s ease;
+}
+
+/* Активная иконка */
+.bottom-navigation-item.is-active .bottom-navigation-icon {
+  background-color: #5644D8;
+}
+
+/* Название */
+.bottom-navigation-label {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 14px;
+  color: #98A2B3;
+
+  transition: color 0.2s ease;
+}
+
+/* Активный пункт */
+.bottom-navigation-item.is-active .bottom-navigation-label {
+  color: #5644D8;
+}
