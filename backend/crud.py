@@ -1,6 +1,13 @@
 from datetime import date
 from sqlalchemy.orm import Session
-from models import User, Task, BiorhythmLog
+
+from models import (
+    User,
+    Task,
+    BiorhythmLog,
+    UserSettings,
+    Notification,
+)
 from pwdlib import PasswordHash
 from schemas import UserCreate, TaskCreate, TaskUpdate
 
@@ -129,6 +136,116 @@ def save_biorhythm_cache(
         db.commit()
         db.refresh(log)
         return log
+    except Exception:
+        db.rollback()
+        raise
+
+
+# ---------- Настройки пользователя ----------
+
+
+def get_or_create_user_settings(db: Session, user_id: int):
+    settings = db.query(UserSettings).filter(UserSettings.user_id == user_id).first()
+
+    if settings:
+        return settings
+
+    settings = UserSettings(user_id=user_id)
+
+    try:
+        db.add(settings)
+        db.commit()
+        db.refresh(settings)
+        return settings
+    except Exception:
+        db.rollback()
+        raise
+
+
+def update_user_settings(db: Session, user_id: int, settings_data):
+    settings = get_or_create_user_settings(db, user_id)
+
+    try:
+        changes = settings_data.model_dump(exclude_unset=True)
+
+        for key, value in changes.items():
+            if value is not None:
+                setattr(settings, key, value)
+
+        db.commit()
+        db.refresh(settings)
+        return settings
+    except Exception:
+        db.rollback()
+        raise
+
+
+# ---------- Уведомления ----------
+
+
+def get_user_notifications(db: Session, user_id: int):
+    return (
+        db.query(Notification)
+        .filter(Notification.user_id == user_id)
+        .order_by(Notification.created_at.desc())
+        .all()
+    )
+
+
+def get_notification(db: Session, user_id: int, notification_id: int):
+    return (
+        db.query(Notification)
+        .filter(Notification.id == notification_id, Notification.user_id == user_id)
+        .first()
+    )
+
+
+def create_notification(
+    db: Session,
+    user_id: int,
+    title: str,
+    message: str,
+    notification_type: str = "general",
+    task_id: int | None = None,
+):
+    notification = Notification(
+        user_id=user_id,
+        task_id=task_id,
+        title=title,
+        message=message,
+        notification_type=notification_type,
+    )
+
+    try:
+        db.add(notification)
+        db.commit()
+        db.refresh(notification)
+        return notification
+    except Exception:
+        db.rollback()
+        raise
+
+
+def mark_notification_read(db: Session, notification: Notification):
+    try:
+        notification.is_read = True
+        db.commit()
+        db.refresh(notification)
+        return notification
+    except Exception:
+        db.rollback()
+        raise
+
+
+def mark_all_notifications_read(db: Session, user_id: int):
+    try:
+        (
+            db.query(Notification)
+            .filter(Notification.user_id == user_id, Notification.is_read == False)
+            .update({"is_read": True}, synchronize_session=False)
+        )
+
+        db.commit()
     except Exception:
         db.rollback()
         raise

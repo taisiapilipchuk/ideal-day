@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import (
     Column,
     Integer,
@@ -11,6 +13,7 @@ from sqlalchemy import (
     Time,
 )
 from sqlalchemy.orm import relationship
+
 from database import Base
 
 
@@ -25,8 +28,20 @@ class User(Base):
     chronotype = Column(String, nullable=False, default="pigeon")
 
     tasks = relationship("Task", back_populates="user", cascade="all, delete-orphan")
+
     biorhythm_logs = relationship(
         "BiorhythmLog", back_populates="user", cascade="all, delete-orphan"
+    )
+
+    settings = relationship(
+        "UserSettings",
+        back_populates="user",
+        uselist=False,
+        cascade="all, delete-orphan",
+    )
+
+    notifications = relationship(
+        "Notification", back_populates="user", cascade="all, delete-orphan"
     )
 
 
@@ -67,3 +82,53 @@ class BiorhythmLog(Base):
     user = relationship("User", back_populates="biorhythm_logs")
 
     __table_args__ = (Index("idx_biorhythm_user_date", "user_id", "date", unique=True),)
+
+
+class UserSettings(Base):
+    __tablename__ = "user_settings"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), unique=True, nullable=False
+    )
+
+    notifications_enabled = Column(Boolean, default=True, nullable=False)
+
+    task_reminders_enabled = Column(Boolean, default=True, nullable=False)
+
+    recommendation_notifications_enabled = Column(Boolean, default=True, nullable=False)
+
+    reminder_minutes_before = Column(Integer, default=15, nullable=False)
+
+    user = relationship("User", back_populates="settings")
+
+
+class Notification(Base):
+    __tablename__ = "notifications"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+
+    task_id = Column(
+        Integer, ForeignKey("tasks.id", ondelete="SET NULL"), nullable=True
+    )
+
+    title = Column(String, nullable=False)
+    message = Column(String, nullable=False)
+
+    notification_type = Column(String, nullable=False, default="general")
+
+    is_read = Column(Boolean, default=False, nullable=False)
+
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+
+    user = relationship("User", back_populates="notifications")
+
+    __table_args__ = (
+        Index("idx_notifications_user", "user_id"),
+        Index("idx_notifications_read", "user_id", "is_read"),
+    )

@@ -1,6 +1,9 @@
+from datetime import date, datetime, timedelta
+
 from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+
 from database import SessionLocal
 from schemas import (
     UserCreate,
@@ -9,19 +12,25 @@ from schemas import (
     TaskCreate,
     TaskUpdate,
     TaskResponse,
+    UserSettingsUpdate,
+    UserSettingsResponse,
+    NotificationResponse,
 )
 import crud
 from auth import create_access_token, get_current_user
-from models import User
-from datetime import date
+from models import User, Task, Notification
 from biorhythm import calculate_biorhythm
 from recommendations import generate_recommendations
 from scheduler import create_schedule
+from models import Base
+from database import engine
 
 
 class DeleteTaskResponse(BaseModel):
     message: str
 
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Ideal Day API",
@@ -34,7 +43,9 @@ app = FastAPI(
     - Формирование рекомендаций.
     - Управление задачами.
     - Автоматическое составление расписания.
-
+    - Управление настройками пользователя.
+    - Получение уведомлений и напоминаний.
+    
     Для защищённых запросов необходимо использовать Bearer Token.
     """,
     version="1.0.0",
@@ -57,6 +68,14 @@ app = FastAPI(
             "name": "Планировщик",
             "description": "Автоматическое составление расписания задач.",
         },
+        {
+            "name": "Настройки",
+            "description": "Получение и изменение настроек пользователя.",
+        },
+        {
+            "name": "Уведомления",
+            "description": "Получение уведомлений и управление ими.",
+        },
     ],
 )
 
@@ -72,24 +91,12 @@ def get_db():
 # ---------- Общее ----------
 
 
-@app.get(
-    "/",
-    tags=["Общее"],
-    summary="Главная страница",
-    description="Проверяет доступность главного маршрута backend-приложения.",
-    response_description="Сообщение о работе backend.",
-)
+@app.get("/", tags=["Общее"], summary="Главная страница")
 def home():
     return {"message": "Ideal Day backend is working!"}
 
 
-@app.get(
-    "/api/health",
-    tags=["Общее"],
-    summary="Проверка состояния API",
-    description="Проверяет, запущено ли backend-приложение.",
-    response_description="Текущий статус API.",
-)
+@app.get("/api/health", tags=["Общее"], summary="Проверка состояния API")
 def health_check():
     return {"status": "ok"}
 
@@ -102,15 +109,10 @@ def health_check():
     response_model=UserResponse,
     tags=["Пользователи"],
     summary="Получение информации о текущем пользователе",
-    description="Возвращает информацию о пользователе, определённом по токену авторизации.",
-    response_description="Данные текущего пользователя.",
-    responses={
-        401: {"description": "Пользователь не авторизован."},
-        404: {"description": "Пользователь не найден."},
-    },
 )
 def get_current_user_info(
-    user_id: int = Depends(get_current_user), db: Session = Depends(get_db)
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db),
 ):
     user = db.query(User).filter(User.id == user_id).first()
 
@@ -120,13 +122,7 @@ def get_current_user_info(
     return user
 
 
-@app.get(
-    "/api/search",
-    tags=["Пользователи"],
-    summary="Поиск пользователей",
-    description="Принимает имя для поиска и возвращает его в ответе.",
-    response_description="Результат обработки поискового запроса.",
-)
+@app.get("/api/search", tags=["Пользователи"], summary="Поиск пользователей")
 def search_users(name: str):
     return {"search_name": name}
 
@@ -137,12 +133,6 @@ def search_users(name: str):
     status_code=201,
     tags=["Пользователи"],
     summary="Регистрация пользователя",
-    description="Создаёт новую учётную запись пользователя.",
-    response_description="Данные зарегистрированного пользователя.",
-    responses={
-        400: {"description": "Email или имя пользователя уже заняты."},
-        422: {"description": "Ошибка проверки входных данных."},
-    },
 )
 def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
     if crud.get_user_by_email(db, user_data.email):
@@ -154,17 +144,7 @@ def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
     return crud.create_user(db, user_data)
 
 
-@app.post(
-    "/api/login",
-    tags=["Пользователи"],
-    summary="Авторизация пользователя",
-    description="Проверяет email и пароль пользователя и выдаёт токен доступа.",
-    response_description="Токен доступа и тип авторизации.",
-    responses={
-        401: {"description": "Неверный email или пароль."},
-        422: {"description": "Ошибка проверки входных данных."},
-    },
-)
+@app.post("/api/login", tags=["Пользователи"], summary="Авторизация пользователя")
 def login_user(user_data: UserLogin, db: Session = Depends(get_db)):
     user = crud.get_user_by_email(db, user_data.email)
 
@@ -179,17 +159,7 @@ def login_user(user_data: UserLogin, db: Session = Depends(get_db)):
 # ---------- Биоритмы ----------
 
 
-@app.get(
-    "/api/biorhythm",
-    tags=["Биоритмы"],
-    summary="Получение биоритмов",
-    description="Рассчитывает физический, эмоциональный и интеллектуальный биоритмы пользователя на указанную дату. Если дата не передана, используется текущая дата.",
-    response_description="Значения биоритмов и критические циклы.",
-    responses={
-        401: {"description": "Пользователь не авторизован."},
-        404: {"description": "Пользователь не найден."},
-    },
-)
+@app.get("/api/biorhythm", tags=["Биоритмы"], summary="Получение биоритмов")
 def get_biorhythm(
     target_date: date | None = None,
     user_id: int = Depends(get_current_user),
@@ -202,6 +172,12 @@ def get_biorhythm(
 
     if not user:
         raise HTTPException(status_code=404, detail="Пользователь не найден")
+
+    if not user.birth_date:
+        raise HTTPException(
+            status_code=400,
+            detail="Для расчёта биоритмов необходимо указать дату рождения",
+        )
 
     values = calculate_biorhythm(user.birth_date, target_date)
 
@@ -233,12 +209,6 @@ def get_biorhythm(
     "/api/recommendations",
     tags=["Рекомендации"],
     summary="Получение рекомендаций",
-    description="Формирует рекомендации на основе биоритмов пользователя на указанную дату. Если дата не передана, используется текущая дата.",
-    response_description="Дата и список рекомендаций.",
-    responses={
-        401: {"description": "Пользователь не авторизован."},
-        404: {"description": "Пользователь не найден."},
-    },
 )
 def get_recommendations(
     target_date: date | None = None,
@@ -252,6 +222,12 @@ def get_recommendations(
 
     if not user:
         raise HTTPException(status_code=404, detail="Пользователь не найден")
+
+    if not user.birth_date:
+        raise HTTPException(
+            status_code=400,
+            detail="Для получения рекомендаций необходимо указать дату рождения",
+        )
 
     values = calculate_biorhythm(user.birth_date, target_date)
 
@@ -290,11 +266,6 @@ def get_recommendations(
     response_model=list[TaskResponse],
     tags=["Задачи"],
     summary="Получение списка задач",
-    description="Возвращает все задачи текущего пользователя. При передаче target_date возвращает только задачи на указанную дату.",
-    response_description="Список задач пользователя.",
-    responses={
-        401: {"description": "Пользователь не авторизован."},
-    },
 )
 def get_tasks(
     target_date: date | None = None,
@@ -313,12 +284,6 @@ def get_tasks(
     status_code=201,
     tags=["Задачи"],
     summary="Создание задачи",
-    description="Создаёт новую задачу для текущего пользователя.",
-    response_description="Созданная задача.",
-    responses={
-        401: {"description": "Пользователь не авторизован."},
-        422: {"description": "Ошибка проверки входных данных."},
-    },
 )
 def create_task(
     task_data: TaskCreate,
@@ -328,19 +293,10 @@ def create_task(
     return crud.create_task(db, user_id, task_data)
 
 
-# ---------- Планировщик ----------
-
-
 @app.get(
     "/api/tasks/schedule",
     tags=["Планировщик"],
     summary="Получение расписания задач",
-    description="Формирует расписание задач текущего пользователя на указанную дату с учётом занятых интервалов и правил планировщика.",
-    response_description="Дата и сформированное расписание.",
-    responses={
-        401: {"description": "Пользователь не авторизован."},
-        422: {"description": "Не указана дата или передана некорректная дата."},
-    },
 )
 def get_task_schedule(
     target_date: date,
@@ -348,13 +304,9 @@ def get_task_schedule(
     db: Session = Depends(get_db),
 ):
     tasks = crud.get_tasks_by_date(db, user_id, target_date)
-
     schedule = create_schedule(tasks)
 
     return {"date": target_date, "schedule": schedule}
-
-
-# ---------- Получение и изменение задач ----------
 
 
 @app.get(
@@ -362,12 +314,6 @@ def get_task_schedule(
     response_model=TaskResponse,
     tags=["Задачи"],
     summary="Получение задачи",
-    description="Возвращает задачу по её ID. Пользователь может получить только собственную задачу.",
-    response_description="Найденная задача.",
-    responses={
-        401: {"description": "Пользователь не авторизован."},
-        404: {"description": "Задача не найдена или недоступна пользователю."},
-    },
 )
 def get_task(
     task_id: int,
@@ -387,13 +333,6 @@ def get_task(
     response_model=TaskResponse,
     tags=["Задачи"],
     summary="Обновление задачи",
-    description="Частично обновляет задачу по её ID. Можно передать только те поля, которые необходимо изменить. Пользователь может обновлять только собственные задачи.",
-    response_description="Обновлённая задача.",
-    responses={
-        401: {"description": "Пользователь не авторизован."},
-        404: {"description": "Задача не найдена или недоступна пользователю."},
-        422: {"description": "Ошибка проверки входных данных."},
-    },
 )
 def update_task(
     task_id: int,
@@ -414,13 +353,6 @@ def update_task(
     response_model=DeleteTaskResponse,
     tags=["Задачи"],
     summary="Удаление задачи",
-    description="Удаляет задачу по её ID. Пользователь может удалить только собственную задачу.",
-    response_description="Сообщение об успешном удалении.",
-    responses={
-        200: {"description": "Задача успешно удалена."},
-        401: {"description": "Пользователь не авторизован."},
-        404: {"description": "Задача не найдена или недоступна пользователю."},
-    },
 )
 def delete_task(
     task_id: int,
@@ -435,3 +367,152 @@ def delete_task(
     crud.delete_task(db, task)
 
     return {"message": "Задача успешно удалена"}
+
+
+# ---------- Настройки пользователя ----------
+
+
+@app.get(
+    "/api/settings",
+    response_model=UserSettingsResponse,
+    tags=["Настройки"],
+    summary="Получение настроек пользователя",
+)
+def get_settings(
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    return crud.get_or_create_user_settings(db, user_id)
+
+
+@app.patch(
+    "/api/settings",
+    response_model=UserSettingsResponse,
+    tags=["Настройки"],
+    summary="Изменение настроек пользователя",
+)
+def update_settings(
+    settings_data: UserSettingsUpdate,
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    return crud.update_user_settings(db, user_id, settings_data)
+
+
+# ---------- Уведомления ----------
+
+
+@app.get(
+    "/api/notifications",
+    response_model=list[NotificationResponse],
+    tags=["Уведомления"],
+    summary="Получение уведомлений пользователя",
+)
+def get_notifications(
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    return crud.get_user_notifications(db, user_id)
+
+
+@app.patch(
+    "/api/notifications/{notification_id}/read",
+    response_model=NotificationResponse,
+    tags=["Уведомления"],
+    summary="Отметить уведомление прочитанным",
+)
+def read_notification(
+    notification_id: int,
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    notification = crud.get_notification(db, user_id, notification_id)
+
+    if not notification:
+        raise HTTPException(status_code=404, detail="Уведомление не найдено")
+
+    return crud.mark_notification_read(db, notification)
+
+
+@app.patch(
+    "/api/notifications/read-all",
+    tags=["Уведомления"],
+    summary="Отметить все уведомления прочитанными",
+)
+def read_all_notifications(
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    crud.mark_all_notifications_read(db, user_id)
+
+    return {"message": "Все уведомления отмечены прочитанными"}
+
+
+# ---------- Проверка напоминаний ----------
+
+
+@app.post(
+    "/api/notifications/check-reminders",
+    tags=["Уведомления"],
+    summary="Проверка задач для напоминаний",
+)
+def check_task_reminders(
+    user_id: int = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    settings = crud.get_or_create_user_settings(db, user_id)
+
+    if not settings.notifications_enabled or not settings.task_reminders_enabled:
+        return {
+            "message": "Уведомления о задачах отключены",
+            "created": 0,
+        }
+
+    now = datetime.now()
+    reminder_limit = now + timedelta(minutes=settings.reminder_minutes_before)
+
+    tasks = (
+        db.query(Task)
+        .filter(
+            Task.user_id == user_id,
+            Task.due_date == now.date(),
+            Task.is_completed == False,
+            Task.start_time.isnot(None),
+        )
+        .all()
+    )
+
+    created_count = 0
+
+    for task in tasks:
+        task_start = datetime.combine(now.date(), task.start_time)
+
+        if now <= task_start <= reminder_limit:
+            existing_notification = (
+                db.query(Notification)
+                .filter(
+                    Notification.user_id == user_id,
+                    Notification.task_id == task.id,
+                    Notification.notification_type == "task_reminder",
+                )
+                .first()
+            )
+
+            if existing_notification:
+                continue
+
+            crud.create_notification(
+                db=db,
+                user_id=user_id,
+                task_id=task.id,
+                title="Напоминание о задаче",
+                message=f"Скоро начнётся задача: {task.title}",
+                notification_type="task_reminder",
+            )
+
+            created_count += 1
+
+    return {
+        "message": "Проверка напоминаний завершена",
+        "created": created_count,
+    }

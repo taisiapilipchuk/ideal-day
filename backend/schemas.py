@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, EmailStr, model_validator
-from datetime import date, time
+from datetime import date, time, datetime
 from typing import Literal
 
 # ---------- Пользователи ----------
@@ -105,5 +105,39 @@ class TaskResponse(BaseModel):
     end_time: time | None
     is_completed: bool
     priority: int
+
+    model_config = {"from_attributes": True}
+
+
+# ---------- Настройки пользователя ----------
+
+
+class UserSettingsUpdate(BaseModel):
+    notifications_enabled: bool | None = None
+    task_reminders_enabled: bool | None = None
+    recommendation_notifications_enabled: bool | None = None
+    reminder_minutes_before: int | None = Field(default=None, ge=1, le=1440)
+
+
+class UserSettingsResponse(BaseModel):
+    notifications_enabled: bool
+    task_reminders_enabled: bool
+    recommendation_notifications_enabled: bool
+    reminder_minutes_before: int
+
+    model_config = {"from_attributes": True}
+
+
+# ---------- Уведомления ----------
+
+
+class NotificationResponse(BaseModel):
+    id: int
+    task_id: int | None
+    title: str
+    message: str
+    notification_type: str
+    is_read: bool
+    created_at: datetime
 
     model_config = {"from_attributes": True}
